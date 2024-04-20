@@ -1,0 +1,21 @@
+/* root styles */
+@use './variables';
+@use './constant';
+
+@forward 'base';
+@forward 'themes';
+@forward 'mixin';
+@forward 'components';
+@forward 'layouts';
+@forward 'pages';
+@forward 'materials';
+@forward 'functions';
+
+/* vendor */
+@use './vendors/quill-js.scss';
+@import '~quill/dist/quill.core.css';
+@import '~quill/dist/quill.bubble.css';
+@import '~quill/dist/quill.snow.css';
+
+/* video.js */
+@import "~video.js/dist/video-js.css";

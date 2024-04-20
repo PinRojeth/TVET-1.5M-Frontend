@@ -1,0 +1,50 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button mat-button [routerLink]="'../../'">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}}
+        </button>
+      </h1>
+
+      <div class="group-btn">
+        <button
+          *ngIf="[pApplyMajor.write] | permission"
+          color="accent"
+          mat-flat-button
+          [routerLink]="['../../edit', majorId]"
+        >
+          {{'button.edit' | translate}}
+          <mat-icon svgIcon="edit"></mat-icon>
+        </button>
+        <button *ngIf="[pApplyMajor.delete] | permission" color="warn" mat-flat-button (click)="onDelete()">
+          {{'button.delete' | translate}}
+          <mat-icon svgIcon="delete"></mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-form">
+    <div class="header-label">{{'form.general_info' | translate}}</div>
+    <div class="grid col-md-2 detail-text">
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.name' | translate}}</label>
+        <div class="value">{{ info?.name }}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.name_en' | translate}}</label>
+        <div class="value">{{ info?.name_en || '--/--' }}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.code' | translate}}</label>
+        <div class="value">{{ info?.code || '--/--' }}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.sector' | translate}}</label>
+        <div class="value">{{ info?.sectors?.name || '--/--' }}</div>
+      </div>
+    </div>
+  </div>
+</div>

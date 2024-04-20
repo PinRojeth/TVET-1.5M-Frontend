@@ -1,0 +1,60 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">កត់ត្រាវត្តមាន</h1>
+    </div>
+  </div>
+
+  <div class="detail-form">
+    <app-filter
+      [hasButton]="[pAttendance.write] | permission"
+      (actionButton)="onCreate()"
+      [apiRoute]="filterData$"
+      [hide]="['dateRange', 'date', 'yearDate', 'search']"
+      (queryFilter)="setParams($event)"
+    >
+    </app-filter>
+    <custom-table
+      [tableData]="tableData"
+      [tableColumns]="tableColumns"
+      [requestUrl]="requestUrl"
+      (goToEvent)="goTo($event)"
+    >
+      <ng-template [appZippy]="'school'" let-element>
+        <div class="group-picture-name">
+          <img
+            class="profile-picture-list"
+            *ngIf="element?.schools?.profile_image; else elseBlock"
+            [src]="(element.schools.profile_image | staticFile) + '?image_size=s'"
+            alt="profile picture"
+            onerror="this.onerror=null;this.src='/assets/imgs/school.svg'"
+          />
+          <ng-template #elseBlock>
+            <img class="profile-picture-list" [src]="'/assets/imgs/school.svg'" alt="profile picture" />
+          </ng-template>
+          <div class="el-responsive">{{element?.schools.name}}</div>
+        </div>
+      </ng-template>
+
+      <ng-template [appZippy]="'amount_student'" let-element>
+        {{element?.student_count}}
+      </ng-template>
+
+      <ng-template [appZippy]="'date'" let-element>
+        {{(element?.date | khmerDate: 'dd MMMM yyyy') || '--/--' }}
+      </ng-template>
+
+      <ng-template [appZippy]="'courses.name'" let-element>
+        {{element?.name}}
+      </ng-template>
+
+      <ng-template [appZippy]="'action'" let-element>
+        <app-action
+          [useRouter]="{view: { routerLink: ['info', element._id] }}"
+          [permission]="{edit: false, delete: false, view: [pAttendance.read] | permission }"
+        >
+        </app-action>
+      </ng-template>
+    </custom-table>
+  </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">{{ 'staff.list' | translate }}</h1>
+    </div>
+  </div>
+
+  <div class="detail-form">
+    <app-filter
+      [hasButton]="[pStaff.write] | permission"
+      (queryEvent)="onSearch($event)"
+      (actionButton)="onCreate()"
+      [apiRoute]="filterData$"
+      (queryFilter)="setParams($event)"
+    >
+    </app-filter>
+    <custom-table
+      [tableData]="tableData"
+      [tableColumns]="tableColumns"
+      [requestUrl]="staffService.path"
+      (goToEvent)="goTo($event)"
+    >
+      <ng-template [appZippy]="'name'" let-element>
+        <div class="group-picture-name">
+          <img
+            class="profile-picture-list"
+            *ngIf="element.profile_image; else elseBlock"
+            [src]="(element.profile_image | staticFile) + '?image_size=s'"
+            alt="profile picture"
+          />
+          <ng-template #elseBlock>
+            <img
+              class="profile-picture-list"
+              [src]="(element.gender === 'female' ? '/assets/imgs/female.svg' : '/assets/imgs/male.svg')"
+              alt="profile picture"
+            />
+          </ng-template>
+          <div class="el-responsive">{{element | staffFullName: translate.currentLang}}</div>
+        </div>
+      </ng-template>
+
+      <ng-template [appZippy]="'gender'" let-element>
+        {{(element.gender === 'female' ? ('form.gender.female' | translate) : ('form.gender.male' | translate) |
+                titlecase)|| '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'phone'" let-element>
+        {{element.phone_number || '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'role'" let-element>
+        {{element.users.roles?.name || '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'schools'" let-element>
+        <span class="text_title">{{(element.schools | translateAPI: translate.currentLang) || '--//--'}}</span>
+      </ng-template>
+
+      <ng-template [appZippy]="'department'" let-element>
+        <span class="text_title">{{(element.user_departments | translateAPI: translate.currentLang) || '--//--'}}</span>
+      </ng-template>
+
+      <ng-template [appZippy]="'action'" let-element>
+        <app-action
+          [useRouter]="{view: {routerLink: 'info/' + element._id}, edit: {routerLink: 'edit/' + element._id}}"
+          [permission]="{ delete: false, view: ([pStaff.read] | permission), edit: ([pStaff.write] | permission) }"
+        >
+        </app-action>
+      </ng-template>
+    </custom-table>
+  </div>
+</div>

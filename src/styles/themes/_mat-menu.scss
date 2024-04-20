@@ -1,0 +1,17 @@
+.mat-mdc-menu-item {
+  .mdc-list-item {
+    &__primary-text {
+      display: flex;
+      align-items: center;
+    }
+  }
+  // .mat-icon {
+  //   width: 20px;
+  //   height: 20px;
+  //   &.black {
+  //     svg path {
+  //       fill: rgba(0, 0, 0, 0.54);
+  //     }
+  //   }
+  // }
+}

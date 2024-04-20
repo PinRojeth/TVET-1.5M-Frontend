@@ -1,0 +1,88 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title flex items-center justify-content-between">
+      <h1 class="title">{{ 'menu.course' | translate }}</h1>
+      <button mat-flat-button color="print" (click)="onExportFile()">
+        <mat-icon>print</mat-icon>
+        {{'button.export_file' | translate}}
+      </button>
+    </div>
+  </div>
+
+  <div class="detail-form">
+    <app-filter
+      [hasButton]="[pCourse.write] | permission"
+      (queryEvent)="onSearch($event)"
+      (actionButton)="onCreate()"
+      [apiRoute]="filterData$"
+      (queryFilter)="setParams($event)"
+    >
+    </app-filter>
+    <custom-table
+      [tableData]="tableData"
+      [tableColumns]="tableColumns"
+      [requestUrl]="courseService.path"
+      (goToEvent)="goTo($event)"
+      id="courses-table"
+    >
+      <ng-template [appZippy]="'code'" let-element>
+        {{element.code || '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'major'" let-element>
+        {{element.apply_majors?.name || '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'register_date'" let-element>
+        {{element.registation_start | date: 'dd/MM/yyyy' || '--//--'}} ~
+        {{element.registation_end | date: 'dd/MM/yyyy' || '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'course_date'" let-element>
+        {{element.course_start | date: 'dd/MM/yyyy' || '--//--'}} ~
+        {{element.course_end | date: 'dd/MM/yyyy' || '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'shift'" let-element>
+        {{ element?.shifts?.name ||  '--//--'}}
+      </ng-template>
+
+      <!-- <ng-template [appZippy]="'duration'" let-element>
+                {{element.duration || '--//--' }}
+            </ng-template> -->
+
+      <ng-template [appZippy]="'school'" let-element>
+        <div class="group-picture-name" *ngIf="element?.schools; else elseNull">
+          <img
+            class="profile-picture-list"
+            *ngIf="element?.schools?.profile_image; else elseBlock"
+            [src]="(element?.schools?.profile_image | staticFile) + '?image_size=s'"
+            alt="profile picture"
+            onerror="this.onerror=null;this.src='/assets/imgs/school.svg'"
+          />
+          <ng-template #elseBlock>
+            <img class="profile-picture-list" [src]="'/assets/imgs/school.svg'" alt="profile picture" />
+          </ng-template>
+          <div class="el-responsive">{{element?.schools?.name}}</div>
+        </div>
+        <ng-template #elseNull>{{'--//--'}}</ng-template>
+      </ng-template>
+
+      <ng-template [appZippy]="'student_count'" let-element>
+        {{ element?.student_count ||  0}}
+      </ng-template>
+
+      <ng-template [appZippy]="'action'" let-element>
+        <app-action
+          [useRouter]="{view: {routerLink: 'info/' + element._id}, edit: {routerLink: 'edit/' + element._id}}"
+          (clickEvent)="actionEvent($event, element._id)"
+          [permission]="{
+                        view: ([pCourse.read] | permission ),
+                        edit: ([pCourse.write] | permission ),
+                        delete: ([pCourse.delete] | permission ) }"
+        >
+        </app-action>
+      </ng-template>
+    </custom-table>
+  </div>
+</div>

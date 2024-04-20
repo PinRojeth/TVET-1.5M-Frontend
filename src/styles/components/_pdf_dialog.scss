@@ -1,0 +1,38 @@
+@use '../variables' as *;
+
+.auto-scroll {
+  max-height: 300px;
+  overflow: auto;
+}
+
+.pdf-container {
+  position: relative;
+
+  .head-dialog {
+    width: inherit;
+    justify-content: space-between;
+    span {
+      font-size: 16px;
+      font-weight: bold;
+      color: $scarpa-flow;
+    }
+
+    button {
+      background: #9fbcfd33;
+      border-radius: 10px;
+      .mat-mdc-button-persistent-ripple {
+        border-radius: 10px;
+      }
+    }
+  }
+
+  mat-spinner {
+    position: absolute;
+    inset: 46%;
+    z-index: 1;
+  }
+
+  pdf-viewer {
+    height: calc(100vh - 100px);
+  }
+}

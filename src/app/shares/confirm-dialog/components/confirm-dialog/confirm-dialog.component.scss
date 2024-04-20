@@ -1,0 +1,47 @@
+mat-dialog-content {
+  min-width: 22em;
+  line-height: 26px;
+
+  .alert-icon-dialog {
+    width: 100%;
+    display: grid;
+    place-items: center;
+    margin: 1em 0;
+
+    img {
+      width: 50%;
+      max-height: 110px;
+      object-fit: contain;
+    }
+  }
+
+  h2 {
+    &::after {
+      content: '';
+      width: 0;
+    }
+  }
+
+  .sms {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+}
+
+.btn-action-dialog {
+  justify-content: center;
+  padding: 20px 0 !important;
+}
+
+.close {
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  padding: 6px;
+}
+
+.close:hover {
+  background-color: rgb(240, 239, 239);
+  border-radius: 50%;
+}

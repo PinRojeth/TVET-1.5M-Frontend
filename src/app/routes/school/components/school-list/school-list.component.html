@@ -1,0 +1,48 @@
+<div class="app-content">
+    <div class="app-header">
+        <div class="app-title">
+            <h1 class="title">{{ 'menu.school' | translate }}</h1>
+        </div>
+    </div>
+
+    <div class="detail-form">
+        <app-filter
+            [hasButton]="[pSchool.write] | permission"
+            (queryEvent)="onSearch($event)"
+            (actionButton)="onCreate()" [apiRoute]="filterData$" (queryFilter)="setParams($event)">
+        </app-filter>
+        <custom-table [tableData]="tableData" [tableColumns]="tableColumns" [requestUrl]="schoolService.path"
+            (goToEvent)="goTo($event)">
+            <ng-template [appZippy]="'name'" let-element>
+                <div class="group-picture-name">
+                    <img class="profile-picture-list" *ngIf="element.profile_image; else elseBlock"
+                        [src]="(element.profile_image | staticFile) + '?image_size=s'" alt="profile picture"
+                        onerror="this.onerror=null;this.src='/assets/imgs/school.svg'" />
+                    <ng-template #elseBlock>
+                        <img class="profile-picture-list" [src]="'/assets/imgs/school.svg'" alt="profile picture" />
+                    </ng-template>
+                    <div class="el-responsive">{{element.name}}</div>
+                </div>
+            </ng-template>
+
+            <ng-template [appZippy]="'location'" let-element>
+                {{ element.address?.city_provinces?.name || '--/--' }}
+            </ng-template>
+
+            <ng-template [appZippy]="'code'" let-element>
+                {{ element.code || '--/--' }}
+            </ng-template>
+
+            <ng-template [appZippy]="'major-count'" let-element>
+                {{ element.major_count || '--/--' }}
+            </ng-template>
+
+            <ng-template [appZippy]="'action'" let-element>
+                <app-action
+                    [useRouter]="{view: {routerLink: 'info/' + element._id}, edit: {routerLink: 'edit/' + element._id}}"
+                    [permission]="{ delete: false, view: ([pSchool.read] | permission), edit: ([pSchool.update] | permission) }" >
+                </app-action>
+            </ng-template>
+        </custom-table>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+.skeleton {
+    background: linear-gradient(-90deg, #E7E7E8 0%, #d1d1d1 30%, #E7E7E8 50%, #E7E7E8 100%);
+    background-size: 400% 400%;
+    animation: skeleton-loading 0.9s linear infinite forwards;
+    border-radius: 0.25rem;
+
+    &__text {
+        height: 22px;
+        width: 100%;
+    }
+
+    &__btn {
+        height: 32px;
+    }
+
+    &__table {
+        height: 48px;
+    }
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    100% {
+        background-position: -135% 0%;
+    }
+}

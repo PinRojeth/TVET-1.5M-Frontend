@@ -1,0 +1,23 @@
+<div class="app-content cms-content">
+    <div class="detail-form mb-16">
+        <div class="header-label flex items-center">គ្រប់គ្រងមាតិកា
+            <div class="group-btn">
+                <button *ngIf="[pCms.write] | permission" color="accent" mat-flat-button (click)="onEdit()">
+                    {{'button.edit' | translate}}
+                    <mat-icon svgIcon="edit"></mat-icon>
+                </button>
+            </div>
+        </div>
+
+        <div class="grid col-sm-1 detail-text">
+            <div class="d-flex">
+                <label style="width: 100px; padding-bottom: 16px;">{{'form.title_cms' | translate}} </label>
+                <div class="title" [innerHTML]="cms?.name | safeHtml"></div>
+            </div>
+            <div class="d-flex">
+                <label style="width: 100px;">ការពិពណ៌នា</label>
+                <div class="value">{{cms?.description}}</div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,117 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title flex items-center justify-content-between">
+      <h1 class="title">{{'menu.student_requests' | translate }}</h1>
+      <button mat-flat-button color="print" (click)="onExportFile()" [disabled]="tableData?.list?.length < 1">
+        <mat-icon>print</mat-icon>
+        {{'button.export_file' | translate}}
+      </button>
+    </div>
+  </div>
+
+  <div class="detail-form override-button">
+    <section class="filter-menu">
+      <app-filter
+        [hasButton]="false"
+        [apiRoute]="filterData$"
+        (queryEvent)="onSearch($event)"
+        (queryFilter)="setParams($event)"
+      >
+      </app-filter>
+      <section class="button-create">
+        <button
+          *ngIf="[pStudent.apply] | permission"
+          role="button"
+          type="button"
+          mat-raised-button
+          color="primary"
+          [matMenuTriggerFor]="menuCreate"
+        >
+          <mat-icon svgIcon="add_new" matPrefix></mat-icon>
+          {{'button.create' | translate}}
+        </button>
+        <mat-menu #menuCreate="matMenu" xPosition="before">
+          <button mat-menu-item (click)="goToCreatePage('poorId')">
+            <span>{{'button.has_poor_id' | translate}}</span>
+          </button>
+          <button mat-menu-item (click)="goToCreatePage('')">
+            <span>{{'button.no_poor_id' | translate}}</span>
+          </button>
+        </mat-menu>
+      </section>
+    </section>
+    <custom-table
+      [tableData]="tableData"
+      [tableColumns]="tableColumns"
+      [requestUrl]="requestUrl"
+      (goToEvent)="goTo($event)"
+      id="request-scholarship-table"
+    >
+      <ng-template [appZippy]="'name'" let-element>
+        <div class="group-picture-name">
+          <img
+            class="profile-picture-list"
+            *ngIf="element.profile_image; else elseBlock"
+            [src]="(element.profile_image | staticFile) + '?image_size=s'"
+            alt="profile picture"
+          />
+          <ng-template #elseBlock>
+            <img
+              class="profile-picture-list"
+              [src]="(element.gender === 'female' ? '/assets/imgs/female.svg' : '/assets/imgs/male.svg')"
+              alt="profile picture"
+            />
+          </ng-template>
+          <div class="el-responsive">{{element | fullName: translate.currentLang}}</div>
+        </div>
+      </ng-template>
+
+      <ng-template [appZippy]="'gender'" let-element>
+        {{(element.gender === 'female' ? ('form.gender.female' | translate) : ('form.gender.male' | translate) |
+                titlecase)|| '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'phone'" let-element>
+        {{element.phone_number || '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'poor_id'" let-element>
+        {{ element.poor_id || '--/--' }}
+      </ng-template>
+
+      <ng-template [appZippy]="'schools'" let-element>
+        <div class="group-picture-name">
+          <img
+            class="profile-picture-list"
+            *ngIf="element?.schools?.profile_image; else elseBlock"
+            [src]="(element?.schools?.profile_image | staticFile) + '?image_size=s'"
+            alt="profile picture"
+            onerror="this.onerror=null;this.src='/assets/imgs/school.svg'"
+          />
+          <ng-template #elseBlock>
+            <img class="profile-picture-list" [src]="'/assets/imgs/school.svg'" alt="profile picture" />
+          </ng-template>
+          <div class="el-responsive">{{element.schools | translateAPI: translate.currentLang}}</div>
+        </div>
+      </ng-template>
+
+      <ng-template [appZippy]="'major'" let-element>
+        {{ element.apply_majors || '--/--' | translateAPI: translate.currentLang}}
+      </ng-template>
+
+      <ng-template [appZippy]="'status'" let-element>
+        <span class="status-fill rounded-sm" [ngClass]="element.scholarship_status | approvedStudent | lowercase">
+          {{'enum_status.' + (element.scholarship_status | scholarshipStatus) | translate}}
+        </span>
+      </ng-template>
+
+      <ng-template [appZippy]="'action'" let-element>
+        <app-action
+          [useRouter]="{view: {routerLink: 'info/' + element._id}}"
+          [permission]="{ delete: false, edit: false, view: ([pStudent.read] | permission) }"
+        >
+        </app-action>
+      </ng-template>
+    </custom-table>
+  </div>
+</div>

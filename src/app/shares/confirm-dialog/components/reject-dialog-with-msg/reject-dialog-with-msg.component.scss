@@ -1,0 +1,28 @@
+
+
+.field-reason {
+    mat-form-field {
+        &.mat-mdc-form-field.mat-form-field-appearance-outline .mat-mdc-form-field-subscript-wrapper {
+            display: none !important;
+        }
+    }
+    // .mat-mdc-form-field.mat-form-field-appearance-outline .mat-mdc-form-field-subscript-wrapper {
+    //     display: none !important;
+    // }
+}
+
+.reject-action {
+    padding-bottom: 24px;
+}
+
+.close {
+    border: none;
+    background-color: white; 
+    cursor: pointer;
+    padding: 6px;
+  }
+  
+.close:hover {
+    background-color: rgb(240, 239, 239);
+    border-radius: 50%;
+}

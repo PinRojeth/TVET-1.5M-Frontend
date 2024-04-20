@@ -1,0 +1,119 @@
+<div class="app-content report">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">{{'report.course_report' | translate}}</h1>
+    </div>
+  </div>
+
+  <div class="detail-form">
+    <div class="flex wrap items-center place-content-space-between gap-8">
+      <section class="flex wrap items-center gap-8 no-subscript-wrapper" [formGroup]="formDate">
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>From</mat-label>
+          <input
+            matInput
+            formControlName="start"
+            readonly
+            (dateChange)="onInputDate()"
+            [ngxMatDatetimePicker]="picker1"
+          />
+          <mat-datepicker-toggle matSuffix [for]="$any(picker1)">
+            <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+          </mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #picker1 [showSeconds]="true"> </ngx-mat-datetime-picker>
+        </mat-form-field>
+        <mat-form-field appearance="outline" floatLabel="always">
+          <mat-label>To</mat-label>
+          <input
+            matInput
+            formControlName="end"
+            readonly
+            (dateChange)="onInputDate()"
+            [ngxMatDatetimePicker]="picker2"
+          />
+          <mat-datepicker-toggle matSuffix [for]="$any(picker2)">
+            <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+          </mat-datepicker-toggle>
+          <ngx-mat-datetime-picker #picker2 [showSeconds]="true"> </ngx-mat-datetime-picker>
+        </mat-form-field>
+        <app-filter [hide]="['dateRange', 'date', 'yearDate', 'search']"> </app-filter>
+        <button mat-flat-button color="primary" (click)="onDateChange()">
+          <mat-icon>send</mat-icon>
+          Generate
+        </button>
+      </section>
+    </div>
+
+    <custom-table id="courses-table">
+      <ng-template [appZippy]="'code'" let-element>
+        {{element.code || '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'major'" let-element>
+        {{element.apply_majors?.name || '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'register_date'" let-element>
+        {{element.registation_start | date: 'dd/MM/yyyy' || '--//--'}} ~
+        {{element.registation_end | date: 'dd/MM/yyyy' || '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'course_date'" let-element>
+        {{element.course_start | date: 'dd/MM/yyyy' || '--//--'}} ~
+        {{element.course_end | date: 'dd/MM/yyyy' || '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'shift'" let-element>
+        {{ element?.shifts?.name ||  '--//--'}}
+      </ng-template>
+
+      <!-- <ng-template [appZippy]="'duration'" let-element>
+                {{element.duration || '--//--' }}
+            </ng-template> -->
+
+      <ng-template [appZippy]="'school'" let-element>
+        <div class="group-picture-name" *ngIf="element?.schools; else elseNull">
+          <img
+            class="profile-picture-list"
+            *ngIf="element?.schools?.profile_image; else elseBlock"
+            [src]="(element?.schools?.profile_image | staticFile) + '?image_size=s'"
+            alt="profile picture"
+            onerror="this.onerror=null;this.src='/assets/imgs/school.svg'"
+          />
+          <ng-template #elseBlock>
+            <img class="profile-picture-list" [src]="'/assets/imgs/school.svg'" alt="profile picture" />
+          </ng-template>
+          <div class="el-responsive">{{element?.schools?.name}}</div>
+        </div>
+        <ng-template #elseNull>{{'--//--'}}</ng-template>
+      </ng-template>
+
+      <ng-template [appZippy]="'student_count'" let-element>
+        {{ element?.student_count ||  0}}
+      </ng-template>
+
+      <!-- <ng-template [appZippy]="'action'" let-element>
+        <app-action
+          [useRouter]="{view: {routerLink: 'info/' + element._id}, edit: {routerLink: 'edit/' + element._id}}"
+          (clickEvent)="actionEvent($event, element._id)"
+          [permission]="{
+                        view: ([pCourse.read] | permission ),
+                        edit: ([pCourse.write] | permission ),
+                        delete: ([pCourse.delete] | permission ) }"
+        >
+        </app-action>
+      </ng-template> -->
+    </custom-table>
+    <ng-template #emptyReport>
+      <div class="report-empty">
+        <div>
+          <img src="/TVET1.5M-admin/src/assets/imgs/report-empty.svg" alt="report image placeholder" />
+          <div align="center" class="grid gap-y-4 mt-4">
+            <strong>សូមជ្រើសរើសកាលបរិច្ឆេទ</strong>
+            <span class="text-blur">ទទួលយកសំណើររបស់បេក្ខជន</span>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

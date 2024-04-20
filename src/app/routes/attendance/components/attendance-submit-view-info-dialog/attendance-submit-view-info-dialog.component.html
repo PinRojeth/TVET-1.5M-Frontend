@@ -1,0 +1,22 @@
+<div class="detail-form record-student-dialog">
+  <div class="flex items-center justify-content-between">
+    <div class="header-label">
+      វត្តមានសិស្ស <span class="text-color">{{this.data.students | fullName}}</span>
+    </div>
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <section class="mb-16"><mat-divider></mat-divider></section>
+
+  <mat-dialog-content>
+    <custom-table [tableData]="tableData" [tableColumns]="tableColumns" [requestUrl]="requestUrl">
+      <ng-template [appZippy]="'date'" let-element>
+        {{element.date | date: 'dd/MM/yyyy'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'attendance'" let-element> {{element.attendance_score}}% </ng-template>
+    </custom-table>
+  </mat-dialog-content>
+</div>

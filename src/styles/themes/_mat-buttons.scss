@@ -1,0 +1,28 @@
+@use '../variables';
+
+/* custom mat button */
+.mdc-button {
+  padding: 3px 16px !important;
+  border-radius: variables.$rounded-sm !important;
+  height: 40px !important;
+
+  &.mat-accent {
+    .mdc-button {
+      &__label {
+        color: #fff;
+      }
+    }
+  }
+}
+
+.mat-raised-button {
+  color: variables.$color-primary;
+}
+
+.mat-icon[svgicon='arrow'] svg {
+  padding: 1px;
+}
+
+.mat-tooltip {
+  font-size: 12.75px;
+}

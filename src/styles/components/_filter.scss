@@ -1,0 +1,436 @@
+@use '../variables' as *;
+
+.mat-mdc-card {
+  border: none;
+}
+
+.filter-card {
+  align-items: center;
+  //padding: 10px 20px !important;
+
+  .filter-box {
+    .filter-icon {
+      width: 18px;
+    }
+
+    .common-user-input-field {
+      line-height: 32px;
+      max-width: 250px;
+      font-size: 15px;
+      font-weight: 400;
+      border-radius: 10px;
+      background-color: #fff;
+      padding: 0.25em 0.5em;
+      border: 1px solid #e7e7e7;
+    }
+
+    //*Filter Custom Style
+    .mat-mdc-badge-medium.mat-mdc-badge-overlap.mat-mdc-badge-after .mat-mdc-badge-content {
+      right: -5px;
+    }
+
+    .mat-mdc-badge-medium.mat-mdc-badge-above .mat-mdc-badge-content {
+      top: 10px;
+    }
+
+    .mat-mdc-badge-medium .mat-mdc-badge-content {
+      width: 15px;
+      height: 15px;
+      line-height: 15px;
+      font-size: 10px;
+    }
+  }
+
+  .mat-mdc-form-field {
+    .mat-mdc-form-field-wrapper {
+      margin: 0;
+      padding-bottom: 0;
+    }
+  }
+
+  .search-box {
+    width: 100%;
+
+    .mat-mdc-form-field {
+      max-width: 400px;
+
+      &.mat-mdc-form-field-appearance-outline {
+
+        .mat-mdc-form-field-outline-start,
+        .mat-mdc-form-field-outline-end {
+          min-width: 18px;
+          background-color: white;
+        }
+      }
+    }
+  }
+
+  &.without-create {
+    .search-box {
+      width: 100%;
+
+      .mat-mdc-form-field {
+        margin-left: auto;
+      }
+    }
+  }
+
+  &.with-create,
+  &.with-print {
+    .filter-search {
+      .box:not(:last-child) {
+        margin-bottom: 16px;
+      }
+    }
+
+    .create-btn,
+    .group-btn {
+      margin-left: auto;
+    }
+
+    @media screen and (min-width: 600px) {
+      .filter-search {
+        display: flex;
+        align-items: center;
+
+        .box:not(:last-child) {
+          margin-right: 16px;
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.filter-card.no-button {
+  .filter-wrapper {
+    display: flex;
+    width: 100%;
+
+    @media screen and (max-width: 700px) {
+      flex-direction: column;
+
+      .section-box:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+//Custom Filter UI
+.menu-filter-panel {
+  width: 350px;
+  min-width: 350px !important;
+  max-width: none !important;
+  margin-top: 1em !important;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  padding: $spacing-md !important;
+  border-radius: $rounded-sm !important;
+  line-height: 26px;
+
+  .mat-mdc-select-value {
+    text-align: center;
+  }
+
+  .filter-icon {
+    width: 18px;
+  }
+
+  .mat-mdc-form-field-wrapper {
+    padding: 0;
+  }
+
+  .mat-mdc-form-field-prefix {
+    mat-icon {
+      color: $color-secondary;
+    }
+  }
+
+  .mat-mdc-form-field.mat-mdc-form-field-appearance-outline {
+    .mat-mdc-form-field-outline-end {
+      background-color: #ffffff;
+    }
+  }
+}
+
+
+
+$input-height: 40;
+$input-width: 250;
+$box-rounded: calc($input-height / 2);
+$spacing: 16;
+
+.filter-wrapper {
+
+  .mat-mdc-form-field.mat-form-field-appearance-outline .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  //*Filter Custom Style
+  .mat-mdc-badge-medium.mat-mdc-badge-overlap.mat-mdc-badge-after .mat-mdc-badge-content {
+    right: -5px;
+  }
+
+  .mat-mdc-badge-medium.mat-mdc-badge-above .mat-mdc-badge-content {
+    top: -8px;
+  }
+
+  .mat-mdc-badge-medium .mat-mdc-badge-content {
+    width: 15px;
+    height: 15px;
+    line-height: 15px;
+    font-size: 10px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  .section-box:not(:last-child) {
+    margin-right: $spacing * 1px;
+  }
+
+  .section-box {
+
+    .mat-mdc-form-field.mat-mdc-form-field-appearance-outline .mat-mdc-form-field-outline-start,
+    .mat-mdc-form-field.mat-mdc-form-field-appearance-outline .mat-mdc-form-field-outline-end {
+      background-color: #fff;
+    }
+  }
+
+  .search-box,
+  .trigger-box .trigger-btn {
+    display: flex;
+    align-items: center;
+    height: $input-height * 1px;
+    border: 1px solid $color-thin-grey;
+    background: #fff;
+    border-radius: $rounded-sm;
+    padding: 0 8px;
+
+    mat-icon {
+      color: rgba($color-black, 0.4);
+    }
+  }
+
+  .search-box {
+    width: $input-width * 1px;
+    // min-width: $input-width * 1px;
+
+    input {
+      width: 100%;
+      background: transparent;
+      line-height: inherit;
+      outline: none;
+      border: none;
+      font-size: 14px;
+      font-weight: 400;
+      font-family: Poppins, Khmer, system ui;
+    }
+
+    mat-icon {
+      min-width: 24px;
+    }
+  }
+
+  .trigger-box {
+    .trigger-btn {
+      min-width: 200px;
+      outline: none;
+      cursor: pointer;
+      line-height: 35px;
+      font-size: 14px;
+      font-weight: 400;
+
+      .title {
+        width: 100%;
+        margin: 0 0.5em;
+        text-align: start;
+        color: rgba($color-black, 0.4);
+      }
+    }
+
+    .filter-icon {
+      width: 18px !important;
+    }
+  }
+
+  @media screen and (min-width: (map-get($map: $grid-breakpoints, $key: "sm") + 100px)) {
+    display: flex;
+
+    .input-box {
+      flex: 1;
+    }
+
+    .trigger-box {
+      .trigger-btn {
+        min-width: 200px;
+        outline: none;
+        cursor: pointer;
+        line-height: 35px;
+        font-size: 14px;
+        font-weight: 400;
+
+        .title {
+          width: 100%;
+          margin: 0 0.5em;
+          text-align: flex-start;
+          color: rgba($color-black, 0.4);
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: (map-get($map: $grid-breakpoints, $key: "sm") + 101px)) {
+
+    .search-box,
+    .trigger-box,
+    .trigger-box .trigger-btn {
+      width: 100%;
+    }
+  }
+}
+
+.selection-card {
+  .search-box {
+    .mat-mdc-form-field-appearance-outline .mat-mdc-form-field-wrapper {
+      padding: 8px;
+    }
+  }
+}
+
+.filter-select {
+  display: inline-block;
+}
+
+//Custom Filter UI
+.menu-filter-panel {
+  width: 360px;
+  min-width: 360px !important;
+  max-width: none !important;
+  margin-top: 1em !important;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
+  padding: $spacing * 1px;
+  border-radius: $rounded-sm !important;
+
+  &__clear {
+    cursor: pointer;
+
+    &:hover {
+      color: rgb(246, 36, 85);
+    }
+  }
+
+  .menu-filter-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .mat-mdc-menu-content {
+    padding: 0 !important;
+  }
+
+  .mat-mdc-select-value {
+    text-align: center;
+  }
+
+  .filter-icon {
+    width: 24px;
+    height: 24px;
+    padding: 2px;
+  }
+
+  .mat-mdc-form-field-wrapper {
+    padding: 0;
+  }
+
+  .mat-mdc-form-field-prefix {
+    mat-icon {
+      color: $color-secondary;
+    }
+  }
+
+  .mat-mdc-accent.mat-mdc-radio-checked {
+    .mat-mdc-radio-outer-circle {
+      border-color: $bittersweet;
+    }
+
+    .mat-mdc-radio-inner-circle {
+      background-color: $bittersweet;
+    }
+
+    .mat-mdc-radio-label-content {
+      color: $bittersweet;
+    }
+  }
+
+  .mat-mdc-form-field.mat-mdc-form-field-appearance-outline {
+    .mat-mdc-form-field-outline-start {
+      background-color: #ffffff !important;
+    }
+
+    .mat-mdc-form-field-outline-end {
+      background-color: #ffffff;
+    }
+  }
+
+  //?make only single filter box fit content
+  .grid {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+
+    @media screen and (max-width: map-get($map: $grid-breakpoints, $key: 'md')) {
+      grid-template-columns: auto;
+    }
+  }
+}
+
+
+.no-result-found {
+  font-size: inherit;
+  line-height: 3em;
+  height: 3em;
+  padding: 0 16px;
+}
+
+.option-container {
+  height: 240px;
+  overflow: auto;
+}
+
+.custom-radio-filter {
+  max-height: 24em;
+  overflow-y: auto;
+
+  .mat-mdc-radio-label {
+    height: 100%;
+  }
+
+  .custom-radio-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: 0;
+    border-top: 0;
+  }
+
+  .custom-radio-button {
+    display: flex;
+    height: 48px;
+    padding: 0 16px;
+    width: 100%;
+    align-items: center;
+    border-radius: $rounded-sm;
+
+    span.mat-mdc-radio-label-content {
+      text-transform: capitalize;
+    }
+  }
+
+  .no-data {
+    display: flex;
+    justify-content: center;
+  }
+
+}

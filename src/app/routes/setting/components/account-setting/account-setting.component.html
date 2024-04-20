@@ -1,0 +1,146 @@
+<div class="app-content staff-wrapper">
+  <div class="app-header">
+    <h1 class="app-title">
+      <div class="title">{{'menu.setting' | translate}}</div>
+      <div class="group-btn">
+        <button mat-flat-button color="accent" [routerLink]="['edit', staff?._id]">
+          <mat-icon svgIcon="edit"></mat-icon>
+          {{'button.edit' | translate}}
+        </button>
+        <button mat-flat-button color="primary" (click)="openChangePasswordDialog()">
+          <mat-icon>lock</mat-icon>
+          {{'button.change_pwd' | translate}}
+        </button>
+      </div>
+    </h1>
+  </div>
+
+  <div>
+    <div class="detail-form">
+      <div class="header-label">{{'staff.staff_info' | translate}}</div>
+      <app-image-uploader [status]="'view'" [payload]="staff"></app-image-uploader>
+      <div class="grid col-sm-2 detail-text">
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.last_name' | translate}}</label>
+          <div class="value">{{staff?.last_name}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.first_name' | translate}}</label>
+          <div class="value">{{staff?.first_name}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.last_name_en' | translate}}</label>
+          <div class="value">{{staff?.last_name_en}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.first_name_en' | translate}}</label>
+          <div class="value">{{staff?.first_name_en}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.date_birth' | translate}}</label>
+          <div class="value">{{staff?.date_of_birth | date: 'dd/MM/yyyy'}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.gender.title' | translate}}</label>
+          <div class="value">
+            {{staff?.gender === 'female' ? ('form.gender.female' | translate) : ('form.gender.male' | translate) |
+            titlecase}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.nationality' | translate}}</label>
+          <div class="value">
+            {{(staff?.nationality | translateAPI: translate.currentLang) || '--/--'}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.ethnicity' | translate}}</label>
+          <div class="value">
+            {{(staff?.ethnicity | translateAPI: translate.currentLang) || '--/--'}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2 border-none">
+          <label>{{'form.phone' | translate}}</label>
+          <div class="value">{{staff?.phone_number || '--/--'}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-form mt-16">
+      <div class="header-label">{{'form.place_birth.title' | translate}}</div>
+      <div class="grid col-sm-2 detail-text">
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.city' | translate}}</label>
+          <div class="value">
+            {{(staff?.place_of_birth?.city_provinces | translateAPI: translate.currentLang) || "--/--"}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.district' | translate}}</label>
+          <div class="value">
+            {{(staff?.place_of_birth?.districts | translateAPI: translate.currentLang) || "--/--"}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.commune' | translate}}</label>
+          <div class="value">
+            {{(staff?.place_of_birth?.communes | translateAPI: translate.currentLang) || "--/--"}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.village' | translate}}</label>
+          <div class="value">
+            {{(staff?.place_of_birth?.villages | translateAPI: translate.currentLang) || "--/--"}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2 border-none">
+          <label>{{'form.address.detail' | translate}}</label>
+          <div class="value">{{staff?.place_of_birth?.detail || '--/--'}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-form mt-16">
+      <div class="header-label">{{'form.address.title' | translate}}</div>
+      <div class="grid col-sm-2 detail-text">
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.city' | translate}}</label>
+          <div class="value">
+            {{(staff?.address?.city_provinces | translateAPI: translate.currentLang) || "--/--"}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.district' | translate}}</label>
+          <div class="value">{{(staff?.address?.districts | translateAPI: translate.currentLang) || "--/--"}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.commune' | translate}}</label>
+          <div class="value">{{(staff?.address?.communes | translateAPI: translate.currentLang) || "--/--"}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.village' | translate}}</label>
+          <div class="value">{{(staff?.address?.villages | translateAPI: translate.currentLang) || "--/--"}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2 border-none">
+          <label>{{'form.address.detail' | translate}}</label>
+          <div class="value">{{staff?.address?.detail || '--/--'}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-form mt-16">
+      <div class="header-label">{{'form.auth' | translate}}</div>
+      <div class="grid col-sm-2 detail-text">
+        <div class="grid gap-x-16 col-2 border-none">
+          <label>{{'form.username' | translate}}</label>
+          <div class="value">{{staff?.users?.username || '--/--'}}</div>
+        </div>
+
+        <div class="grid gap-x-16 col-2 border-none">
+          <label>{{'form.role' | translate}}</label>
+          <div class="value">{{staff?.users.roles?._id | rolePipe}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

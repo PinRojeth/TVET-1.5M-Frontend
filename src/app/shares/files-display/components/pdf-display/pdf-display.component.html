@@ -1,0 +1,13 @@
+<div class="custom-dialog">
+    <mat-dialog-content style="overflow: hidden;">
+
+        <ngx-extended-pdf-viewer [(src)]="src" [height]="'95%'" [useBrowserLocale]="true"
+            [showDownloadButton]="showDownloadButton" [showOpenFileButton]="false" [showPrintButton]="false"
+            [showDrawEditor]="false" [showTextEditor]="false" [showPresentationModeButton]="true">
+        </ngx-extended-pdf-viewer>
+
+    </mat-dialog-content>
+    <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+        <mat-icon class="close-icon" color="warn">close</mat-icon>
+    </button>
+</div>

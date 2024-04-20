@@ -1,0 +1,224 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<div
+  class="mat-elevation-z0 filter-card with-create grid gap-x-16 gap-y-8 mb-16"
+  [ngClass]="hasButton ? 'col-sm-2' : 'col-1'"
+>
+  <div>
+    <div class="filter-search">
+      <section class="filter-wrapper flex wrap gap-8">
+        <div class="section-box input-box mb-sm-0" *ngIf="!hide.includes('search')">
+          <div class="search-box">
+            <mat-icon svgIcon="search"></mat-icon>
+            <input
+              matInput
+              #searchQuery
+              (keyup)="search(searchQuery.value)"
+              [placeholder]="'filter.search' | translate"
+            />
+            <button
+              *ngIf="searchQuery.value"
+              mat-icon-button
+              matSuffix
+              (click)="searchQuery.value = ''; clear(); $event.stopPropagation()"
+            >
+              <mat-icon>clear</mat-icon>
+            </button>
+          </div>
+        </div>
+        <div class="section-box mb-xs-16 mb-sm-0" *ngIf="!hide.includes('dateRange')">
+          <mat-form-field appearance="outline" (click)="picker.open()">
+            <mat-date-range-input [max]="maxDate" [rangePicker]="picker">
+              <input readonly matStartDate placeholder="Start date" [formControl]="start_date" />
+              <input
+                readonly
+                matEndDate
+                placeholder="End date"
+                [formControl]="end_date"
+                (dateChange)="onDateRageChange($event.value)"
+              />
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker">
+              <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
+        <div class="section-box mb-xs-16 mb-sm-0" *ngIf="!hide.includes('date')">
+          <mat-form-field appearance="outline" (click)="picker.open()">
+            <input
+              matInput
+              [matDatepicker]="picker"
+              readonly
+              [formControl]="dateNow"
+              (dateChange)="onDateChange($event.target.value)"
+              (click)="picker.open()"
+              [placeholder]="currentDate.placeholder"
+            />
+            <mat-datepicker-toggle matPrefix>
+              <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="section-box mb-xs-16 mb-sm-0" *ngIf="!hide.includes('yearDate')">
+          <app-year-date (yearChange)="yearChange($event)"></app-year-date>
+        </div>
+        <div class="section-box trigger-box mb-sm-0" *ngIf="!hide.includes('filter')">
+          <button
+            mat-stroked-button
+            [matMenuTriggerFor]="menu"
+            #filter="matMenuTrigger"
+            class="bg-white py-2"
+            (click)="filterClick()"
+          >
+            <mat-icon
+              [matBadge]="filterSet.size ? filterSet.size : null"
+              svgIcon="filter"
+              class="filter-icon"
+              aria-hidden="false"
+            >
+            </mat-icon>
+            <span class="px-8">{{'filter.filter' | translate}}</span>
+            <mat-icon iconPositionEnd>expand_more</mat-icon>
+          </button>
+          <mat-menu #menu class="menu-filter-panel">
+            <div class="menu-filter-header">
+              <b>{{'filter.filter' | translate}}</b>
+              <span
+                *ngIf="filterSet.size"
+                (click)="reset(); $event.stopPropagation()"
+                class="menu-filter-panel__clear"
+                >{{'filter.clear_all' | translate}}</span
+              >
+            </div>
+            <div class="expansion-panel" (click)="$event.stopPropagation()" (keyup)="null">
+              <mat-accordion [togglePosition]="'before'" [multi]="false">
+                <ng-container *ngFor="let child of filters; let i = index">
+                  <mat-expansion-panel
+                    (closed)="onCollapse()"
+                    class="mat-elevation-z0"
+                    *ngIf="child.use"
+                    [expanded]="useFilters.length === 1"
+                  >
+                    <mat-expansion-panel-header>
+                      <mat-panel-title>
+                        <!-- {{child.title | titlecase}} -->
+                        {{child.translate | translate | titlecase }}
+                        <div [class.hightlight]="filterSet.has(child.paramKey)"></div>
+                      </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div>
+                      <ng-container *ngIf="child.dep">
+                        <mat-form-field appearance="outline">
+                          <mat-icon [svgIcon]="child.svgIcon" matPrefix class="filter-icon">
+                            {{getFilterByKey(child.dep).matIcon}}</mat-icon
+                          >
+                          <mat-select
+                            [placeholder]="'choose ' + getFilterByKey(child.dep).labelFunc | lowercase"
+                            [(value)]="getFilterByKey(child.dep).selectedValue"
+                            (selectionChange)="onFilter(getFilterByKey(child.dep), $event.value);"
+                            #select
+                          >
+                            <mat-select-trigger>
+                              <span>{{getFilterByKey(child.dep)?.selectedValue?.label}}</span>
+                            </mat-select-trigger>
+                            <mat-option *ngFor="let item of getFilterByKey(child.dep).data">
+                              {{item?.label | translate}}
+                            </mat-option>
+                          </mat-select>
+                          <mat-icon matSuffix>expand_more</mat-icon>
+                        </mat-form-field>
+                      </ng-container>
+                      <ng-container *ngIf="child.isMultiple; else notMutiple">
+                        <app-selection-filter (queryEvent)="searchSubject($event)"></app-selection-filter>
+                        <mat-chip-grid style="height: 48px;">
+                          <mat-chip-row
+                            *ngFor="let selectedItem of selectedSubjects"
+                            (removed)="remove(selectedItem, child.paramKey)"
+                          >
+                            {{selectedItem.label}}
+                            <button matChipRemove>
+                              <mat-icon>cancel</mat-icon>
+                            </button>
+                          </mat-chip-row>
+                        </mat-chip-grid>
+                        <mat-selection-list #subjects (selectionChange)="onSelectionChanges($event,child.paramKey)">
+                          <cdk-virtual-scroll-viewport
+                            #scroller
+                            [itemSize]="48"
+                            class="option-container"
+                            [minBufferPx]="240"
+                            [maxBufferPx]="240"
+                          >
+                            <div *cdkVirtualFor="let s of child.data">
+                              <mat-list-option color="primary" checkboxPosition="before">
+                                {{ s.label}}
+                              </mat-list-option>
+                            </div>
+                          </cdk-virtual-scroll-viewport>
+                        </mat-selection-list>
+                      </ng-container>
+                      <ng-template #notMutiple>
+                        <!-- month date -->
+                        <ng-container *ngIf="child.paramKey === 'month'; else besideMonth">
+                          <app-month-date
+                            [params]="params"
+                            [selectedYear]="selectedYear"
+                            (monthChange)="monthChange(getFilterByKey(child.paramKey), $event)"
+                          >
+                          </app-month-date>
+                        </ng-container>
+
+                        <ng-template #besideMonth>
+                          <app-selection-filter *ngIf="child.hasSearch" (queryEvent)="onSearch($event, child.paramKey)">
+                          </app-selection-filter>
+                          <div class="custom-radio-filter">
+                            <mat-radio-group
+                              *ngIf="child.data.length > 0"
+                              [(ngModel)]="child.selectedValue"
+                              class="custom-radio-group"
+                              (change)="onFilter(child, $event.value)"
+                            >
+                              <mat-radio-button
+                                matRipple
+                                [matRippleColor]="'#0000001a'"
+                                class="custom-radio-button "
+                                [value]="s"
+                                *ngFor="let s of child.data"
+                              >
+                                <span *ngIf="s?.translate === false; else translateChild"> {{ s.label }}</span>
+                                <ng-template #translateChild>{{ s.label | translate }}</ng-template>
+                              </mat-radio-button>
+                            </mat-radio-group>
+                            <span class="no-data" *ngIf="child.data.length < 1">{{'filter.no_data' | translate}}</span>
+                          </div>
+                        </ng-template>
+                      </ng-template>
+                    </div>
+                  </mat-expansion-panel>
+                </ng-container>
+              </mat-accordion>
+            </div>
+          </mat-menu>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="create-btn" *ngIf="hasButton">
+    <button
+      *ngIf="button.label"
+      role="button"
+      type="button"
+      mat-flat-button
+      [color]="button.color ? button.color : 'primary'"
+      (click)="onButtonAction()"
+    >
+      <mat-icon [svgIcon]="button.svgIcon" matPrefix>{{button.matIcon}}</mat-icon>
+      {{ button.label | translate }}
+    </button>
+    <button *ngIf="!button.label" mat-stroked-button color="print" class="btn-sm">
+      <mat-icon [svgIcon]="button.svgIcon" matPrefix>{{button.matIcon}}</mat-icon>
+    </button>
+  </div>
+</div>

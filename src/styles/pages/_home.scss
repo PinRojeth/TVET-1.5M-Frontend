@@ -1,0 +1,82 @@
+@use '../variables' as *;
+
+.home {
+  .justify-between {
+    justify-content: space-between;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  strong {
+    opacity: 0.85;
+  }
+
+  h1,
+  p {
+    margin: 0;
+  }
+
+  .text-color {
+    color: $color-primary;
+  }
+
+  .text-blur {
+    opacity: 0.8;
+  }
+
+  .app-title {
+    .group-btn {
+      .mat-mdc-form-field-subscript-wrapper.mat-mdc-form-field-bottom-align {
+        display: none;
+      }
+      .btn-sm {
+        border: 1px solid $mercury-color !important;
+        border-radius: $rounded-sm;
+        width: 38px;
+        height: 38px;
+        padding: 6px;
+        margin-top: 4px;
+
+        .mat-mdc-button-persistent-ripple {
+          border-radius: $rounded-sm;
+        }
+      }
+    }
+  }
+
+  .stat-detail {
+    justify-content: space-between;
+    background-color: #fff;
+    padding: 16px;
+    border-radius: $rounded-md;
+
+    p {
+      opacity: 0.8;
+    }
+  }
+
+  .chart-container {
+    .title-and-more {
+      width: 100%;
+    }
+
+    .multi-line-title {
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .legends {
+      span {
+        &.circle {
+          width: 10px;
+          height: 10px;
+          display: inline-block;
+          margin-right: 4px;
+          border-radius: $rounded-full;
+        }
+      }
+    }
+  }
+}

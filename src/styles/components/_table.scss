@@ -1,0 +1,399 @@
+@use '../variables' as *;
+
+.mat-mdc-table {
+  tbody {
+    tr {
+      &:not(.mat-mdc-no-data-row) {
+        &:hover {
+          background-color: $black-squeeze-light;
+        }
+      }
+    }
+  }
+
+  tr {
+    &.mat-mdc-row {
+      &:nth-child(even) {
+        //background-color: #f5f5f5;
+      }
+    }
+  }
+
+  &.table-custom {
+    tr {
+      &.mat-mdc-row {
+        &:nth-child(even) {
+          background-color: unset;
+        }
+      }
+    }
+  }
+
+  .group-picture-name {
+    display: flex;
+    align-items: center;
+  }
+
+  .status {
+    display: inline-flex;
+    align-items: center;
+    //padding: $spacing-xs $spacing-md;
+
+    &::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      min-width: 8px;
+      min-height: 8px;
+      border-radius: $rounded-full;
+      margin-right: $spacing-sm;
+    }
+
+    &.active,
+    &.default,
+    &.added,
+    &.passed,
+    &.successfully,
+    &.verify,
+    &.verified,
+    &.approved,
+    &.published,
+    &.completed {
+      color: $harlequin;
+      font-weight: 500;
+
+      &::before {
+        background-color: $harlequin;
+      }
+    }
+
+    &.pending,
+    &.requesting,
+    &.incomplete,
+    &.pretest,
+    &.qualification_test,
+    &.practice,
+    &.payment,
+    &.progress,
+    &.requesting {
+      color: $sea-buckthorn;
+
+      &::before {
+        background-color: $sea-buckthorn;
+      }
+    }
+
+    &.inactive,
+    &.failed,
+    &.unsuccessfully,
+    &.rejected,
+    &.expired,
+    &.disabled,
+    &.unpublished {
+      color: $color-red;
+
+      &::before {
+        background-color: $color-red;
+      }
+    }
+
+    &.empty,
+    &.cancelled,
+    &.none {
+      color: $color-black;
+
+      &::before {
+        background-color: $color-grey;
+      }
+    }
+
+    &.draft {
+      color: $color-primary;
+      font-weight: 500;
+
+      &::before {
+        background-color: $color-primary;
+      }
+    }
+  }
+
+  .status-fill {
+    display: inline-flex;
+    align-items: center;
+
+    &::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      min-width: 8px;
+      min-height: 8px;
+      border-radius: $rounded-full;
+      margin-right: $spacing-sm;
+    }
+
+    &.active,
+    &.passed,
+    &.approved,
+    &.completed {
+      color: $harlequin;
+      padding: 8px 18px;
+      background-color: rgba($color: $harlequin, $alpha: 0.1);
+      border-radius: 50px !important;
+
+      &::before {
+        background-color: $harlequin;
+      }
+    }
+
+    &.pending,
+    &.incomplete,
+    &.pretest,
+    &.qualification_test,
+    &.practice,
+    &.payment,
+    &.progress,
+    &.requesting {
+      color: $sea-buckthorn;
+      background-color: rgba($color: $sea-buckthorn, $alpha: 0.1);
+      padding: 8px 18px;
+      border-radius: 50px !important;
+
+      &::before {
+        background-color: $sea-buckthorn;
+      }
+    }
+
+    &.inactive,
+    &.failed,
+    &.rejected,
+    &.quit {
+      color: $color-light-red;
+      padding: 8px 18px;
+      background-color: rgba($color: $color-light-red, $alpha: 0.1);
+      border-radius: 50px !important;
+
+      &::before {
+        background-color: $color-light-red;
+      }
+    }
+
+    &.empty,
+    &.canceled,
+    &.none {
+      color: $scarpa-flow;
+      padding: 8px 18px;
+      background-color: rgba($color: $scarpa-flow, $alpha: 0.1);
+      border-radius: 50px !important;
+
+      &::before {
+        background-color: #838383;
+      }
+    }
+
+    &.draft {
+      color: #0093E9 ;
+      padding: 8px 18px;
+      background-color: rgba($color: #0093E9, $alpha: 0.1) ;
+      border-radius: 50px !important;
+
+      &::before {
+        background-color: #0093E9 ;
+      }
+    }
+  }
+
+  .action {
+    display: inline-flex;
+    align-items: center;
+    padding: $spacing-xs $spacing-md;
+
+    &::before {
+      content: '';
+      width: 8px;
+      height: 8px;
+      border-radius: $rounded-full;
+      margin-right: $spacing-sm;
+    }
+
+    &.update {
+      color: $color-secondary;
+      background-color: rgba($color: $color-secondary, $alpha: 0.2);
+      font-weight: 500;
+
+      &::before {
+        background-color: $color-secondary;
+      }
+    }
+
+    &.delete,
+    &.reject,
+    &.inactive {
+      color: $color-red;
+      background-color: rgba($color: $color-red, $alpha: 0.2);
+      font-weight: 500;
+
+      &::before {
+        background-color: $color-red;
+      }
+    }
+
+    &.create,
+    &.active {
+      color: $color-primary;
+      background-color: rgba($color: $color-primary, $alpha: 0.2);
+      font-weight: 500;
+
+      &::before {
+        background-color: $color-primary;
+      }
+    }
+
+    &.approve {
+      color: $harlequin;
+      background-color: rgba($color: $harlequin, $alpha: 0.2);
+      font-weight: 500;
+
+      &::before {
+        background-color: $harlequin;
+      }
+    }
+
+    &.change_password,
+    &.change_pwd {
+      color: $color-long-course;
+      background-color: rgba($color: $color-long-course, $alpha: 0.2);
+      font-weight: 500;
+
+      &::before {
+        background-color: $color-long-course;
+      }
+    }
+
+    &.reset_password,
+    &.reset_pwd {
+      color: $color-light-red;
+      background-color: rgba($color: $color-light-red, $alpha: 0.2);
+      font-weight: 500;
+
+      &::before {
+        background-color: $color-light-red;
+      }
+    }
+
+    &.login {
+      color: $color-short-course;
+      background-color: rgba($color: $color-short-course, $alpha: 0.2);
+
+      &::before {
+        background-color: $color-short-course;
+      }
+    }
+  }
+
+  .el-responsive {
+    min-width: 100px;
+    max-width: 400px;
+    line-height: 27px;
+    @include line-clamp(2);
+  }
+
+  .group-btn {
+    width: max-content;
+    margin-left: 0;
+  }
+}
+
+.table-container {
+  overflow-x: auto;
+  overflow-y: hidden;
+  position: relative;
+  border-radius: 10px;
+
+  .progress-bar {
+    position: absolute;
+    z-index: 101;
+    top: 0;
+    left: 0;
+  }
+
+  .mat-mdc-progress-bar-fill::after {
+    background-color: #3544ae !important;
+  }
+
+  .dragCursor {
+    margin-right: 16px;
+    cursor: move;
+  }
+}
+
+// cdk drag drop of table
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2), 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  // height: 48px;
+  background-color: white;
+  display: table;
+  .td {
+    flex-grow: 2;
+    font-size: 14px;
+    padding: 4px;
+    vertical-align: middle;
+  }
+}
+
+.cdk-drag-placeholder {
+  opacity: 0;
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-dragging .mat-mdc-row:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.ellipse-txt {
+  max-width: 494px;
+  padding: 0;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.text_title {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* width */
+.table-container::-webkit-scrollbar {
+  height: 10px;
+}
+
+/* Track */
+.table-container::-webkit-scrollbar-track {
+  background-color: #e4e4e4;
+  border-radius: 100px;
+}
+
+/* Handle */
+.table-container::-webkit-scrollbar-thumb {
+  background-color: #c1c1c1;
+  border-radius: 100px;
+}
+
+/* Handle on hover */
+.table-container::-webkit-scrollbar-thumb:hover {
+  background: #b1b1b1;
+}

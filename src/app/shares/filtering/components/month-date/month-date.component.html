@@ -1,0 +1,10 @@
+<mat-form-field appearance="outline">
+    <input matInput [matDatepicker]="monthPicker" [formControl]="monthDate" readonly>
+    <mat-datepicker-toggle matSuffix [for]="monthPicker"></mat-datepicker-toggle>
+    <mat-datepicker
+        #monthPicker
+        startView="year"
+        (monthSelected)="chosenMonthHandler($event, monthPicker)"
+        panelClass="month-picker">
+    </mat-datepicker>
+</mat-form-field>

@@ -1,0 +1,144 @@
+<div class="app-content">
+
+    <div class="app-header">
+        <div class="app-title">
+            <h1 class="title">
+                <button mat-button [routerLink]="'../../'">
+                    <mat-icon>arrow_back</mat-icon>
+                    {{'button.back' | translate}}
+                </button>
+            </h1>
+
+            <div class="group-btn">
+                <button
+                    *ngIf="[pSchool.update] | permission"
+                    color="accent"
+                    mat-flat-button
+                    [routerLink]="['../../edit', schoolId]">
+                    {{'button.edit' | translate}}
+                    <mat-icon svgIcon="edit"></mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-form mb-16">
+        <div class="header-label">{{'form.general_info' | translate}}</div>
+        <div class="d-flex">
+            <app-school-image-uploader [status]="'view'" [school]="info"></app-school-image-uploader>
+            <span class="m-30 value">{{ info?.id_code}}</span>
+        </div>
+        <div class="grid col-md-2 detail-text">
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.school_name' | translate}}</label>
+                <div class="value">{{ info?.name }}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.school_name_en' | translate}}</label>
+                <div class="value">{{ info?.name_en || '--/--' }}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.school_code' | translate}}</label>
+                <div class="value">{{ info?.code || '--/--' }}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.school_code_en' | translate}}</label>
+                <div class="value">{{ info?.code_en || '--/--' }}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+              <label>លេខសម្គាល់គ្រឹះស្ថាន</label>
+              <div class="value">{{ info?.id_code || '--/--' }}</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="detail-form mb-16">
+        <div class="header-label">{{'form.address.title' | translate}}</div>
+        <div class="grid col-sm-2 detail-text">
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.address.city' | translate}}</label>
+                <div class="value">
+                    {{(info?.address?.city_provinces | translateAPI: translate.currentLang) || "--//--"}}
+                </div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.address.district' | translate}}</label>
+                <div class="value">{{(info?.address?.districts | translateAPI: translate.currentLang) || "--//--"}}
+                </div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.address.commune' | translate}}</label>
+                <div class="value">{{(info?.address?.communes | translateAPI: translate.currentLang) || "--//--"}}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.address.village' | translate}}</label>
+                <div class="value">{{(info?.address?.villages | translateAPI: translate.currentLang) || "--//--"}}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-form mb-16">
+        <div class="header-label">{{'form.contact' | translate}}</div>
+        <div class="grid col-sm-2 detail-text">
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.phone' | translate}}</label>
+                <div class="value">
+                    {{info?.phone_number || "--//--"}}
+                </div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.email' | translate}}</label>
+                <div class="value">{{info?.email || "--//--"}}
+                </div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.website' | translate}}</label>
+                <div class="value">{{info?.website || "--//--"}}</div>
+            </div>
+            <div class="grid gap-x-16 col-2"></div>
+        </div>
+    </div>
+
+
+    <div class="detail-form mb-16">
+        <div class="header-label">{{'form.register' | translate}}</div>
+        <div class="grid col-sm-3 detail-text">
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.create_by' | translate}}</label>
+                <div class="value">{{info?.create_by || "--//--"}}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.create_number' | translate}}</label>
+                <div class="value">{{info?.create_number || "--//--"}}
+                </div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.create_date' | translate}}</label>
+                <div class="value">{{(info?.create_date | date: 'dd/MM/yyyy') || "--//--"}}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.register_by' | translate}}</label>
+                <div class="value">{{info?.register_by || "--//--"}}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.register_number' | translate}}</label>
+                <div class="value">{{info?.register_number || "--//--"}}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.register_date' | translate}}</label>
+                <div class="value">{{(info?.register_date | date: 'dd/MM/yyyy') || "--//--"}}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="detail-form">
+        <div class="header-label">{{'major.title' | translate}}</div>
+        <div class="grid gap-x-16 detail-text">
+            <div class="grid gap-x-16 col-xs-2 col-md-4">
+                <label>{{'major.title' | translate}}</label>
+                <div class="value col-span-md-3">{{ majors }}</div>
+            </div>
+        </div>
+    </div> -->
+</div>

@@ -1,0 +1,204 @@
+<div class="detail-form mb-16">
+  <div *ngIf="student?.request_timelines" class="reason p-16 rounded-md mb-16">
+    <p class="reason__title">
+      {{'enum_status.' + (student.request_timelines.status | approvedStudent) | translate}}
+    </p>
+    <span *ngIf="!!student?.request_timelines?.reason" class="mt-16">{{student?.request_timelines?.reason}}</span>
+  </div>
+
+  <div class="header-label">{{'form.general_info' | translate}}</div>
+  <app-image-uploader [status]="'view'" [payload]="student"></app-image-uploader>
+
+  <div class="grid col-sm-2 detail-text">
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.last_name' | translate}}</label>
+      <div class="value">{{student?.last_name}}</div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.first_name' | translate}}</label>
+      <div class="value">{{student?.first_name}}</div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.last_name_en' | translate}}</label>
+      <div class="value">{{student?.last_name_en}}</div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.first_name_en' | translate}}</label>
+      <div class="value">{{student?.first_name_en}}</div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.date_birth' | translate}}</label>
+      <div class="value">{{student?.date_of_birth | date: 'dd/MM/yyyy'}}</div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.gender.title' | translate}}</label>
+      <div class="value">
+        {{student?.gender === 'female' ? ('form.gender.female' | translate) : ('form.gender.male' | translate) | titlecase}}
+      </div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.nationality' | translate}}</label>
+      <div class="value">
+        {{(student?.nationality | translateAPI: translate.currentLang) || '--/--'}}
+      </div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.ethnicity' | translate}}</label>
+      <div class="value">
+        {{(student?.ethnicity | translateAPI: translate.currentLang) || '--/--'}}
+      </div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.phone' | translate}}</label>
+      <div class="value">{{student?.phone_number || '--/--'}}</div>
+    </div>
+    <div class="grid gap-x-16 col-2 ">
+      <label>{{'form.id_card_number' | translate}}</label>
+      <div class="value">{{student?.id_card_number || '--/--'}}</div>
+    </div>
+    <div class="grid gap-x-16 col-2 mat-mdc-table border-none">
+      <label>{{'form.status' | translate}}</label>
+      <div class="value">
+        <span class="status-fill rounded-sm" [ngClass]="student?.status | approvedStudent | lowercase">
+          {{student?.status ? ('enum_status.' + (student?.status | approvedStudent) | translate) : '--/--'}}
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="detail-form mt-16">
+  <div class="header-label">បណ្ណសមធម៌</div>
+  <div class="grid col-sm-2 detail-text">
+    <div class="grid gap-x-16 col-2">
+      <label>លេខបណ្ណសមធម៌</label>
+      <div class="value">
+        {{student?.poor_id || '--/--'}}
+      </div>
+    </div>
+    <div class="grid gap-x-16 col-2 mat-mdc-table">
+      <label>{{'form.status' | translate}}</label>
+      <div class="value">
+        <span class="status-fill rounded-sm" [ngClass]="student?.poor_status | approvedStudent | lowercase">
+          {{student?.poor_status ? ('enum_status.' + (student?.poor_status | approvedStudent) | translate) : '--/--'}}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-16">
+    <label>ឯកសារភ្ជាប់ (បណ្ណសមធម៌ ឬបណ្ណសម្គាល់គ្រួសារងាយរងហានិភ័យ អត្តសញ្ញាណប័ណ្ណ លិខិតបញ្ជាក់ការសិក្សា)</label>
+    <div class="value">
+      <div class="image-wrapper mt-8 flex gap-16 flex-wrap" *ngIf="student?.attachment_files?.length > 0; else noFile">
+        <div
+          class="flex gap-16 image-box-wrapper flex-wrap"
+          *ngFor="let item of student?.attachment_files; trackBy: trackByFn"
+        >
+          <div class="image-box">
+            <img
+              class="rounded-md"
+              [appPreviewFile]="(item?.image_binary || ((item?.attachment_data?.toString() || item?.toString()) | staticFile))?.toString()"
+              [src]="item.image_binary || ((item?.attachment_data?.toString() || item?.toString()) | staticFile) + '?image_size=m'"
+              alt="file attachment"
+            />
+          </div>
+        </div>
+      </div>
+      <ng-template #noFile> (មិនមានឯកសារភ្ជាប់) </ng-template>
+    </div>
+  </div>
+</div>
+
+<div class="detail-form mt-16">
+  <div class="header-label">វគ្គសិក្សា</div>
+  <div class="grid col-sm-2 detail-text">
+    <div class="grid gap-x-16 col-2 border-none">
+      <label>{{'school.title' | translate}}</label>
+      <div class="value">
+        <div class="group-picture-name">
+          <img
+            class="profile-picture-list"
+            *ngIf="student?.schools?.profile_image; else elseBlock"
+            [src]="(student?.schools?.profile_image | staticFile) + '?image_size=s'"
+            alt="profile picture"
+            onerror="this.onerror=null;this.src='/assets/imgs/school.svg'"
+          />
+          <ng-template #elseBlock>
+            <img class="profile-picture-list" [src]="'/assets/imgs/school.svg'" alt="profile picture" />
+          </ng-template>
+          <div class="el-responsive">{{student?.schools | translateAPI: translate.currentLang}}</div>
+        </div>
+      </div>
+    </div>
+    <div class="grid gap-x-16 col-2 border-none">
+      <label>{{'major.title' | translate}}</label>
+      <div class="value">{{student?.apply_majors | translateAPI: translate.currentLang}}</div>
+    </div>
+    <div class="grid gap-x-16 col-2 border-none">
+      <label>{{'form.course_code' | translate}}</label>
+      <div class="value">{{student?.courses?.code || '--//--'}}</div>
+    </div>
+  </div>
+</div>
+
+<div class="detail-form mt-16">
+  <div class="header-label">{{'form.place_birth.title' | translate}}</div>
+  <div class="grid col-sm-2 detail-text">
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.address.city' | translate}}</label>
+      <div class="value">
+        {{(student?.place_of_birth?.city_provinces | translateAPI: translate.currentLang) || "--/--"}}
+      </div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.address.district' | translate}}</label>
+      <div class="value">
+        {{(student?.place_of_birth?.districts | translateAPI: translate.currentLang) || "--/--"}}
+      </div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.address.commune' | translate}}</label>
+      <div class="value">
+        {{(student?.place_of_birth?.communes | translateAPI: translate.currentLang) || "--/--"}}
+      </div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.address.village' | translate}}</label>
+      <div class="value">
+        {{(student?.place_of_birth?.villages | translateAPI: translate.currentLang) || "--/--"}}
+      </div>
+    </div>
+    <div class="grid gap-x-16 col-2 border-none">
+      <label>{{'form.address.detail' | translate}}</label>
+      <div class="value">{{student?.place_of_birth?.detail || '--/--'}}</div>
+    </div>
+  </div>
+</div>
+
+<div class="detail-form mt-16">
+  <div class="header-label">{{'form.address.title' | translate}}</div>
+  <div class="grid col-sm-2 detail-text">
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.address.city' | translate}}</label>
+      <div class="value">
+        {{(student?.address?.city_provinces | translateAPI: translate.currentLang) || "--/--"}}
+      </div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.address.district' | translate}}</label>
+      <div class="value">{{(student?.address?.districts | translateAPI: translate.currentLang) || "--/--"}}</div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.address.commune' | translate}}</label>
+      <div class="value">{{(student?.address?.communes | translateAPI: translate.currentLang) || "--/--"}}</div>
+    </div>
+    <div class="grid gap-x-16 col-2">
+      <label>{{'form.address.village' | translate}}</label>
+      <div class="value">{{(student?.address?.villages | translateAPI: translate.currentLang) || "--/--"}}</div>
+    </div>
+    <div class="grid gap-x-16 col-2 border-none">
+      <label>{{'form.address.detail' | translate}}</label>
+      <div class="value">{{student?.address?.detail || '--/--'}}</div>
+    </div>
+  </div>
+</div>

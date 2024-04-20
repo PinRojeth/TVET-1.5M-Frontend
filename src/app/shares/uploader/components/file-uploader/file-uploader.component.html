@@ -1,0 +1,22 @@
+<section>
+    <div class="upload-card bg-grey rounded-md border-dashed border p-16 mt-4">
+        <div class="relative-div">
+            <div *ngIf="hasFile" class="have-file-uplod">
+                <mat-icon svgIcon="excel_alt" class="mr-8"></mat-icon>
+                <div class="file-name">{{fileName}}</div>
+                <mat-icon (click)="removeFile()" class="clear-icon ml-8">clear</mat-icon>
+            </div>
+            <div *ngIf="!hasFile" [style.backgroundImage]="'url(' + defaultImage + ')'" class="profile-picture svg">
+            </div>
+        </div>
+        <div>
+            Drag your document here, or
+            <span class="text-primary btn-browse" (click)="pickFile.value = ''; pickFile.click()">
+                Browse files
+            </span>
+            <div>Max file size: 50MB</div>
+        </div>
+    </div>
+    <input type="file" #pickFile (change)="fileChangeEvent($event)" accept=".doc, .docx, application/msword, .pdf"
+        hidden>
+</section>

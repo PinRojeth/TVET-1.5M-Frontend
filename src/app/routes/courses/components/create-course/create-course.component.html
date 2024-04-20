@@ -1,0 +1,178 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button mat-button [routerLink]="courseId ? '../../' : '../'">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}}
+        </button>
+      </h1>
+    </div>
+  </div>
+
+  <form id="course-form" [formGroup]="form" autocomplete="off">
+    <div class="detail-form">
+      <div class="header-label">{{'form.general_info' | translate}}</div>
+      <div class="grid gap-x-16 col-md-4">
+        <div>
+          <label class="required">{{ 'form.code' | translate }}</label>
+          <mat-form-field appearance="outline" class="input">
+            <input matInput formControlName="code" />
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="required">{{ 'form.major' | translate }}</label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="apply_majors">
+              <app-searchbar-in-select-option (queryEvent)="onSearch($event)"></app-searchbar-in-select-option>
+              <mat-option *ngIf="majors?.length < 1" disabled>
+                <span class="flex" [ngStyle]="{'justify-content': 'center'}">{{'filter.no_data' | translate}}</span>
+              </mat-option>
+              <mat-option *ngFor="let item of majors" [value]="item._id">
+                <span *ngIf="item.code;">{{item.code}} - {{item.name}}</span>
+                <span *ngIf="!item.code;">{{item.name}}</span>
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>expand_more</mat-icon>
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="required">{{ 'form.res_date' | translate }}</label>
+          <mat-form-field appearance="outline">
+            <input
+              readonly
+              matInput
+              [matDatepicker]="pickerStart"
+              (click)="pickerStart.open()"
+              formControlName="registation_start"
+              required
+              (dateChange)="onDateChange('start_regis')"
+            />
+            <mat-datepicker-toggle matSuffix [for]="pickerStart">
+              <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerStart></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="required">{{ 'form.res_end' | translate }}</label>
+          <mat-form-field appearance="outline">
+            <input
+              readonly
+              matInput
+              [matDatepicker]="picker"
+              (click)="picker.open()"
+              formControlName="registation_end"
+              required
+              [min]="this.form.value.registation_start"
+              (dateChange)="onDateChange('end_regis')"
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker">
+              <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="required">{{'form.student_amount' | translate}}</label>
+          <mat-form-field appearance="outline">
+            <input type="number" matInput formControlName="student_amount" inputmode="numeric" min="1" />
+            <span matTextSuffix class="text-blur">នាក់</span>
+          </mat-form-field>
+        </div>
+        <!-- <div>
+          <label [ngClass]="{'required': form.controls.duration?.invalid}">{{'form.duration' | translate}}</label>
+          <mat-form-field appearance="outline">
+            <input type="number" matInput formControlName="duration" inputmode="numeric" min="1" />
+            <span matTextSuffix class="text-blur">ថ្ងៃ</span>
+          </mat-form-field>
+        </div> -->
+        <div>
+          <label class="required">{{'form.shift' | translate}}</label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="shifts">
+              <app-searchbar-in-select-option (queryEvent)="onSearchShift($event)"></app-searchbar-in-select-option>
+              <mat-option *ngIf="shifts?.length < 1" disabled>
+                <span class="flex" [ngStyle]="{'justify-content': 'center'}">{{'filter.no_data' | translate}}</span>
+              </mat-option>
+              <mat-option *ngFor="let item of shifts" [value]="item._id">
+                <span *ngIf="item.code;">{{item.code}} - {{item.name}}</span>
+                <span *ngIf="!item.code;">{{item.name}}</span>
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>expand_more</mat-icon>
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="required">{{ 'form.course_start' | translate }}</label>
+          <mat-form-field appearance="outline">
+            <input
+              readonly
+              matInput
+              [matDatepicker]="pickerCourseStart"
+              (click)="pickerCourseStart.open()"
+              [min]="this.form.value.registation_start"
+              formControlName="course_start"
+              required
+              (dateChange)="onDateChange('start')"
+            />
+            <mat-datepicker-toggle matSuffix [for]="pickerCourseStart">
+              <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerCourseStart></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="required">{{ 'form.course_end' | translate }}</label>
+          <mat-form-field appearance="outline">
+            <input
+              readonly
+              matInput
+              [matDatepicker]="pickerCourseEnd"
+              (click)="pickerCourseEnd.open()"
+              formControlName="course_end"
+              (dateChange)="onDateChange('end')"
+              [min]="this.form.value.course_start"
+              required
+            />
+            <mat-datepicker-toggle matSuffix [for]="pickerCourseEnd">
+              <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerCourseEnd></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div>
+          <label>{{'form.fee' | translate}}</label>
+          <mat-form-field appearance="outline">
+            <input type="number" matInput formControlName="fee" min="0" />
+            <span matTextSuffix class="text-blur">៛</span>
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="col-span-md-3">
+        <label>{{'form.requirement' | translate}}</label>
+        <div class="form-control" name="requirement" class="quill-container form-control" style="position: relative; ">
+          <mat-quill
+            name="requirement"
+            formControlName="requirement"
+            class="my-mat-quill"
+            [modules]="modules"
+            (onEditorChanged)="changedEditor($event)"
+          >
+          </mat-quill>
+          <input type="file" style="display: none" id="fileInputField" #quillImgUploader />
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="group-btn btn-left mt-16">
+    <button color="primary" mat-flat-button form="course-form" [disabled]="isLoading" (click)="onSubmit()">
+      <mat-icon *ngIf="!isLoading; else loading" svgIcon="save"></mat-icon>
+      <ng-template #loading>
+        <mat-spinner [diameter]="20" class="loading-spinner"></mat-spinner>
+      </ng-template>
+      {{'button.save' | translate}}
+    </button>
+  </div>
+</div>

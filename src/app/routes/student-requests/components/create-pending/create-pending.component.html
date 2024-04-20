@@ -1,0 +1,247 @@
+<div class="app-content student-requests">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button mat-button [routerLink]="'../../'">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}}
+        </button>
+      </h1>
+    </div>
+  </div>
+
+  <div class="detail-form mb-16">
+    <div class="header-label">បណ្ណសមធម៌</div>
+    <div class="grid col-sm-2 detail-text">
+      <div class="col-span-sm-2 grid col-sm-2">
+        <div>
+          <label>លេខបណ្ណសមធម៌</label>
+          <div class="value poor-id mt-6">
+            <div class="search-box">
+              <input matInput #poorIDQuery placeholder="លេខបណ្ណសមធម៌..." />
+              <button mat-flat-button matSuffix color="accent" class="btn-search" (click)="search(poorIDQuery.value)">
+                <mat-icon *ngIf="!isSearch; else searching">search</mat-icon>
+                <ng-template #searching>
+                  <mat-icon>
+                    <mat-spinner [diameter]="20" class="loading-spinner"></mat-spinner>
+                  </mat-icon>
+                </ng-template>
+                {{'button.search' | translate}}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="data">
+      <div class="grid col-sm-2 detail-text">
+        <div class="grid gap-x-16 col-2">
+          <label>លេខបណ្ណសមធម៌</label>
+          <div class="value">{{data?.poor_id || '--/--'}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>កម្រិតភាពក្រីក្រ</label>
+          <div class="value">{{data?.poverty_status}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>ថ្ងៃខែឆ្នាំចេញបណ្ណ</label>
+          <div class="value">{{data?.created_at | date: 'dd/MM/yyyy'}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>ថ្ងៃខែឆ្នាំផុតសុពលភាព</label>
+          <div class="value">{{data?.expire_at | date: 'dd/MM/yyyy'}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.date_birth' | translate}}</label>
+          <div class="value">{{data?.date_of_birth || '--/--'}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>ភូមិ</label>
+          <div class="value">{{address?.villages.name}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>ក្រុង/ស្រុក/ខណ្ឌ</label>
+          <div class="value">{{address?.communes.name}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>ឃុំ/សង្កាត់</label>
+          <div class="value">{{address?.districts.name}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>រាជធានី/ខេត្ដ</label>
+          <div class="value">{{address?.city_provinces.name}}</div>
+        </div>
+      </div>
+
+      <div class="header-label mt-16">សមាជិកគ្រួសារ</div>
+      <custom-table [tableData]="tableData" [tableColumns]="tableColumns">
+        <ng-template [appZippy]="'name'" let-element>
+          <div class="el-responsive">{{element | fullName}}</div>
+        </ng-template>
+
+        <ng-template [appZippy]="'gender'" let-element>
+          {{(element.gender === 'female' ? ('form.gender.female' | translate) : ('form.gender.male' | translate) |
+                    titlecase)|| '--//--'}}
+        </ng-template>
+
+        <ng-template [appZippy]="'dob'" let-element>
+          {{(element.date_of_birth | date: 'dd/MM/yyyy') || '--//--'}}
+        </ng-template>
+
+        <ng-template [appZippy]="'rth'" let-element>
+          {{ element.relation_to_head || '--/--' }}
+        </ng-template>
+
+        <ng-template [appZippy]="'action'" let-element>
+          <div class="group-btn">
+            <button mat-icon-button class="btn-sm" (click)="chooseMember(element)">
+              <mat-icon [color]="element.is_apply ? 'primary' : 'warn'">
+                {{element.is_apply ? 'check_circle' : 'add_circle'}}
+              </mat-icon>
+            </button>
+          </div>
+        </ng-template>
+      </custom-table>
+    </ng-container>
+  </div>
+
+  <ng-container *ngIf="appliedMember">
+    <form id="apply-student-form" [formGroup]="form">
+      <div class="detail-form">
+        <div class="header-label">ប្រវត្តិរូបបេក្ខជន</div>
+        <div class="grid gap-x-16 col-sm-2 col-md-4">
+          <div>
+            <label [ngClass]="{'required': form.get('last_name').invalid}" for="">
+              {{'form.last_name' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <input matInput formControlName="last_name" required />
+            </mat-form-field>
+          </div>
+          <div>
+            <label [ngClass]="{'required': form.get('first_name').invalid}">
+              {{'form.first_name' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <input matInput formControlName="first_name" required />
+            </mat-form-field>
+          </div>
+          <div>
+            <label [ngClass]="{'required': form.get('last_name').invalid}" for="">
+              {{'form.gender.title' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="gender">
+                <mat-option value="male">{{'form.gender.male' | translate}}</mat-option>
+                <mat-option value="female">{{'form.gender.female' | translate}}</mat-option>
+              </mat-select>
+              <mat-icon matSuffix>expand_more</mat-icon>
+            </mat-form-field>
+          </div>
+          <div>
+            <label [ngClass]="{'required': form.get('phone_number').invalid}">
+              {{'form.phone' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <input matInput formControlName="phone_number" />
+            </mat-form-field>
+          </div>
+          <div>
+            <label [ngClass]="{'required': form.get('date_of_birth').invalid}">
+              {{'form.date_birth' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <input
+                readonly
+                matInput
+                [matDatepicker]="picker"
+                [max]="maxDate"
+                (click)="picker.open()"
+                formControlName="date_of_birth"
+                required
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker">
+                <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker startView="multi-year" #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div>
+            <label>
+              {{'form.id_card_number' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <input matInput formControlName="id_card_number" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="header-label">ជ្រើសរើសវគ្គសិក្សា</div>
+        <div class="grid gap-x-16 col-sm-2">
+          <div>
+            <label [ngClass]="{'required': form.get('schools').invalid}" for="">
+              {{'school.title' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="schools" (selectionChange)="onSchoolChange($event.value)">
+                <mat-select-trigger>
+                  <ng-container *ngIf="schoolsCtr?.value; else noneSelect">
+                    <div class="container_option selected">
+                      <img
+                        [src]="schoolsCtr?.value?.profile_image
+                                                ? (schoolsCtr?.value?.profile_image | staticFile)
+                                                : 'assets/img/school.svg'"
+                        alt=""
+                      />
+                      {{schoolsCtr?.value?.name}}
+                    </div>
+                  </ng-container>
+                  <ng-template #noneSelect>-- ជ្រើសរើស --</ng-template>
+                </mat-select-trigger>
+                <mat-option value="">-- ជ្រើសរើស --</mat-option>
+                <mat-option *ngFor="let item of schools" [value]="item">
+                  <div class="container_option">
+                    <img
+                      [src]="item?.profile_image
+                                            ? (item?.profile_image | staticFile)
+                                            : 'assets/img/school.svg'"
+                      alt=""
+                    />
+                    {{item?.name}}
+                  </div>
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>expand_more</mat-icon>
+            </mat-form-field>
+          </div>
+          <div>
+            <label [ngClass]="{'required': form.get('courses').invalid}">
+              {{'menu.course' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="courses">
+                <mat-option value="">--ជ្រើសរើស--</mat-option>
+                <mat-option *ngFor="let item of courseBySchool" [value]="item._id">
+                  <span>{{item?.name}}</span>
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>expand_more</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div class="group-btn btn-left mt-16">
+      <button color="primary" mat-flat-button form="apply-student-form" [disabled]="isLoading" (click)="onSubmit()">
+        <mat-icon *ngIf="!isLoading; else loading" svgIcon="save"></mat-icon>
+        <ng-template #loading>
+          <mat-spinner [diameter]="20" class="loading-spinner"></mat-spinner>
+        </ng-template>
+        {{'button.save' | translate}}
+      </button>
+    </div>
+  </ng-container>
+</div>

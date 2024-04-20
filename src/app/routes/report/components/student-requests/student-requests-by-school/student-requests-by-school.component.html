@@ -1,0 +1,12 @@
+<div class="chart-container">
+    <div class="w-full flex place-content-space-between">
+        <h3>{{'report.student_requests_by_school' | translate}}</h3>
+        <div class="flex legends gap-16">
+            <span *ngFor="let lab of label; let i=index">
+                <span class="circle" [ngStyle]="{'background-color': color[i]}"></span>
+                {{lab | titlecase}}
+            </span>
+        </div>
+    </div>
+    <app-stacked-bar-chart [height]="500" [chartData]="stackedBarChartData" class="bar-chart"> </app-stacked-bar-chart>
+</div>

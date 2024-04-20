@@ -1,0 +1,14 @@
+@use "sass:math";
+
+//convert pixel to rem and 16px = 1rem or 1em
+@function rem($pixel) {
+  @return math.div(strip-unit($pixel), 16) + rem;
+}
+
+//remove unit from value ex: 16px -> 16
+@function strip-unit($number) {
+  @if type-of($number) == "number" and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+  @return $number;
+}

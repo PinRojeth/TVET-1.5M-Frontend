@@ -1,0 +1,39 @@
+<div class="student-request-dialog">
+    <!-- <div mat-dialog-title align="center">
+        <img [src]="icon" alt="icon.svg" class="mt-24" />
+    </div> -->
+    <div class="flex place-content-space-between items-center pt-16 pl-16 pr-16 pb-10">
+        <p class="title p-0 m-0">{{title | translate}}</p>
+    
+        <button class="border-none close" color="base" mat-dialog-close type="button">
+        <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <div class="pl-16 pr-16"><mat-divider></mat-divider></div>
+    <mat-dialog-content>
+        <div class="detail-form p-0" autocomplete="off">
+            <form id="form" [formGroup]="form">
+                <div class="input-group">
+                    <div class="grid gap-x-16">
+                        <div class="field-reason">
+                            <label [ngClass]="{'required': !data?.optional_reason}">{{'dialog.reason' | translate}}</label>
+                            <mat-form-field appearance="outline">
+                                <textarea matInput rows="3" formControlName="reason" [placeholder]="'dialog.reject_hint' | translate"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="center" class="reject-action">
+        <!-- <button mat-raised-button mat-dialog-close>
+            <mat-icon>clear</mat-icon>
+            {{'button.cancel' | translate}}
+        </button> -->
+        <button form="form" mat-raised-button color="warn" type="submit" (click)="onSubmit()">
+            <mat-icon>done</mat-icon>
+            {{'button.reject' | translate}}
+        </button>
+    </mat-dialog-actions>
+</div>

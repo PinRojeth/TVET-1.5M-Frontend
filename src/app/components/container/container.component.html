@@ -1,0 +1,133 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<div class="app-menu" (window:resize)="onResize()">
+  <mat-toolbar class="dashboard-toolbar" [class.blurred]="!isFirefox">
+    <header class="dashboard__header">
+      <button class="icon" mat-icon-button (click)="toggleSideNav()">
+        <mat-icon svgIcon="menu-hamburger"></mat-icon>
+      </button>
+      <img routerLink="/" class="ml-8 mr-8"
+        [src]="isExpanded ? 'assets/icons/mlvt.png' : 'assets/icons/mlvt.png'" alt="logo-image" [width]="32"
+        [height]="32" />
+      <h1 routerLink="/">ប្រព័ន្ធគ្រប់គ្រងអាហារូបករណ៍</h1>
+      <div class="header-action">
+        <button class="languages" mat-button [matMenuTriggerFor]="dropMenu"
+          aria-label="Example icon-button with a menu">
+          <span>{{browserLang === 'en' ? (browserLang | uppercase) : 'ខ្មែរ'}}</span>
+          <mat-icon svgIcon="{{browserLang === 'en' ? 'english_flag' : 'khmer_flag'}}"></mat-icon>
+          <mat-icon iconPositionEnd>expand_more</mat-icon>
+        </button>
+        <mat-menu #dropMenu="matMenu">
+          <div>
+            <button mat-menu-item *ngFor="let lang of langs | keyvalue: originalOrder" (click)="useLanguage(lang.key)">
+              <mat-icon svgIcon="{{lang.key === 'en' ? 'english_flag' : 'khmer_flag'}}"></mat-icon>
+              <span>{{ lang.value }}</span>
+              <span *ngIf="browserLang === lang.key" class="flex pl-8"><mat-icon svgIcon="check"></mat-icon></span>
+            </button>
+          </div>
+        </mat-menu>
+
+        <div class="avatar">
+          <button mat-button class="profile-menu-btn" [matMenuTriggerFor]="beforeMenu">
+            <img mat-card-avatar class="avatar-profile" alt="avatar"
+              [src]="account?.profile_image ? (account?.profile_image | staticFile) : (account?.gender === 'female' ? 'assets/imgs/female.svg' : 'assets/imgs/male.svg')" />
+            <mat-icon iconPositionEnd>expand_more</mat-icon>
+          </button>
+          <mat-menu #beforeMenu="matMenu" xPosition="before" backdropClass="hover-profile">
+            <div class="profile-img ml-16 mr-16" mat-ripple routerLink="setting/account">
+              <img mat-card-avatar class="avatar-profile" alt="avatar"
+                [src]="account?.profile_image ? (account?.profile_image | staticFile) : (account?.gender === 'female' ? 'assets/imgs/female.svg' : 'assets/imgs/male.svg')" />
+              <span class="ml-8">
+                <span class="name"> {{(account | staffFullName) || 'Unknown'}}</span>
+                <span class="role">{{account?.roles | staffRole}}</span>
+              </span>
+            </div>
+            <mat-divider></mat-divider>
+            <!-- *ngIf="checkPermission([pAdmin.logAdmin.read, pAdmin.logAssessmentCenter.read, pAdmin.logUser.read])" -->
+            <!-- <button mat-menu-item [routerLink]="['/setting/activity']">
+              <mat-icon svgIcon="log"></mat-icon>
+              {{'setting.log.title' | translate}}
+            </button> -->
+            <button mat-menu-item (click)="logout()"><mat-icon>logout</mat-icon>{{'button.logout' | translate}}</button>
+          </mat-menu>
+        </div>
+      </div>
+    </header>
+  </mat-toolbar>
+
+  <mat-sidenav-container class="app-container" autosize>
+    <mat-sidenav #sidenav class="example-sidenav" [class.large-width]="mobileQuery || isExpanded"
+      [mode]="mobileQuery ? 'over' : 'side'" [opened]="!mobileQuery" [disableClose]="!mobileQuery">
+      <div class="main-logo" routerLink="/">
+        <div class="logo-container">
+          <!-- <img [src]="isExpanded ? 'assets/imgs/logo.svg' : 'assets/imgs/logo.svg'" alt="logo-image" /> -->
+        </div>
+      </div>
+      <mat-nav-list class="menu-list mt-0" id="list-nav" [ngStyle]="{'margin-top': isExpanded ? '120px' : ''}">
+        <div [ngClass]="{'pr-10 pl-10 pt-20': isExpanded}">
+          <div *ngFor="let m of menu">
+            <mat-list-item #tooltip="matTooltip" [matTooltip]="!isExpanded ? (m.title | translate) : ''"
+              matTooltipPosition="right" *ngIf="m.child.length <= 0 " [routerLink]="m.route"
+              [routerLinkActive]="m.route ? 'active' : ''" [routerLinkActiveOptions]="{exact:false}"
+              [ngClass]="{'rounded-0': !isExpanded}">
+              <span class="menu-item-title" *ngIf="isExpanded">{{ m.title | translate }}</span>
+              <mat-icon matListItemIcon *ngIf="m.svgIcon !== '' " [svgIcon]="m.svgIcon"
+                [class.svg-active]="m.route && route.url.includes(m.route)">
+              </mat-icon>
+            </mat-list-item>
+
+            <mat-expansion-panel *ngIf="m.child.length > 0 && isExpanded; else shrink" class="expansion-panel"
+              [class.parents]="isChildActive(m.child)">
+              <mat-expansion-panel-header [class.active]="isChildActive(m.child)" #tooltipParent="matTooltip"
+                [matTooltip]="!isExpanded ? (m.title | translate) : ''" matTooltipPosition="right">
+                <mat-icon matListItemIcon *ngIf="m.icon !== ''">{{ m.icon }}</mat-icon>
+                <mat-icon matListItemIcon *ngIf="m.svgIcon !== ''" [svgIcon]="m.svgIcon"></mat-icon>
+
+                <span class="menu-item-title" *ngIf="isExpanded">{{m.title | translate }}</span>
+              </mat-expansion-panel-header>
+              <mat-nav-list class="expansion-panel-body">
+                <mat-list-item #tooltip="matTooltip" [matTooltip]="!isExpanded ? (c.title | translate): ''"
+                  matTooltipPosition="right" *ngFor="let c of m.child"
+                  class=" {{ isExpanded ? 'expand' : 'no-expand' }}" [routerLink]="c.route" routerLinkActive="active"
+                  [routerLinkActiveOptions]="{exact:false}">
+                  <span class="menu-item-title">{{ c.title | translate }}</span>
+                  <mat-icon matListItemIcon *ngIf="c.icon !== '' && !isExpanded">{{ c.icon }}</mat-icon>
+                  <mat-icon matListItemIcon *ngIf="c.svgIcon !== '' && !isExpanded" [svgIcon]="c.svgIcon"></mat-icon>
+                </mat-list-item>
+              </mat-nav-list>
+            </mat-expansion-panel>
+
+            <ng-template #shrink>
+              <mat-list-item #tooltip="matTooltip" [matTooltip]="!isExpanded ? (m.title | translate) : ''"
+                matTooltipPosition="right" *ngIf="m.child.length > 0 " [class.active]="isChildActive(m.child)"
+                [matMenuTriggerFor]="narrow" [ngClass]="{'triangle': !isExpanded, 'rounded-0': !isExpanded}">
+                <span class="menu-item-title" *ngIf="isExpanded">{{ m.title | translate }}</span>
+                <mat-icon matListItemIcon *ngIf="m.svgIcon !== '' " [svgIcon]="m.svgIcon"
+                  [class.svg-active]="m.route && route.url.includes(m.route)">
+                </mat-icon>
+                <mat-icon iconPositionEnd>chevron_right</mat-icon>
+              </mat-list-item>
+
+              <mat-menu #narrow="matMenu" [overlapTrigger]="true" backdropClass="nav-mat-menu">
+                <mat-nav-list class="expansion-panel-body">
+                  <mat-list-item *ngFor="let c of m.child" [routerLink]="c.route" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact:false}">
+                    <span class="menu-item-title">{{ c.title | translate }}</span>
+                  </mat-list-item>
+                </mat-nav-list>
+              </mat-menu>
+            </ng-template>
+          </div>
+        </div>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content [class.explicit-sm-ml]="!mobileQuery && !isExpanded"
+      [class.explicit-lg-ml]=" !mobileQuery  && isExpanded">
+      <div class="example-sidenav-content app-root-content" [class.nav-text-hidden]="!isExpanded"
+        [class.nav-text-show]="isExpanded">
+        <section class="dash-row ">
+          <router-outlet></router-outlet>
+        </section>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+</div>

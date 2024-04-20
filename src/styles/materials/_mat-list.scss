@@ -1,0 +1,19 @@
+$icon-size: 20;
+
+.mat-mdc-list-base {
+  .mat-mdc-list-item {
+    .mat-mdc-list-item-unscoped-content {
+      font-size: 16px;
+    }
+
+    .mat-mdc-list-item-icon,
+    .mat-list-base .mat-list-option .mat-list-icon {
+      width: $icon-size * 1px !important;
+      height: $icon-size * 1px !important;
+      font-size: $icon-size * 1px !important;
+
+      padding: 0 !important;
+      margin-right: 0 !important;
+    }
+  }
+}

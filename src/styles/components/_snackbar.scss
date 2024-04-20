@@ -1,0 +1,57 @@
+@use '../variables' as *;
+
+.snackbar-custom {
+  .snackbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .snackbar-message {
+    display: flex;
+    align-items: center;
+
+    span {
+      color: #fff;
+      font-weight: 500;
+    }
+
+    mat-icon {
+      margin-right: 5px;
+    }
+  }
+
+  #snackbar-duration {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .mat-mdc-progress-bar {
+    .mdc-linear-progress {
+      &__bar-inner {
+        border-color: $color-white;
+      }
+    }
+  }
+
+  &.snackbar-success {
+    .mdc-snackbar {
+      &__surface {
+        background-color: #4caf50;
+      }
+    }
+  }
+
+  &.snackbar-error {
+    .mdc-snackbar {
+      &__surface {
+        background-color: #f44336;
+      }
+    }
+  }
+}
+
+.cdk-global-overlay-wrapper + .snackbar-custom {
+  pointer-events: visible;
+}

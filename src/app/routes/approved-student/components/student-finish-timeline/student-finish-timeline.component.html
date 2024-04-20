@@ -1,0 +1,75 @@
+<div class="detail-form">
+  <div class="student-finish__timeline mat-mdc-table">
+    <div class="header-label">កំណត់ហេតុស្នើសុំ</div>
+    <div class="flex gap-x-16 mt-16" *ngFor="let item of timeline; let i=index; trackBy: trackByFn">
+      <section class="mt-16 mobile-off" align="right">
+        <span class="text-blur">
+          <p>{{item.createdAt | date: 'dd-MM-yyyy'}}</p>
+          <span>{{ item.createdAt | date: 'h:mm a' }}</span>
+        </span>
+      </section>
+
+      <section class="line-warpper">
+        <span class="circle" [ngClass]="item.status | approvedStudent | lowercase"></span>
+        <span class="horizontal-line" *ngIf="i !== (timeline?.length - 1)">
+          <span class="line"></span>
+        </span>
+      </section>
+
+      <section class="create_by">
+        <section class="flex items-center flex-wrap gap-8">
+          <div class="group-picture-name">
+            <img
+              class="profile-picture-list"
+              *ngIf="item.create_by.profile_image; else elseBlock"
+              [src]="(item.create_by.profile_image | staticFile) + '?image_size=s'"
+              alt="profile picture"
+            />
+            <ng-template #elseBlock>
+              <img
+                class="profile-picture-list"
+                [src]="(item.create_by.gender === 'female' ? '/assets/imgs/female.svg' : '/assets/imgs/male.svg')"
+                alt="profile picture"
+              />
+            </ng-template>
+            <div class="el-responsive">
+              <strong>{{item.create_by | fullName: translate.currentLang}}</strong>
+            </div>
+          </div>
+
+          <section class="flex items-center flex-wrap gap-8 create_by__status">
+            <!-- date on mobile screen -->
+            <section class="mobile-on">
+              <span class="text-blur">
+                <p>{{item.createdAt | date: 'dd-MM-yyyy'}}</p>
+                <span>{{ item.createdAt | date: 'h:mm a' }}</span>
+              </span>
+            </section>
+
+            <span class="status-fill rounded-sm" [ngClass]="item?.status | approvedStudent | lowercase">
+              {{item?.name || '--/--'}}
+            </span>
+          </section>
+        </section>
+
+        <div *ngIf="item?.quit_type" class="create_by__quit-reason mt-8">
+          <div class="create_by__quit-reason__wrapper p-16 rounded-md">
+            <p class="text-blur">Type:</p>
+            <span class="status rounded-sm failed"
+              ><strong
+                >{{("enum_status.student_finish." + (studentFinishEnum[item?.quit_type] | stringUnderscore)) | translate}}</strong
+              ></span
+            >
+
+            <section *ngIf="item?.reason" class="mt-12">
+              <p class="text-blur">Reason:</p>
+              <span
+                ><strong>{{item.reason}}</strong></span
+              >
+            </section>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>

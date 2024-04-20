@@ -1,0 +1,28 @@
+@use '../../../../../styles//variables' as *;
+
+.circle-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 100%;
+
+  &.allow {
+    background-color: $salem;
+  }
+
+  &.reject {
+    background-color: $thunderbird-color;
+  }
+}
+
+.button-delete {
+  margin-right: auto;
+  color: $color-light-red;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  column-gap: 4px;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

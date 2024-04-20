@@ -1,0 +1,9 @@
+.reason {
+    background-color: rgba($color: #ff5345, $alpha: 0.1);
+    color: #ff5345;
+  
+    &__title {
+      font-size: 16px;
+      font-weight: 600;
+    }
+}

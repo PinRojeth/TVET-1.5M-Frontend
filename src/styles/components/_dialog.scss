@@ -1,0 +1,49 @@
+.auto-scroll {
+    max-height: 300px;
+    overflow: auto;
+}
+
+.custom-dialog {
+    background-color: white;
+    border-radius: 4px;
+
+    .dialog-header {
+        display: flex;
+        align-items: center;
+        place-content: space-between;
+        border-bottom: 1px solid #dee2e6;
+        padding: 12px 14px 12px 12px;
+
+        .title {
+            display: block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .btn-close {
+            display: flex;
+            align-items: center;
+            place-content: center;
+            width: 32px;
+            height: 32px;
+            background-color: rgba(159, 188, 253, 0.1);
+            cursor: pointer;
+        }
+    }
+
+    mat-dialog-content {
+        padding: 16px 12px !important;
+
+        &[actions="no"] {
+            max-height: calc(65vh + 64px);
+        }
+    }
+
+    mat-dialog-actions {
+        border-top: 1px solid #dee2e6;
+        padding: 12px;
+    }
+}

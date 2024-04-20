@@ -1,0 +1,106 @@
+<div *ngIf="this.permsLength < 2; else elseBlock">
+  <div class="group-btn">
+    <button
+      *ngIf="permission?.view"
+      [routerLink]="useRouter?.view?.routerLink"
+      [queryParams]="useRouter?.view?.queryParam"
+      mat-icon-button
+      class="btn-sm"
+      #tooltip="matTooltip"
+      matTooltip="មើល"
+      matTooltipPosition="left"
+      (click)="onClick('view')"
+    >
+      <mat-icon svgIcon="visibility-color"></mat-icon>
+    </button>
+    <button
+      *ngIf="permission?.edit"
+      [routerLink]="useRouter?.edit?.routerLink"
+      [queryParams]="useRouter?.edit?.queryParam"
+      mat-icon-button
+      class="btn-sm"
+      #tooltip="matTooltip"
+      matTooltip="កែ"
+      matTooltipPosition="above"
+      (click)="onClick('edit')"
+    >
+      <mat-icon svgIcon="edit-color"></mat-icon>
+    </button>
+    <button
+      *ngIf="permission?.delete"
+      mat-icon-button
+      class="btn-sm"
+      #tooltip="matTooltip"
+      matTooltip="លុប"
+      matTooltipPosition="right"
+      (click)="onClick('delete')"
+    >
+      <mat-icon svgIcon="edit-color"></mat-icon>
+    </button>
+
+    <button
+      *ngIf="addButton.length > 0 && addButton[0]?.permission"
+      [routerLink]="addButton[0]?.router?.routerLink"
+      [queryParams]="addButton[0]?.router?.queryParam"
+      mat-icon-button
+      class="btn-sm"
+      #tooltip="matTooltip"
+      [matTooltip]="addButton[0].label"
+      matTooltipPosition="right"
+      (click)="onClick(addButton[0].label)"
+    >
+      <mat-icon [svgIcon]="addButton[0].svgIcon">{{addButton[0].matIcon}}</mat-icon>
+    </button>
+  </div>
+</div>
+
+<ng-template #elseBlock>
+  <button mat-icon-button [matMenuTriggerFor]="menu" class="btn-sm">
+    <mat-icon svgIcon="horizontal-dots"></mat-icon>
+  </button>
+  <mat-menu #menu="matMenu" xPosition="before">
+    <a
+      *ngIf="permission.view"
+      class="menu-item"
+      [routerLink]="useRouter?.view?.routerLink"
+      [queryParams]="useRouter?.view?.queryParam"
+    >
+      <button mat-menu-item (click)="onClick('view')">
+        <mat-icon svgIcon="visibility-color"></mat-icon>
+        <span>{{'button.view' | translate}}</span>
+      </button>
+    </a>
+
+    <a
+      *ngIf="permission.edit"
+      class="menu-item"
+      [routerLink]="useRouter?.edit?.routerLink"
+      [queryParams]="useRouter?.edit?.queryParam"
+    >
+      <button mat-menu-item (click)="onClick('edit')">
+        <mat-icon svgIcon="edit-color"></mat-icon>
+        <span>{{'button.edit' | translate}}</span>
+      </button>
+    </a>
+
+    <a *ngIf="permission.delete" class="menu-item">
+      <button mat-menu-item (click)="onClick('delete')">
+        <mat-icon svgIcon="delete-color"></mat-icon>
+        <span>{{'button.delete' | translate}}</span>
+      </button>
+    </a>
+
+    <a
+      *ngFor="let item of addButton; trackBy: trackByFn"
+      class="menu-item"
+      [routerLink]="item?.router?.routerLink"
+      [queryParams]="item?.router?.queryParam"
+    >
+      <button *ngIf="item?.permission !== false" mat-menu-item (click)="onClick(item.label)">
+        <mat-icon [svgIcon]="item.svgIcon">{{item.matIcon}}</mat-icon>
+        <span *ngIf="item?.translate; else label">{{item.translate | translate}}</span>
+        <ng-template #label>{{item.label}}</ng-template>
+      </button>
+    </a>
+  </mat-menu>
+</ng-template>

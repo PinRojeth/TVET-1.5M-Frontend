@@ -1,0 +1,101 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button mat-button [routerLink]="['../../../../', 'approved']">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}} <span class="name">| {{ name }}</span>
+        </button>
+      </h1>
+
+      <div class="group-btn" *ngIf="([pStudent.writeUser] | permission) && isApproved && activeLink === 0 && !!student">
+        <button
+          color="print"
+          *ngIf="([pStudent.writeApproved] | permission) && student?.change_course === 1"
+          mat-flat-button
+          (click)="onChangeCourse()"
+        >
+          ប្ដូរវគ្គសិក្សា
+          <mat-icon>book_4</mat-icon>
+        </button>
+
+        <button
+          color="reset"
+          *ngIf="([pStudent.addPoorId] | permission) && !student?.poor_id"
+          mat-flat-button
+          (click)="onAddPoorId()"
+        >
+          បញ្ចូលបណ្ណសមធម៌
+          <mat-icon svgIcon="add-poor-id"></mat-icon>
+        </button>
+
+        <button *ngIf="student?.users?.username" mat-flat-button color="primary" (click)="openResetPasswordDialog()">
+          <mat-icon>lock</mat-icon>
+          {{'button.reset_pwd' | translate}}
+        </button>
+        <button
+          *ngIf="([pStudent.writeUser] | permission) && !student?.users?.username"
+          color="primary"
+          mat-flat-button
+          (click)="openAddUserDialog()"
+        >
+          គ្រប់គ្រងគណនី
+          <mat-icon>lock</mat-icon>
+        </button>
+        <button
+          color="accent"
+          mat-flat-button
+          [routerLink]="['../../../', 'edit', studentId]"
+          *ngIf="[pStudent.write] | permission"
+        >
+          កែប្រែ
+          <mat-icon svgIcon="edit-square"></mat-icon>
+        </button>
+        <button
+          color="warn"
+          mat-flat-button
+          (click)="onRequestQuit()"
+          *ngIf="([pStudent.writeApproved] | permission) && (student?.scholarship_status === 1 || student?.scholarship_status === 4)"
+        >
+          ចាកចេញ
+          <mat-icon svgIcon="power"></mat-icon>
+        </button>
+        <button
+          color="success"
+          mat-flat-button
+          (click)="onResume()"
+          *ngIf="([pStudent.resumeStudy] | permission) && student?.scholarship_status === 9"
+        >
+          បន្តសិក្សា
+          <mat-icon svgIcon="checked"></mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="student-finish-wrapper">
+    <nav mat-tab-nav-bar mat-stretch-tabs="false" [tabPanel]="tabPanel">
+      <a
+        mat-tab-link
+        *ngFor="let link of links; trackBy: trackByFn"
+        [routerLink]="['..', link.tab]"
+        (click)="this.activeLink = link.index"
+        [active]="activeLink === link.index"
+        [queryParams]="{student: name}"
+      >
+        {{link.label}}
+      </a>
+    </nav>
+
+    <div>
+      <mat-tab-nav-panel #tabPanel>
+        <app-student-finish-detail
+          *ngIf="activeLink === 0"
+          (studentEvent)="onGetStudent($event)"
+          [reload]="isReload"
+        ></app-student-finish-detail>
+        <app-student-finish-timeline *ngIf="activeLink === 1"></app-student-finish-timeline>
+      </mat-tab-nav-panel>
+    </div>
+  </div>
+</div>

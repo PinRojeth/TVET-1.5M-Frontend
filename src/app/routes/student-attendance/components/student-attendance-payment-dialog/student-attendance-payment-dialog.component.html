@@ -1,0 +1,71 @@
+<div class="student-request-dialog student-attendance">
+  <div class="flex place-content-space-between items-center p-16">
+    <p class="title p-0 m-0">ប្រាក់ឧបត្ថម្ភ</p>
+
+    <button mat-mini-fab color="base" [mat-dialog-close]="false">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="pl-16 pr-16"><mat-divider></mat-divider></div>
+
+  <mat-dialog-content>
+    <div class="detail-form">
+      <form [formGroup]="form" autocomplete="off">
+        <div class="grid gap-x-16 col-1">
+          <div class="grid col-md-2 gap-16">
+            <div>
+              <mat-label [ngClass]="{'required': form.get('status')?.invalid}">ស្ថានភាព</mat-label>
+              <mat-form-field appearance="outline">
+                <mat-select formControlName="status" (selectionChange)="onStatusChange()">
+                  <mat-select-trigger *ngIf="!!getStatus()">
+                    <div class="flex items-center gap-x-8">
+                      <span class="circle-dot" [ngClass]="getStatus()?.name_en"></span>{{getStatus()?.name}}
+                    </div>
+                  </mat-select-trigger>
+                  <mat-option *ngFor="let item of status; trackBy: trackByFn" [value]="item._id">
+                    <div class="flex items-center gap-x-8">
+                      <span class="circle-dot" [ngClass]="item.name_en"></span>{{item.name}}
+                    </div>
+                  </mat-option>
+                </mat-select>
+                <mat-icon matSuffix *ngIf="!form.get('status')?.disabled">expand_more</mat-icon>
+              </mat-form-field>
+            </div>
+
+            <div>
+              <label [ngClass]="{'required': form.get('paid_amount')?.invalid}">តម្លៃ</label>
+              <mat-form-field appearance="outline">
+                <input type="number" matInput formControlName="paid_amount" inputmode="numeric" min="0" />
+                <span matTextSuffix class="text-blur">៛</span>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div>
+            <label [ngClass]="{'required': form.get('reason')?.invalid}">មតិ</label>
+            <mat-form-field appearance="outline">
+              <textarea matInput rows="2" formControlName="reason"></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions *ngIf="(([pPayment.delete] | permission) || ([pPayment.write] | permission)) && !form.disabled">
+    <section
+      class="button-delete"
+      role="button"
+      *ngIf="([pPayment.delete] | permission) && this.data.data?.scholarship_payments?.status === 1"
+      (click)="onDelete()"
+    >
+      <mat-icon>delete</mat-icon>
+      លុបប្រាក់ឧបត្ថម្ភ
+    </section>
+
+    <button mat-flat-button color="primary" (click)="onSubmit()" *ngIf="[pPayment.write] | permission">
+      {{"button.done" | translate}}
+    </button>
+  </mat-dialog-actions>
+</div>

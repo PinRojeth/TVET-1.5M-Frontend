@@ -1,0 +1,18 @@
+<div class="app-content">
+  <div class="detail-form mb-16">
+    <div class="header-label flex items-center">
+      MOP Token
+      <div class="group-btn">
+        <button *ngIf="[pToken.write] | permission" color="accent" mat-flat-button [routerLink]="token?._id">
+          {{'button.edit' | translate}}
+          <mat-icon svgIcon="edit"></mat-icon>
+        </button>
+      </div>
+    </div>
+
+    <div class="grid col-sm-12 gap-y-16 detail-text">
+      <label class="col-span-sm-4 col-span-md-2">Token</label>
+      <div class="value col-span-sm-8 col-span-md-10">{{token?.nsaf_token}}</div>
+    </div>
+  </div>
+</div>

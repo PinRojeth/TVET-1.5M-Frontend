@@ -1,0 +1,126 @@
+@use '../variables' as *;
+
+.report {
+  .text-bold {
+    font-weight: 600;
+  }
+
+  .text-blur {
+    color: $aluminium;
+  }
+
+  .no-subscript-wrapper {
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+  }
+
+  .display-none {
+    display: none;
+  }
+
+  .table-container {
+    border: 1px solid $athens-gray-color;
+
+    table.mat-mdc-table {
+      .mdc-data-table {
+        &__header-row {
+          height: 65px;
+        }
+      }
+
+      th {
+        &.th-center {
+          text-align: center;
+        }
+      }
+
+      td {
+        &.td-center {
+          text-align: center;
+        }
+
+        &.sub-header {
+          background-color: rgba($color-primary, 0.1);
+        }
+      }
+
+      thead {
+        tr {
+          background-color: $color-primary;
+          color: #fff;
+
+          &:first-child {
+            th {
+              border-bottom-right-radius: 0;
+              border-bottom-left-radius: 0;
+            }
+          }
+
+          &:last-child {
+            height: 50px;
+
+            th {
+              &:first-child {
+                border-left: 1px solid $ship-cove-color;
+              }
+            }
+          }
+
+          th {
+            border: 0;
+            color: #fff;
+            border-bottom: 1px solid $ship-cove-color;
+
+            &:not(:first-child) {
+              border-left: 1px solid $ship-cove-color;
+            }
+          }
+        }
+      }
+
+      tbody {
+        tr {
+          &:last-child {
+            &:not(.mat-mdc-no-data-row) {
+              background-color: rgba($sea-buckthorn, 0.1);
+            }
+
+            td {
+              font-weight: bold;
+              border-left: none;
+              border-bottom-color: transparent;
+
+              &:first-child {
+                text-align: center;
+              }
+            }
+          }
+
+          &:not(.mat-mdc-no-data-row) {
+            td {
+              border-bottom-color: $athens-gray-color;
+
+              &:not(:first-child) {
+                border-left: 1px solid $athens-gray-color;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  app-filter {
+    .filter-card {
+      margin-bottom: 0;
+    }
+  }
+
+  .report-empty {
+    height: 50dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

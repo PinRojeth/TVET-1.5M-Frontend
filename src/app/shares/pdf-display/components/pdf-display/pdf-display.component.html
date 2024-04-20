@@ -1,0 +1,25 @@
+<div class="pdf-container">
+  <div class="flex items-center head-dialog p-12">
+    <span>{{"View Attachment" | translate}}</span>
+    <button [disabled]="isLoading" mat-icon-button [appDownload]="{file: data?.file, fileName: data?.fileName}">
+      <mat-icon [ngStyle]="{color: '#3F419FCC'}">save_alt</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <mat-spinner *ngIf="isLoading" diameter="50"></mat-spinner>
+  <pdf-viewer
+    (error)="isLoading = true"
+    (on-progress)="isLoading = true"
+    (after-load-complete)="isLoading = false"
+    [src]="data.file"
+    [rotation]="0"
+    [show-all]="true"
+    [zoom]="1"
+    [zoom-scale]="'page-width'"
+    [external-link-target]="'blank'"
+    [autoresize]="true"
+    [show-borders]="true"
+  ></pdf-viewer>
+</div>

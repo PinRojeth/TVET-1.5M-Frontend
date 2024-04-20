@@ -1,0 +1,42 @@
+<div class="app-content">
+    <div class="app-header">
+        <div class="app-title">
+            <h1 class="title">{{ 'sector.sector_list' | translate }}</h1>
+        </div>
+    </div>
+
+    <div class="detail-form">
+        <app-filter
+            [hasButton]="[pSector.write] | permission"
+            (queryEvent)="onSearch($event)"
+            (actionButton)="onCreate()" [hide]="['dateRange', 'date', 'yearDate', 'filter']">
+        </app-filter>
+        <custom-table [tableData]="tableData" [tableColumns]="tableColumns" [requestUrl]="sectorService.path"
+            (goToEvent)="goTo($event)">
+            <ng-template [appZippy]="'name'" let-element>
+                <div class="el-responsive">
+                    {{ element.name }}
+                </div>
+            </ng-template>
+
+            <ng-template [appZippy]="'name_en'" let-element>
+                {{ element.name_en || '--/--' }}
+            </ng-template>
+
+            <ng-template [appZippy]="'code'" let-element>
+                {{ element.code || '--/--' }}
+            </ng-template>
+
+            <ng-template [appZippy]="'action'" let-element>
+                <app-action
+                    [useRouter]="{view: {routerLink: 'info/' + element._id}, edit: {routerLink: 'edit/' + element._id}}"
+                    (clickEvent)="actionEvent($event, element._id)"
+                    [permission]="{
+                        view: ([pSector.read] | permission ),
+                        edit: ([pSector.write] | permission ),
+                        delete: ([pSector.delete] | permission ) }">
+                </app-action>
+            </ng-template>
+        </custom-table>
+    </div>
+</div>

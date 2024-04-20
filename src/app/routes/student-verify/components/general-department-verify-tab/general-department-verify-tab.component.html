@@ -1,0 +1,64 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button mat-button [routerLink]="['../../../']">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}} <span class="name">| {{ name }}</span>
+        </button>
+      </h1>
+
+      <div class="group-btn" *ngIf="isLoaded && activeLink === 0">
+        <!-- request action -->
+        <button
+          *ngIf="([pStudent.request] | permission) && student?.status === status.REJECT"
+          mat-flat-button
+          color="primary"
+          (click)="onReRequest()"
+        >
+          ដាក់ស្នើ
+          <mat-icon svgIcon="resend"></mat-icon>
+        </button>
+
+        <!-- <ng-template #request> -->
+          <ng-container *ngIf="student?.status === status.REQUESTING">
+            <button *ngIf="[pStudent.writeApproved] | permission" color="warn" mat-flat-button (click)="onReject()">
+              {{'button.reject' | translate}}
+              <mat-icon>clear</mat-icon>
+            </button>
+            <button *ngIf="[pStudent.writeApproved] | permission" color="success" mat-flat-button (click)="onApprove()">
+              {{'button.approve' | translate}}
+              <mat-icon>done</mat-icon>
+            </button>
+          </ng-container>
+        <!-- </ng-template> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="student-finish-wrapper">
+    <nav mat-tab-nav-bar mat-stretch-tabs="false" [tabPanel]="tabPanel">
+      <a
+        mat-tab-link
+        *ngFor="let link of links; trackBy: trackByFn"
+        [routerLink]="['..', link.tab]"
+        (click)="this.activeLink = link.index"
+        [active]="activeLink === link.index"
+        [queryParams]="{student: name, poorId: poorId}"
+      >
+        {{link.label}}
+      </a>
+    </nav>
+
+    <div>
+      <mat-tab-nav-panel #tabPanel>
+        <app-general-department-verify-detail
+          *ngIf="activeLink === 0"
+          (studentEvent)="onGetStudent($event)"
+          [reload]="reload"
+        ></app-general-department-verify-detail>
+        <app-general-department-verify-timeline *ngIf="activeLink === 1"></app-general-department-verify-timeline>
+      </mat-tab-nav-panel>
+    </div>
+  </div>
+</div>

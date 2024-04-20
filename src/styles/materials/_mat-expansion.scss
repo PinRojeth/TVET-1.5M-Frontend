@@ -1,0 +1,40 @@
+@use '../variables'as var;
+
+.mat-expansion-panel-header {
+  &.mat-expanded {
+    height: 48px;
+  }
+
+  &.mat-expansion-toggle-indicator-before {
+    .mat-expansion-indicator {
+      display: flex;
+    }
+  }
+}
+
+//Custom bg color on hover
+.mat-expansion-panel .mat-expansion-panel-header.cdk-keyboard-focused:not([aria-disabled=true]),
+.mat-expansion-panel .mat-expansion-panel-header.cdk-program-focused:not([aria-disabled=true]),
+.mat-expansion-panel:not(.mat-expanded) .mat-expansion-panel-header:hover:not([aria-disabled=true]) {
+  background: var.$black-squeeze-light;
+}
+
+.mat-expansion-panel-body {
+  padding: 12px !important;
+  border-radius: 0 0 6px 6px;
+  background-color: var.$black-squeeze-light;
+}
+
+.mat-expansion-panel {
+  // border: 1px solid #eaeaea;
+  margin: 4px 0 !important;
+  border-radius: var.$rounded-sm !important;
+
+  .hightlight {
+    margin-left: auto;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var.$color-primary;
+  }
+}

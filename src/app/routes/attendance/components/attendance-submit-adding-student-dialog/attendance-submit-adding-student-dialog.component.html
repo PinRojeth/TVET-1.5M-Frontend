@@ -1,0 +1,156 @@
+<div class="detail-form">
+  <div class="flex items-center justify-content-between">
+    <div class="header-label">បញ្ចូលសិស្ស</div>
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <section class="mb-16"><mat-divider></mat-divider></section>
+
+  <app-filter (queryEvent)="onSearch($event)" [apiRoute]="filterData$" (queryFilter)="setParams($event)"> </app-filter>
+
+  <mat-dialog-content>
+    <div class="table-container">
+      <ng-container *ngIf="loadingService.isLoading$ | async as loadingMap">
+        <mat-progress-bar
+          class="progress-bar"
+          mode="indeterminate"
+          *ngIf="loadingMap.get(requestUrl)"
+        ></mat-progress-bar>
+      </ng-container>
+
+      <!-- Table -->
+      <table #table mat-table [dataSource]="dataSource">
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            <span>
+              {{params.page === 1 ? (i + 1) : i + 1 + (params.limit * (params.page - 1))}}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>ឈ្មោះ</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="group-picture-name">
+              <img
+                class="profile-picture-list"
+                *ngIf="element?.profile_image; else elseBlock"
+                [src]="(element.profile_image | staticFile) + '?image_size=s'"
+                alt="profile picture"
+              />
+              <ng-template #elseBlock>
+                <img
+                  class="profile-picture-list"
+                  [src]="(element.gender === 'female' ? '/assets/imgs/female.svg' : '/assets/imgs/male.svg')"
+                  alt="profile picture"
+                />
+              </ng-template>
+              <div class="el-responsive">{{element | staffFullName}}</div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="gender">
+          <th mat-header-cell *matHeaderCellDef>ភេទ</th>
+          <td mat-cell *matCellDef="let element">
+            {{(element.gender === 'female' ? ('form.gender.female' | translate) : ('form.gender.male' | translate) | titlecase)|| '--//--'}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="poor_id">
+          <th mat-header-cell *matHeaderCellDef>លេខប័ណ្ណក្រីក្រ</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="el-responsive">
+              <section *ngIf="element.poor_status === 1" class="flex items-center">
+                <mat-icon svgIcon="mat-approved"></mat-icon>
+                <span class="pl-6">{{element.poor_id}}</span>
+              </section>
+              <section *ngIf="element.poor_status === 2" class="flex items-center">
+                <mat-icon svgIcon="mat-draft"></mat-icon>
+                <span class="pl-6">{{element.poor_id}}</span>
+              </section>
+              <section *ngIf="element.poor_status === 3" class="flex items-center">
+                <mat-icon svgIcon="mat-pending"></mat-icon>
+                <span class="pl-6">{{element.poor_id}}</span>
+              </section>
+              <section *ngIf="element.poor_status === -3" class="flex items-center">
+                <mat-icon svgIcon="mat-rejected"></mat-icon>
+                <span class="pl-6">{{element.poor_id}}</span>
+              </section>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="courses">
+          <th mat-header-cell *matHeaderCellDef>វគ្គសិក្សា</th>
+          <td mat-cell *matCellDef="let element">
+            {{(element.courses?.code ?? element.courses) || '--/--'}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="average_attendance">
+          <th mat-header-cell *matHeaderCellDef>មធ្យមភាគវត្តមាន</th>
+          <td mat-cell *matCellDef="let element">
+            {{element?.average_attendance ? element?.average_attendance + '%' : '--/--' }}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox
+              (change)="$event ? onSelectStudentColumn() : null;"
+              [checked]="isCheckColumn"
+              [indeterminate]="dataCheckedPerPage?.length !== 0 && !isCheckColumn"
+              *ngIf="dataSource?.data?.length > 0"
+              color="primary"
+            >
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox
+              (click)="$event.stopPropagation()"
+              (change)="$event ? onSelectStudentRow($event, element) : null;"
+              [checked]="element?.is_check"
+              [disabled]="element?.disabled"
+              color="primary"
+            >
+            </mat-checkbox>
+          </td>
+        </ng-container>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="12">
+            <div class="empty grid p-32  content-center" *ngIf="loadingService.isLoading$ | async as loadingMap">
+              <app-empty [width]="100" [height]="70" *ngIf="!loadingMap.get(requestUrl); else loading"></app-empty>
+              <ng-template #loading>
+                <h4>{{'table.loading' | translate}}...</h4>
+              </ng-template>
+            </div>
+          </td>
+        </tr>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <div style="overflow-x: auto;">
+      <app-pagination
+        *ngIf="params.limit >= 0"
+        [total]="total"
+        [limit]="params.limit"
+        [page]="params.page"
+        [surroundButton]="6"
+        (changed)="goTo($event)"
+      >
+      </app-pagination>
+    </div>
+  </mat-dialog-content>
+
+  <div align="right" class="done-button mt-16">
+    <button mat-flat-button color="primary" (click)="onSubmit()" class="rounded-full">រួចរាល់</button>
+  </div>
+</div>

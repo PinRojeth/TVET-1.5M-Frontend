@@ -1,0 +1,39 @@
+<div class="v-pagin" *ngIf="total > 0">
+
+  <ng-container *ngIf="limit > 0; else limited">
+    <button [disabled]="page===1 || total===0" (click)="goTo(page - 1)">
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <button *ngIf="start!==1  && total!==0" [disabled]="true">...</button>
+    <button *ngFor="let i of pageList" [ngClass]="{'active':i===page}" (click)="goTo(i)">
+      {{i}}
+    </button>
+    <button *ngIf="end!==last && total!==0" [disabled]="true">...</button>
+    <button [disabled]="page===last  || total===0" (click)="goTo(page + 1)">
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </ng-container>
+
+  <ng-template #limited>
+    <button disabled>
+      <mat-icon>keyboard_arrow_left</mat-icon>
+    </button>
+    <button *ngFor="let i of [1]" disabled [ngClass]="{'active':i===page}">
+      {{i}}
+    </button>
+    <button disabled>
+      <mat-icon>keyboard_arrow_right</mat-icon>
+    </button>
+  </ng-template>
+
+  <mat-select [(value)]="limit" (selectionChange)="goTo(1)">
+    <mat-option *ngFor="let option of pageOptions; let last = last" [value]="option">
+      <span *ngIf="last; else notLast">{{'filter.all' | translate}}</span>
+      <ng-template #notLast>
+        <span
+          >{{option}}<span>/{{'table.page' | translate}}</span></span
+        >
+      </ng-template>
+    </mat-option>
+  </mat-select>
+</div>

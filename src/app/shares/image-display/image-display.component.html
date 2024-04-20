@@ -1,0 +1,19 @@
+<!-- <div class="image-container" [ngStyle]="{'background-color': isLoading ? 'rgba(0,0,0,0.2)': ''}">
+    <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+        <mat-icon class="close-icon" color="warn">close</mat-icon>
+    </button>
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <img [src]="data" [ngStyle]="{visibility:isLoading?'hidden':''}" (load)="hideLoader()" (error)="hideLoader()" />
+</div> -->
+<mat-dialog-content>
+  <div class="image-container" [ngStyle]="{'background-color': isLoading ? 'rgba(0,0,0,0.2)': ''}">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <img [src]="data" [ngStyle]="{visibility:isLoading?'hidden':''}" (load)="hideLoader()" (error)="hideLoader()" />
+    <!-- <button mat-icon-button class="close-button" [mat-dialog-close]="true">
+            <mat-icon class="close-icon" color="warn">close</mat-icon>
+        </button> -->
+  </div>
+</mat-dialog-content>
+<button mat-icon-button class="close-button" [mat-dialog-close]="true">
+  <mat-icon class="close-icon" color="warn">close</mat-icon>
+</button>

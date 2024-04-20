@@ -1,0 +1,119 @@
+<!-- <mat-dialog-content align="center">
+  <div class="alert-icon-dialog">
+    <img [src]="icon" alt="icon.svg" />
+  </div>
+  <h2 matDialogTitle>{{title | translate}}</h2>
+  <span>{{message | translate}}</span>
+</mat-dialog-content>
+<mat-dialog-actions class="btn-action-dialog">
+  <button *ngIf="button != 'back'" mat-raised-button matDialogClose="cancel">
+    <mat-icon>clear</mat-icon>
+    {{button === 'close' ? 'Close': ('button.cancel' | translate)}}
+  </button>
+  <button *ngIf="button === 'delete'" mat-raised-button matDialogClose="confirm" color="primary">
+    <mat-icon>done</mat-icon>
+    Okay
+  </button>
+  <button *ngIf="button === 'save'" mat-raised-button matDialogClose="confirm" color="primary">
+    <mat-icon>save</mat-icon>
+    Save
+  </button>
+  <button *ngIf="button === 'confirm'" mat-raised-button matDialogClose="confirm" color="primary">
+    <mat-icon>done</mat-icon>
+    {{'button.confirm' | translate}}
+  </button>
+  <button *ngIf="button === 'import'" mat-raised-button matDialogClose="confirm" color="primary">
+    <mat-icon svgIcon="import-file"></mat-icon>
+    Import
+  </button>
+  <button *ngIf="button === 'back'" mat-raised-button matDialogClose="confirm" color="primary">
+    <mat-icon>arrow_back</mat-icon>
+    Back
+  </button>
+  <button *ngIf="button === 'reject'" mat-raised-button matDialogClose="reject" color="warn">
+    <mat-icon>done</mat-icon>
+    {{'button.reject' | translate}}
+  </button>
+  <button *ngIf="button === 'approve'" mat-raised-button matDialogClose="approve" color="primary">
+    <mat-icon>done</mat-icon>
+    {{'button.approve' | translate}}
+  </button>
+</mat-dialog-actions> -->
+
+<div class="student-request-dialog">
+  <div class="flex place-content-space-between items-center pt-16 pl-16 pr-16 pb-10">
+    <p class="title p-0 m-0">{{title | translate}}</p>
+
+    <button class="border-none close" color="base" [mat-dialog-close]="false">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="pl-16 pr-16"><mat-divider></mat-divider></div>
+
+  <mat-dialog-content>
+    <div class="detail-form" align="center">
+      <div class="alert-icon-dialog">
+        <img [src]="icon" alt="icon.svg" />
+      </div>
+      <span class="sms">{{message | translate}}</span>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions class="btn-action-dialog">
+    <button *ngIf="button === 'delete'" mat-raised-button matDialogClose="confirm" color="primary">
+      <mat-icon>done</mat-icon>
+      Okay
+    </button>
+    <button *ngIf="button === 'save'" mat-raised-button matDialogClose="confirm" color="primary">
+      <mat-icon>save</mat-icon>
+      Save
+    </button>
+    <button *ngIf="button === 'confirm'" mat-raised-button matDialogClose="confirm" color="primary">
+      <mat-icon>done</mat-icon>
+      {{'button.confirm' | translate}}
+    </button>
+    <button *ngIf="button === 'okay'" mat-raised-button matDialogClose="confirm" color="primary">
+      <mat-icon>done</mat-icon>
+      {{'button.okay' | translate}}
+    </button>
+    <button *ngIf="button === 'import'" mat-raised-button matDialogClose="confirm" color="primary">
+      <mat-icon svgIcon="import-file"></mat-icon>
+      Import
+    </button>
+    <button *ngIf="button === 'back'" mat-raised-button matDialogClose="confirm" color="primary">
+      <mat-icon>arrow_back</mat-icon>
+      Back
+    </button>
+    <button *ngIf="button === 'reject'" mat-raised-button matDialogClose="reject" color="warn">
+      <mat-icon>done</mat-icon>
+      {{'button.reject' | translate}}
+    </button>
+    <button *ngIf="button === 'approve'" mat-raised-button matDialogClose="approve" color="primary">
+      <mat-icon>done</mat-icon>
+      {{'button.approve' | translate}}
+    </button>
+    <button *ngIf="button === 'agree'" mat-raised-button matDialogClose="agree" color="primary">
+      <mat-icon>done</mat-icon>
+      ឯកភាព
+    </button>
+    <div *ngIf="button === 'request'">
+      <button mat-raised-button matDialogClose="approve" color="primary">
+        <mat-icon>done</mat-icon>
+        {{'button.approve' | translate}}
+      </button>
+      <button mat-raised-button matDialogClose="request" color="primary">
+        <mat-icon>done</mat-icon>
+        {{'button.request_poor' | translate}}
+      </button>
+    </div>
+    <button *ngIf="button === 'resend'" mat-raised-button matDialogClose="resend" color="primary">
+      <mat-icon>done</mat-icon>
+      {{'button.resend' | translate}}
+    </button>
+    <button *ngIf="button === 'resend_scholarship'" mat-raised-button matDialogClose="resend_scholarship" color="primary">
+      <mat-icon>done</mat-icon>
+      {{'button.resend_scholarship' | translate}}
+    </button>
+  </mat-dialog-actions>
+</div>

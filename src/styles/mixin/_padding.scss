@@ -1,0 +1,76 @@
+@use '../variables' as *;
+
+$padding-pixels: 100;
+
+@mixin edge-paddings($edge: false, $value) {
+    @if $edge {
+        padding-#{$edge}: $value + px !important;
+    }
+
+    @else {
+        padding: $value + px !important;
+    }
+}
+
+@mixin axis-paddings($axis, $value) {
+    @if ($axis ==x) {
+        padding-left: $value + px !important;
+        padding-right: $value + px !important;
+    }
+
+    @else if ($axis ==y) {
+        padding-top: $value + px !important;
+        padding-bottom: $value + px !important;
+    }
+}
+
+@for $i from 0 to $padding-pixels {
+
+    // padding on each edges
+    @each $name,
+    $edge in $edges {
+        .p#{$name}-#{$i} {
+            @include edge-paddings($edge, $i);
+        }
+    }
+
+    .p-#{$i} {
+        @include edge-paddings(false, $i);
+    }
+
+    // padding on axis
+    @each $axis in $edge-axis {
+        .p#{$axis}-#{$i} {
+            @include axis-paddings($axis, $i);
+        }
+    }
+}
+
+// padding on breakpoints
+@each $breaker,
+$breakpoint in $grid-breakpoints {
+    @media screen and (min-width: $breakpoint) {
+        @for $i from 0 through $padding-pixels {
+
+            // Ex: .p-sm-1, .p-md-2, ...
+            .p-#{$breaker}-#{$i} {
+                @include edge-paddings(false, $i);
+            }
+
+            // Ex: .pt-xs-1, .pr-sm-2, ...
+            @each $name,
+            $edge in $edges {
+                .p#{$name}-#{$breaker}-#{$i} {
+                    @include edge-paddings($edge, $i);
+                }
+            }
+
+            // Ex: .px-sm-1, .py-md-2, ...
+            @each $axis in $edge-axis {
+                .p#{$axis}-#{$breaker}-#{$i} {
+                    @include axis-paddings($axis, $i);
+                }
+            }
+        }
+    }
+}

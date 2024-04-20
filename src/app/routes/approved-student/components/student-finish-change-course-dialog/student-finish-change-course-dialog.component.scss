@@ -1,0 +1,10 @@
+.close {
+  border: none;
+  background-color: white;
+  cursor: pointer;
+  padding: 6px;
+}
+.close:hover {
+  background-color: rgb(240, 239, 239);
+  border-radius: 50%;
+}

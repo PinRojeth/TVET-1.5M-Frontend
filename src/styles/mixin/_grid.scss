@@ -1,0 +1,167 @@
+@use '../variables' as *;
+
+$grid-columns: 12;
+$gap: 50;
+
+@mixin grid-template-columns($count) {
+    grid-template-columns: repeat($count, minmax(0, 1fr));
+}
+
+@mixin grid-template-column-none() {
+    grid-template-columns: none;
+}
+
+@mixin grid-template-rows($count) {
+    grid-template-rows: repeat($count, minmax(0, 1fr));
+}
+
+@mixin grid-template-row-none() {
+    grid-template-rows: none;
+}
+
+@mixin column-spans($count) {
+    grid-column: span $count / span $count;
+}
+
+@mixin column-span-full() {
+    grid-column: 1 / -1;
+}
+
+@mixin column-span-auto() {
+    grid-column: auto;
+}
+
+@mixin row-spans($count) {
+    grid-row: span $count / span $count;
+}
+
+@mixin row-span-full() {
+    grid-row: 1 / -1;
+}
+
+@mixin row-span-auto() {
+    grid-row: auto;
+}
+
+.grid {
+    display: grid !important;
+}
+
+/* Gap */
+@for $i from 0 through $gap {
+
+    /* grid gap */
+    .gap-#{$i} {
+        gap: $i + px;
+    }
+
+    /* X axis gap */
+    .gap-x-#{$i} {
+        column-gap: $i + px;
+    }
+
+    /* Y axis gap */
+    .gap-y-#{$i} {
+        row-gap: $i + px;
+    }
+}
+
+/* Specific screens */
+@each $name,
+$breakpoint in $grid-breakpoints {
+    @media screen and (min-width: $breakpoint) {
+
+        /* Grid Template Columns */
+        .col-#{$name}-none {
+            @include grid-template-column-none();
+        }
+
+        @for $i from 1 through $grid-columns {
+            .col-#{$name}-#{$i} {
+                @include grid-template-columns($i);
+            }
+        }
+
+        /* Grid Template Rows */
+        .row-#{$name}-none {
+            @include grid-template-row-none();
+        }
+
+        @for $i from 1 through $grid-columns {
+            .row-#{$name}-#{$i} {
+                @include grid-template-rows($i);
+            }
+        }
+
+        /* Grid Column Start / End */
+        .col-span-#{$name}-auto {
+            @include column-span-auto();
+        }
+
+        .col-span-#{$name}-full {
+            @include column-span-full();
+        }
+
+        @for $i from 1 through $grid-columns {
+            .col-span-#{$name}-#{$i} {
+                @include column-spans($i);
+            }
+        }
+
+        /* Grid Row Start / End*/
+        .row-span-#{$name}-auto {
+            @include row-span-auto()
+        }
+
+        .row-span-#{$name}-full {
+            @include row-span-full()
+        }
+
+        @for $i from 1 through $grid-columns {
+            .row-span-#{$name}-#{$i} {
+                @include row-spans($i)
+            }
+        }
+    }
+}
+
+/* Grid Template Columns with not specific screens */
+.col-none {
+    @include grid-template-column-none();
+}
+
+@for $i from 1 through $grid-columns {
+    .col-#{$i} {
+        @include grid-template-columns($i);
+    }
+}
+
+/* Grid Column Start / End with not specific screens */
+.col-span-auto {
+    @include column-span-auto();
+}
+
+.col-span-full {
+    @include column-span-full();
+}
+
+@for $i from 1 through $grid-columns {
+    .col-span-#{$i} {
+        @include column-spans($i);
+    }
+}
+
+/* Grid Row Start / End with not specific screens */
+.row-span-auto {
+    @include row-span-auto()
+}
+
+.row-span-full {
+    @include row-span-full()
+}
+
+@for $i from 1 through $grid-columns {
+    .row-span-#{$i} {
+        @include row-spans($i)
+    }
+}

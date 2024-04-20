@@ -1,0 +1,167 @@
+@use "./variables" as *;
+
+$sizes: (
+    "sm": $rounded-sm,
+    "md": $rounded-md,
+    "lg": $rounded-lg,
+    "xl": $rounded-xl,
+    "2xl": $rounded-2xl,
+    "full": $rounded-full,
+);
+
+$text-colors: (
+    "primary": $color-primary,
+    "white": $color-white,
+    "grey": $color-grey,
+);
+
+$background-colors: (
+    "primary": $color-primary,
+    "white": $color-white,
+    "grey": $background-light-grey,
+);
+
+$linear-gradient-colors: (
+    "gradient-primary": $linear-gradient-primary,
+    "light-gradient-primary": $linear-light-gradient-primary,
+);
+
+@mixin profile-picture() {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: $rounded-md;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+@mixin profile-picture-list() {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    min-height: 32px;
+    object-fit: cover;
+    border-radius: $rounded-full;
+    margin: $spacing-sm $spacing-sm $spacing-sm 0;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* rounded */
+@each $name,
+$size in $sizes {
+    .rounded-#{$name} {
+        border-radius: $size !important;
+    }
+}
+
+/* text color */
+@each $name,
+$color in $text-colors {
+    .text-#{$name} {
+        color: $color;
+    }
+}
+
+/* background color */
+@each $name,
+$color in $background-colors {
+    .bg-#{$name} {
+        background-color: $color;
+    }
+}
+
+@each $name,
+$color in $linear-gradient-colors {
+    .bg-#{$name} {
+        background: $color;
+    }
+}
+
+/* profile picture */
+.profile-picture {
+    @include profile-picture();
+}
+
+.profile-picture-list {
+    @include profile-picture-list();
+
+    // selected staff
+    &.selected {
+        position: absolute;
+        left: 0;
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+}
+
+.content-center {
+    place-content: center;
+}
+
+.flex {
+    display: flex;
+
+    &.items-center {
+        align-items: center;
+    }
+
+    &.justify-content-center {
+        justify-content: center;
+    }
+
+    &.place-content-space-between {
+        place-content: space-between;
+    }
+
+    &.wrap {
+        flex-wrap: wrap;
+    }
+}
+
+/* width */
+.timetable-scroll::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+/* Track */
+.timetable-scroll::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+.timetable-scroll::-webkit-scrollbar-thumb {
+    background: rgba(#ccc7c7, 0.9);
+    border-radius: 20px;
+}
+
+/* Handle on hover */
+.timetable-scroll::-webkit-scrollbar-thumb:hover {
+    background: #bbbbbb;
+}
+
+/* Disabled checkbox */
+.custom-box.mat-checkbox-disabled.mat-checkbox-checked .mat-checkbox-background {
+    background-color: $color-primary;
+}
+
+// text overflow
+.line-clamp {
+    &__1 {
+        @include line-clamp();
+    }
+
+    &__2 {
+        @include line-clamp(2);
+    }
+}
+
+.require-hint {
+    font-size: 12px;
+    color: $color-light-red;
+}
+
+.w-full {
+    width: 100%;
+}

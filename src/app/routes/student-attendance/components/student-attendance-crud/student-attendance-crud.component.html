@@ -1,0 +1,232 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button mat-button (click)="location.back()">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}}
+        </button>
+      </h1>
+    </div>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="detail-form mt-16">
+      <div class="header-label">កត់ត្រាវត្តមាន</div>
+      <div class="grid gap-x-16 col-sm-3">
+        <div>
+          <label [ngClass]="{'required': form.get('year').invalid}">ខែឆ្នាំ</label>
+          <mat-form-field appearance="outline">
+            <input matInput [matDatepicker]="dp" formControlName="date" readonly />
+            <mat-datepicker-toggle matSuffix [for]="dp" *ngIf="!form.get('year')?.disabled">
+              <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker
+              #dp
+              startView="multi-year"
+              (yearSelected)="chosenYearHandler($event)"
+              (monthSelected)="chosenMonthHandler($event, dp)"
+            >
+            </mat-datepicker>
+            <mat-error *ngIf="form.get('date')?.errors?.dateError">មានរួចហើយ</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="detail-form mt-16 student-attendance-content">
+    <div class="flex justify-content-between items-center flex-wrap gap-x-16">
+      <div class="header-label">
+        ចំនួនសិស្ស <span class="title__present">({{tableDataSource.data?.length ?? 0}}នាក់)</span>
+      </div>
+      <div class="mb-16" *ngIf="[pStudent.write] | permission">
+        <button mat-flat-button color="accent" (click)="onAddStudent()">
+          <mat-icon svgIcon="add_new"></mat-icon>
+          បញ្ចូលសិស្ស
+        </button>
+      </div>
+    </div>
+
+    <div class="table-container">
+      <ng-container *ngIf="loadingService.isLoading$ | async as loadingMap">
+        <mat-progress-bar
+          class="progress-bar"
+          mode="indeterminate"
+          *ngIf="loadingMap.get(requestUrl)"
+        ></mat-progress-bar>
+      </ng-container>
+
+      <!-- Table -->
+      <table #table mat-table [dataSource]="tableDataSource">
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            {{i + 1}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>ឈ្មោះ</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="group-picture-name">
+              <img
+                class="profile-picture-list"
+                *ngIf="element.students?.profile_image; else elseBlock"
+                [src]="(element.students.profile_image | staticFile) + '?image_size=s'"
+                alt="profile picture"
+              />
+              <ng-template #elseBlock>
+                <img
+                  class="profile-picture-list"
+                  [src]="(element.students.gender === 'female' ? '/assets/imgs/female.svg' : '/assets/imgs/male.svg')"
+                  alt="profile picture"
+                />
+              </ng-template>
+              <div class="el-responsive">{{element.students | staffFullName}}</div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="poor_id">
+          <th mat-header-cell *matHeaderCellDef>លេខប័ណ្ណក្រីក្រ</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="el-responsive">
+              <section *ngIf="element.students?.poor_status === 1" class="flex items-center">
+                <mat-icon svgIcon="mat-approved"></mat-icon>
+                <span class="pl-6">{{(element.students?.poor_id)}}</span>
+              </section>
+              <section *ngIf="element.students?.poor_status === 2" class="flex items-center">
+                <mat-icon svgIcon="mat-draft"></mat-icon>
+                <span class="pl-6">{{(element.students?.poor_id)}}</span>
+              </section>
+              <section *ngIf="element.students?.poor_status === 3" class="flex items-center">
+                <mat-icon svgIcon="mat-pending"></mat-icon>
+                <span class="pl-6">{{(element.students?.poor_id)}}</span>
+              </section>
+              <section *ngIf="element.students?.poor_status === -3" class="flex items-center">
+                <mat-icon svgIcon="mat-rejected"></mat-icon>
+                <span class="pl-6">{{(element.students?.poor_id)}}</span>
+              </section>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="present">
+          <th mat-header-cell *matHeaderCellDef>
+            <section class="flex items-center gap-x-8 justify-content-center">
+              <mat-icon svgIcon="present-header"></mat-icon>
+              <span class="title__present">វត្តមាន</span>
+            </section>
+          </th>
+          <td mat-cell *matCellDef="let element">
+            <section class="flex items-center gap-x-8 justify-content-center">
+              <mat-icon svgIcon="present-header"></mat-icon>
+              <span>{{element.present}}</span>
+            </section>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="absent">
+          <th mat-header-cell *matHeaderCellDef class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <section class="flex items-center gap-x-8 justify-content-center">
+              <mat-icon svgIcon="absent-header"></mat-icon>
+              <span class="title__absent">អវត្តមាន</span>
+            </section>
+          </th>
+          <td mat-cell *matCellDef="let element" class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <section class="flex items-center gap-x-8 justify-content-center">
+              <mat-icon svgIcon="absent-header"></mat-icon>
+              <span>{{element.absent}}</span>
+            </section>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="permission">
+          <th mat-header-cell *matHeaderCellDef class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <section class="flex items-center gap-x-8 justify-content-center">
+              <mat-icon svgIcon="permission-header"></mat-icon>
+              <span class="title__permission">ច្បាប់</span>
+            </section>
+          </th>
+          <td mat-cell *matCellDef="let element" class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <section class="flex items-center gap-x-8 justify-content-center">
+              <mat-icon svgIcon="permission-header"></mat-icon>
+              <span>{{element.permission}}</span>
+            </section>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>ប្រាក់ឧបត្ថម្ភ</th>
+          <td mat-cell *matCellDef="let element">
+            <span
+              class="status-fill rounded-sm"
+              [ngClass]="element?.scholarship_payments?.status | approvedStudent | lowercase"
+            >
+              {{element?.scholarship_payments ? ('enum_status.' + (element.scholarship_payments.status | approvedStudent) | translate) : '--/--'}}
+            </span>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef>សកម្មភាព</th>
+          <td mat-cell *matCellDef="let element">
+            <button
+              mat-icon-button
+              (click)="onEdit(element)"
+              [matTooltip]="'កត់ត្រា'"
+              [matTooltipPosition]="'left'"
+              [disabled]="element?.scholarship_payments && attendanceId"
+            >
+              <mat-icon svgIcon="edit-square-color"></mat-icon>
+            </button>
+
+            <button
+              mat-icon-button
+              (click)="onDelete(element.students)"
+              [matTooltip]="'លុប'"
+              [matTooltipPosition]="'right'"
+              [disabled]="element?.scholarship_payments && attendanceId"
+            >
+              <mat-icon svgIcon="delete-color"></mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="12">
+            <div class="empty grid p-32  content-center" *ngIf="loadingService.isLoading$ | async as loadingMap">
+              <app-empty [width]="100" [height]="70" *ngIf="!loadingMap.get(requestUrl); else loading"></app-empty>
+              <ng-template #loading>
+                <h4>{{'table.loading' | translate}}...</h4>
+              </ng-template>
+            </div>
+          </td>
+        </tr>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="flex gap-8 justify-content-end mt-16" *ngIf="[pStudent.write] | permission">
+    <button mat-button color="primary" (click)="onRecord()">
+      <mat-icon svgIcon="save-color"></mat-icon>
+      រក្សាទុក
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      (click)="onRecord(1)"
+      *ngIf="!data?.submit_date && ([pStudent.write] | permission)"
+    >
+      <mat-icon svgIcon="send"></mat-icon>រក្សាទុក និងបញ្ជូនសំណើ
+    </button>
+  </div>
+</div>

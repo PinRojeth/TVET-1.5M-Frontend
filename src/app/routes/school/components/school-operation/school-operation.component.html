@@ -1,0 +1,327 @@
+<div class="app-content">
+
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button *ngIf="[pSchool.update] | permission" mat-button [routerLink]="schoolId ? '../../' : '../'">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}}
+        </button>
+      </h1>
+    </div>
+  </div>
+
+  <form id="school-form" [formGroup]="form" autocomplete="off">
+
+    <!-- general info -->
+    <div class="detail-form mb-16">
+      <div class="header-label">{{'form.general_info' | translate}}</div>
+      <app-school-image-uploader [status]="'upload'" [school]="school" (uploadImageEvent)="fileChange($event)">
+      </app-school-image-uploader>
+      <div class="grid gap-x-16 col-md-4">
+        <div>
+          <label class="required">{{ 'form.school_name' | translate }}</label>
+          <mat-form-field appearance="outline">
+            <input matInput formControlName="name" (keyup)="onCheckExist(f.name.value.trim())" />
+            <mat-error *ngIf="f.name?.errors?.existed">
+              {{ 'form.already_exit' | translate }}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="required">{{ 'form.school_code' | translate }}</label>
+          <mat-form-field appearance="outline" class="input">
+            <input matInput formControlName="code" />
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="required">{{ 'form.school_name_en' | translate }}</label>
+          <mat-form-field appearance="outline">
+            <input matInput formControlName="name_en" />
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="required">{{ 'form.school_code_en' | translate }}</label>
+          <mat-form-field appearance="outline" class="input">
+            <input matInput formControlName="code_en" />
+          </mat-form-field>
+        </div>
+        <div>
+          <label>{{ 'form.id_code' | translate }}</label>
+          <mat-form-field appearance="outline" class="input">
+            <input matInput formControlName="id_code" />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!-- Authentication -->
+    <div *ngIf="!schoolId" class="detail-form mb-16">
+      <div class="header-label">ការកំណត់គណនីចូលប្រើប្រាស់</div>
+      <div class="grid gap-x-16 col-md-3">
+
+        <div class="col-span-md-3">
+          <div class="grid gap-x-16 col-md-2">
+            <div>
+              <label class="required">{{ 'form.last_name' | translate }}</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="last_name" />
+              </mat-form-field>
+            </div>
+
+            <div>
+              <label class="required">{{ 'form.first_name' | translate }}</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="first_name" />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label class="required">Username</label>
+          <mat-form-field appearance="outline">
+            <input matInput formControlName="username" autocomplete="new-password"
+              (keypress)="validateUsername($event)">
+            <mat-error *ngIf="form.get('username')?.errors?.minlength">
+              {{ 'form.at_least_6' | translate }}
+            </mat-error>
+            <mat-error *ngIf="form.get('username').errors?.user_exist" appLanguage>
+              {{'form.username_already_exit' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="required">Password</label>
+          <mat-form-field appearance="outline">
+            <input matInput type="password" formControlName="password" autocomplete="new-password">
+            <mat-error *ngIf="form.get('password')?.errors?.minlength">
+              {{'form.at_least_8' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="required">Confirm Password</label>
+          <mat-form-field appearance="outline">
+            <input matInput type="password" formControlName="confirm_password">
+            <mat-error *ngIf="form.get('confirm_password')?.errors?.nomatch">
+              {{'form.pwd_must_match' | translate}}
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact -->
+    <div class="detail-form mb-16">
+      <div class="header-label">ទំនាក់ទំនង</div>
+      <div class="grid gap-x-16 col-md-3">
+
+        <div class="col-span-md-3">
+          <div class="grid gap-x-16 col-md-3">
+            <div>
+              <label class="required">{{ 'form.phone' | translate }}</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="phone_number" />
+              </mat-form-field>
+            </div>
+
+            <div>
+              <label class="required">{{ 'form.email' | translate }}</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="email"/>
+              </mat-form-field>
+            </div>
+
+            <div>
+              <label>{{ 'form.website' | translate }}</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="website" />
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- address -->
+    <div class="detail-form mb-16">
+      <div class="header-label">{{'form.address.title' | translate}}</div>
+      <div class="grid gap-x-16 col-sm-4" formGroupName="address">
+        <div>
+          <label class="require">{{'form.address.city' | translate}}
+            <span *ngIf="form.get('address').get('city_provinces').invalid"> *</span>
+          </label>
+          <mat-form-field appearance="outline">
+            <mat-select (openedChange)="selectEvent = $event" (selectionChange)="onPOBCityProvinceChange($event.value)"
+              formControlName="city_provinces">
+              <app-searchbar-in-select-option [baseData]="this[baseAddressEnum.BASE_PROVINCE]"
+                [clearInput]="selectEvent === false ? 1 : 0" (emitData)="cityProvince = $event"
+                (emitSearchedValue)="searchValue = $event"></app-searchbar-in-select-option>
+              <mat-option *ngIf="searchValue && cityProvince?.length < 1" disabled>
+                <span class="flex" [ngStyle]="{'justify-content': 'center'}">{{'filter.no_data' |
+                  translate}}</span>
+              </mat-option>
+              <mat-option *ngFor="let item of cityProvince" [value]="item._id">
+                {{item | translateAPI: translate.currentLang}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix svgIcon="arrow"></mat-icon>
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="require">{{'form.address.district' | translate}}
+            <span *ngIf="form.get('address').get('districts').invalid"> *</span>
+          </label>
+          <mat-form-field appearance="outline" (click)="onPOBDistrictClick()">
+            <mat-select (openedChange)="selectEvent = $event" (selectionChange)="onPOBDistrictsChange($event.value)"
+              formControlName="districts">
+              <app-searchbar-in-select-option [baseData]="this[baseAddressEnum.BASE_DISTRICT]"
+                [clearInput]="selectEvent === false ? 1 : 0" (emitData)="pobDistricts = $event"
+                (emitSearchedValue)="searchValue = $event"></app-searchbar-in-select-option>
+              <mat-option *ngIf="searchValue && pobDistricts?.length < 1" disabled>
+                <span class="flex" [ngStyle]="{'justify-content': 'center'}">{{'filter.no_data' |
+                  translate}}</span>
+              </mat-option>
+              <mat-option *ngFor="let item of pobDistricts" [value]="item._id">
+                {{item | translateAPI: translate.currentLang}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix svgIcon="arrow"></mat-icon>
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="require">{{'form.address.commune' | translate}}
+            <span *ngIf="form.get('address').get('communes').invalid"> *</span>
+          </label>
+          <mat-form-field appearance="outline" (click)="onPOBCommuneClick()">
+            <mat-select (openedChange)="selectEvent = $event" (selectionChange)="onPOBCommuneChange($event.value)"
+              formControlName="communes">
+              <app-searchbar-in-select-option [baseData]="this[baseAddressEnum.BASE_COMMUNE]"
+                [clearInput]="selectEvent === false ? 1 : 0" (emitData)="pobCommune = $event"
+                (emitSearchedValue)="searchValue = $event"></app-searchbar-in-select-option>
+              <mat-option *ngIf="searchValue && pobCommune?.length < 1" disabled>
+                <span class="flex" [ngStyle]="{'justify-content': 'center'}">{{'filter.no_data' |
+                  translate}}</span>
+              </mat-option>
+              <mat-option *ngFor="let item of pobCommune" [value]="item._id">
+                {{item | translateAPI: translate.currentLang}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix svgIcon="arrow"></mat-icon>
+          </mat-form-field>
+        </div>
+        <div>
+          <label class="require">{{'form.address.village' | translate}}
+            <span *ngIf="form.get('address').get('villages').invalid"> *</span>
+          </label>
+          <mat-form-field appearance="outline" (click)="onPOBVillageClick()">
+            <mat-select (openedChange)="selectEvent = $event" formControlName="villages">
+              <app-searchbar-in-select-option [baseData]="this[baseAddressEnum.BASE_VILLAGE]"
+                [clearInput]="selectEvent === false ? 1 : 0" (emitData)="pobVillage = $event"
+                (emitSearchedValue)="searchValue = $event"></app-searchbar-in-select-option>
+              <mat-option *ngIf="searchValue && pobVillage?.length < 1" disabled>
+                <span class="flex" [ngStyle]="{'justify-content': 'center'}">{{'filter.no_data' |
+                  translate}}</span>
+              </mat-option>
+              <mat-option *ngFor="let item of pobVillage" [value]="item._id">
+                {{item | translateAPI: translate.currentLang}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix svgIcon="arrow"></mat-icon>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <!-- Registration -->
+    <div class="detail-form mb-16">
+      <div class="header-label">{{'form.register' | translate}}</div>
+      <div class="grid gap-x-16 col-md-3">
+        <div class="col-span-md-3">
+          <div class="grid gap-x-16 col-md-3">
+            <div>
+              <label>{{ 'form.create_by' | translate }}</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="create_by" />
+              </mat-form-field>
+            </div>
+
+            <div>
+              <label>{{ 'form.create_number' | translate }}</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="create_number" />
+              </mat-form-field>
+            </div>
+
+            <div>
+              <label>{{ 'form.create_date' | translate }}</label>
+              <mat-form-field appearance="outline">
+                <input readonly matInput [matDatepicker]="picker" (click)="picker.open()"
+                  formControlName="create_date"/>
+                <mat-datepicker-toggle matSuffix [for]="picker">
+                  <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div>
+              <label>{{ 'form.register_by' | translate }}</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="register_by" />
+              </mat-form-field>
+            </div>
+
+            <div>
+              <label>{{ 'form.register_number' | translate }}</label>
+              <mat-form-field appearance="outline">
+                <input matInput formControlName="register_number" />
+              </mat-form-field>
+            </div>
+
+            <div>
+              <label>{{ 'form.register_date' | translate }}</label>
+              <mat-form-field appearance="outline">
+                <input readonly matInput [matDatepicker]="pickerRegister" (click)="pickerRegister.open()"
+                  formControlName="register_date"/>
+                <mat-datepicker-toggle matSuffix [for]="pickerRegister">
+                  <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+                </mat-datepicker-toggle>
+                <mat-datepicker #pickerRegister></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- major -->
+    <!-- <div class="detail-form">
+      <div class="header-label">{{'major.title' | translate}}</div>
+      <div>
+        <label class="require">{{'major.title' | translate}}
+          <span *ngIf="f.apply_majors.invalid"> *</span>
+        </label>
+        <mat-form-field appearance="outline">
+          <mat-select formControlName="apply_majors" multiple>
+            <mat-option *ngFor="let item of majors" [value]="item._id">
+              {{item.name}}
+            </mat-option>
+          </mat-select>
+          <mat-icon matSuffix svgIcon="arrow"></mat-icon>
+        </mat-form-field>
+      </div>
+    </div> -->
+  </form>
+
+  <div class="group-btn btn-left mt-16">
+    <button color="primary" mat-flat-button form="school-form" [disabled]="isLoading" (click)="onSubmit()">
+      <mat-icon *ngIf="!isLoading; else loading" svgIcon="save"></mat-icon>
+      <ng-template #loading>
+        <mat-spinner [diameter]="20" class="loading-spinner"></mat-spinner>
+      </ng-template>
+      {{'button.save' | translate}}
+    </button>
+  </div>
+</div>

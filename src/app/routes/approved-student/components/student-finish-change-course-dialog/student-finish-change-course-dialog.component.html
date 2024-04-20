@@ -1,0 +1,35 @@
+<div class="student-request-dialog">
+  <div class="flex place-content-space-between items-center pt-16 pl-16 pr-16 pb-10">
+    <p class="title p-0 m-0">ប្ដូរវគ្គសិក្សា</p>
+
+    <button class="close" color="base" [mat-dialog-close]="false">
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <div class="pl-16 pr-16"><mat-divider></mat-divider></div>
+
+  <mat-dialog-content>
+    <div class="detail-form">
+      <form [formGroup]="form" autocomplete="off">
+        <div class="grid gap-x-16 col-1">
+          <div>
+            <label [ngClass]="{'required': form.get('courses').invalid}">វគ្គសិក្សា</label>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="courses">
+                <mat-option *ngFor="let item of course; trackBy: trackByFn" [value]="item._id">
+                  {{item.name}}
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>expand_more</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+
+  <mat-dialog-actions>
+    <button mat-flat-button color="primary" (click)="onSubmit()">{{"button.done" | translate}}</button>
+  </mat-dialog-actions>
+</div>

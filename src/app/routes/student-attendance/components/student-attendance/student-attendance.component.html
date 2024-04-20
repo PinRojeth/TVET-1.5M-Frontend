@@ -1,0 +1,70 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">{{ title| translate }}</h1>
+    </div>
+  </div>
+
+  <div class="detail-form">
+    <app-filter
+      [hasButton]="[pStudent.write] | permission"
+      (queryEvent)="onSearch($event)"
+      (actionButton)="onCreate()"
+      [apiRoute]="filterData$"
+      (queryFilter)="setParams($event)"
+    >
+    </app-filter>
+    <custom-table
+      [tableData]="tableData"
+      [tableColumns]="tableColumns"
+      [requestUrl]="requestUrl"
+      (goToEvent)="goTo($event)"
+    >
+      <ng-template [appZippy]="'year'" let-element>
+        <div class="el-responsive">{{(element.month | khmerDate: 'MMMM') + ' ' + element.year}}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'schools'" let-element>
+        <div class="group-picture-name">
+          <img
+            class="profile-picture-list"
+            *ngIf="element?.schools?.profile_image; else elseBlock"
+            [src]="(element.schools.profile_image | staticFile) + '?image_size=s'"
+            alt="profile picture"
+            onerror="this.onerror=null;this.src='/assets/imgs/school.svg'"
+          />
+          <ng-template #elseBlock>
+            <img class="profile-picture-list" [src]="'/assets/imgs/school.svg'" alt="profile picture" />
+          </ng-template>
+          <div class="el-responsive">{{element?.schools.name}}</div>
+        </div>
+      </ng-template>
+
+      <ng-template [appZippy]="'amount_student'" let-element>
+        {{element?.student_count}}
+      </ng-template>
+
+      <ng-template [appZippy]="'amount_check'" let-element>
+        {{ element?.payment_count}}
+      </ng-template>
+
+      <ng-template [appZippy]="'submit_date'" let-element>
+        {{(element?.submit_date | date: 'dd-MM-yyyy') || '--/--' }}
+      </ng-template>
+
+      <ng-template [appZippy]="'status'" let-element>
+        <span class="status-fill rounded-sm" [ngClass]="element.status === 1 ? 'pending' : 'none'">
+          {{element.status === 1 ? 'បានដាក់ស្នើ' : 'សេចក្ដីព្រាង'}}
+        </span>
+      </ng-template>
+
+      <ng-template [appZippy]="'action'" let-element>
+        <app-action
+          [useRouter]="{view: { routerLink: 'info/' + element._id }}"
+          [permission]="{edit: false, delete: false, view: [pStudent.read] | permission }"
+        >
+        </app-action>
+      </ng-template>
+    </custom-table>
+  </div>
+</div>

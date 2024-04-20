@@ -1,0 +1,96 @@
+@use '../variables';
+@use '@angular/material' as mat;
+
+.mat-mdc-form-field {
+  display: block !important;
+
+  &.mat-form-field-appearance-outline {
+    /* input */
+    .mat-mdc-form-field-infix {
+      border-top: 0.35em solid transparent;
+      padding: 4px 0;
+      min-height: 38px;
+    }
+
+    .mat-mdc-form-field-icon-prefix > .mat-icon,
+    .mat-mdc-form-field-icon-suffix > .mat-icon,
+    .mat-mdc-form-field-icon-suffix > .mat-mdc-icon-button {
+      padding: 0 12px;
+    }
+
+    .mat-mdc-form-field-icon-suffix > .mat-mdc-icon-button {
+      height: 24px;
+    }
+
+    .mat-mdc-input-element:disabled {
+      color: variables.$color-black;
+    }
+
+    .mat-mdc-select-disabled .mat-mdc-select-value {
+      color: variables.$color-black;
+    }
+
+    .mat-mdc-text-field-wrapper {
+      margin: 0.25em 0;
+      .mat-mdc-form-field-flex {
+        .mdc-notched-outline__leading {
+          border-radius: variables.$rounded-sm 0 0 variables.$rounded-sm !important;
+        }
+        .mdc-notched-outline__trailing {
+          border-radius: 0 variables.$rounded-sm variables.$rounded-sm 0 !important;
+        }
+      }
+
+      &:not(.mdc-text-field--disabled, .mdc-text-field--focused, .mdc-text-field--invalid).mdc-text-field {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__trailing,
+        .mdc-notched-outline__notch {
+          border-color: variables.$black-squeeze-color !important;
+        }
+      }
+
+      &.mdc-text-field--invalid {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__trailing {
+          border-width: 2px;
+        }
+      }
+    }
+
+    /* subscript */
+    .mat-mdc-form-field-subscript-wrapper {
+      margin-top: 0;
+    }
+
+    /* date picker */
+    .mat-mdc-datepicker-toggle {
+      color: variables.$color-primary;
+    }
+
+    /* select */
+    .mat-mdc-select-arrow {
+      opacity: 0;
+    }
+
+    .mat-mdc-form-field-prefix {
+      top: 0.5em;
+    }
+
+    .mat-mdc-form-field-suffix {
+      top: 0.3em;
+    }
+
+    .mat-mdc-form-field-prefix {
+      color: variables.$color-grey;
+    }
+  }
+}
+
+.mat-mdc-form-field-type-mat-select {
+  mat-icon {
+    &:not(.material-icons) {
+      width: 10px;
+      height: 16px;
+    }
+  }
+}

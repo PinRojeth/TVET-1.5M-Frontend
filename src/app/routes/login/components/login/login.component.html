@@ -1,0 +1,50 @@
+<div class="app">
+  <div class="container-fluid flex-center p-v-20 p-h-0 full-height bg">
+    <div class="card-container h-100">
+      <div class="card shadow-lg">
+        <div class="card-body">
+
+          <!-- header -->
+          <div class="card-header">
+            <div class="">
+              <img class="img-fluid" alt="" src="assets/icons/mlvt.png">
+              <h3>TVET 1.5M</h3>
+            </div>
+            <div>
+              <h2>Log In</h2>
+              <div class="header-hint">Enter your credential to get access</div>
+            </div>
+          </div>
+
+          <!-- form group -->
+          <form class="form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+            <div>
+              <label class="required">ឈ្មោះគណនីចូលប្រើប្រាស់</label>
+              <mat-form-field appearance="outline">
+                <input matInput placeholder="Username" formControlName="username" required />
+              </mat-form-field>
+            </div>
+            <div>
+              <label class="required">ពាក្យសម្ងាត់</label>
+              <mat-form-field appearance="outline" class="field-password">
+                <input matInput [type]="hide ? 'password' : 'text'" placeholder="Password" formControlName="password"
+                  required />
+                <button type="button" mat-icon-button matSuffix class="btn-visibility" (click)="hide = !hide"
+                  [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon class="material-icons-outlined">{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
+
+            <button mat-flat-button color="primary" class="btn-login" [disabled]="isLoading">
+              <span *ngIf="!isLoading">Login</span>
+              <mat-spinner class="loading-spinner loading-spinner--white" [diameter]="25" *ngIf="isLoading">
+              </mat-spinner>
+            </button>
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

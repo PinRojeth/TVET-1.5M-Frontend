@@ -1,0 +1,54 @@
+<!-- eslint-disable @angular-eslint/template/mouse-events-have-key-events -->
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<section class="grid gap-x-16 col-1">
+  <div class="upload-card mb-16">
+    <div class="profile-with-name">
+      <div class="relative-div">
+        <mat-icon *ngIf="hasFile && status === 'upload'" (click)="removeFile()">clear</mat-icon>
+        <img
+          *ngIf="hasFile; else Else"
+          class="lecturer-profile"
+          [src]="imageUrl ? imageUrl : (payload?.gender === 'female' ? 'assets/imgs/female.svg' : 'assets/imgs/male.svg')"
+          [appPreviewFile]="ImageUrlPreview"
+          alt="profile picture"
+        />
+
+        <div *ngIf="status === 'upload' && !hasFile">
+          <button (click)="pickFile.value = ''; pickFile.click()" type="button" mat-icon-button class="upload-hover">
+            <mat-icon svgIcon="upload-photo"></mat-icon>
+          </button>
+          <input
+            type="file"
+            #pickFile
+            (change)="fileChangeEvent($event)"
+            accept="image/png, image/jpeg, image/jpg"
+            hidden
+          />
+        </div>
+
+        <ng-template #Else>
+          <img
+            class="lecturer-profile"
+            [src]="imageUrl ? (imageUrl + '?image_size=m') : (payload?.gender === 'female' ? 'assets/imgs/female.svg' : 'assets/imgs/male.svg')"
+            alt="profile picture"
+          />
+        </ng-template>
+      </div>
+      <div class="grid gap-4 ml-16">
+        <div class="value name mb-8">
+          <span *ngIf="isRequired" class="required"></span>
+        </div>
+        <div *ngIf="payload && status === 'view'">
+          <div>
+            <strong>{{(payload | staffFullName: translate.currentLang) || '--/--'}}</strong>
+          </div>
+          <div class="upload-note">
+            <!-- {{(payload.username || payload?.accounts?.username) ? '@' + (payload.username || payload?.accounts?.username) : '--/--'}} -->
+            {{payload?.users?.username ? '@' + (payload?.users?.username) : '--/--'}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <span *ngIf="isRequired" class="require-hint">{{'form.required_profile' | translate}}</span>
+  </div>
+</section>

@@ -1,0 +1,40 @@
+$avatar-size: 30;
+$school-size: 64;
+$profile-size: 30;
+$account-chat: 50;
+
+@mixin cycle($width, $height) {
+    width: $width * 1px;
+    height: $height * 1px;
+    min-width: $width * 1px;
+    min-height: $height * 1px;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+@mixin round() {
+    border-radius: 50%;
+}
+
+.avatar-profile {
+    @include cycle($avatar-size, $avatar-size);
+    @include round();
+}
+
+.school-profile,
+.lecturer-profile {
+    @include cycle($school-size, $school-size);
+    @include round();
+}
+
+.profile-picture {
+    @include cycle($profile-size, $profile-size);
+    @include round();
+}
+
+.account-chat {
+    @include cycle($account-chat, $account-chat);
+    @include round();
+}

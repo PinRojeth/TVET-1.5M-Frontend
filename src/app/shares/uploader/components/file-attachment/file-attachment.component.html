@@ -1,0 +1,14 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<div class="upload-image-group">
+  <mat-form-field appearance="outline">
+    <input matInput [value]="fileName" [placeholder]="'form.choose_file' | translate" readonly />
+  </mat-form-field>
+  <span class="input-group-btn">
+    <button [disabled]="isDisabled" class="browse" type="button"
+      (click)="pickFile.value = ''; pickFile.click()">{{'button.browse' | translate}}</button>
+  </span>
+  <span *ngIf="fileName && !isDisabled" class="remove-file" (click)="removeFile()">
+    <mat-icon>clear</mat-icon>
+  </span>
+  <input type="file" #pickFile (change)="fileChangeEvent($event)" hidden />
+</div>

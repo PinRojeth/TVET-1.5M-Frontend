@@ -1,0 +1,262 @@
+@use '../variables' as *;
+
+@mixin CheckBoxCustom {
+  .mat-mdc-checkbox {
+    &.mat-base {
+      &.mat-mdc-checkbox-checked {
+        .mdc-form-field {
+          .mdc-checkbox {
+            &__background {
+              background-color: $color-long-course !important;
+
+              svg {
+                color: #fff !important;
+              }
+            }
+
+            &__ripple {
+              background-color: $color-long-course !important;
+            }
+          }
+        }
+      }
+
+      .mdc-form-field {
+        .mdc-checkbox {
+          &__background {
+            border-color: $color-long-course !important;
+          }
+        }
+      }
+    }
+
+    &.mat-primary {
+      &.mat-mdc-checkbox-checked {
+        .mdc-form-field {
+          .mdc-checkbox {
+            &__background {
+              border-color: $color-primary !important;
+              background-color: $color-primary !important;
+
+              svg {
+                color: #fff !important;
+              }
+            }
+
+            &__ripple {
+              background-color: $color-primary !important;
+            }
+          }
+        }
+      }
+
+      .mdc-form-field {
+        .mdc-checkbox {
+          &__background {
+            border-color: $color-primary !important;
+          }
+        }
+      }
+    }
+
+    &.mat-warn {
+      &.mat-mdc-checkbox-checked {
+        .mdc-form-field {
+          .mdc-checkbox {
+            &__background {
+              border-color: $color-light-red !important;
+              background-color: $color-light-red !important;
+
+              svg {
+                color: #fff !important;
+              }
+            }
+
+            &__ripple {
+              background-color: $color-light-red !important;
+            }
+          }
+        }
+      }
+
+      .mdc-form-field {
+        .mdc-checkbox {
+          &__background {
+            border-color: $color-light-red !important;
+          }
+        }
+      }
+    }
+
+    .mdc-form-field {
+      .mdc-checkbox {
+        transform: scale(1.4);
+
+        &__background {
+          border-radius: 6px;
+          border-width: thin;
+          padding: 2px;
+
+          svg {
+            padding: 2px;
+          }
+        }
+
+        &__ripple {
+          border-radius: 6px;
+          border-width: thin;
+        }
+      }
+    }
+  }
+}
+
+.student-attendance-content {
+  .title {
+    &__present {
+      color: $color-primary;
+    }
+
+    &__absent {
+      color: $thunderbird-color;
+    }
+
+    &__permission {
+      color: $victoria-color;
+    }
+  }
+
+  @include CheckBoxCustom;
+
+  mat-dialog-content {
+    &.table-custom {
+      table {
+        thead {
+          tr {
+            height: 6em;
+          }
+        }
+      }
+    }
+  }
+
+  table {
+    tr {
+      &.sub-th-header {
+        & > th {
+          background-color: #fff;
+
+          .vertical-line {
+            & > * {
+              background-color: $black-squeeze-color;
+            }
+          }
+        }
+      }
+
+      th {
+        &.align-center {
+          text-align: center;
+          position: relative;
+        }
+
+        .vertical-long-line {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+
+          & > * {
+            width: 1px;
+            height: 4em;
+            background-color: $mercury-dark-color;
+          }
+        }
+
+        .th-col-span {
+          &__vertical-line {
+            display: flex;
+
+            & > * {
+              width: 1px;
+              height: 1.5em;
+              background-color: $mercury-dark-color;
+            }
+          }
+        }
+
+        .vertical-line {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+
+          & > * {
+            width: 1px;
+            height: 1.5em;
+            background-color: $mercury-dark-color;
+          }
+        }
+
+        .flex {
+          &.justify-content-center {
+            mat-icon {
+              min-width: 24px;
+              min-height: 24px;
+            }
+          }
+        }
+      }
+      td {
+        &.align-center {
+          text-align: center;
+          position: relative;
+        }
+
+        &.mat-column-date {
+          min-width: 8em;
+        }
+
+        .vertical-line {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+
+          & > * {
+            width: 1px;
+            height: 1.5em;
+            background-color: $black-squeeze-color;
+          }
+        }
+
+        .flex {
+          &.justify-content-center {
+            transform: translateX(-15px);
+            mat-icon {
+              min-width: 24px;
+              min-height: 24px;
+            }
+          }
+        }
+
+        .mdc-icon-button[disabled='true'] {
+          filter: grayscale(1);
+          opacity: 0.4;
+
+          &:last-child {
+            opacity: 0.22;
+          }
+        }
+      }
+    }
+  }
+}
+
+.record-student-dialog {
+  .text-color {
+    color: $color-primary;
+  }
+
+  @include CheckBoxCustom();
+}

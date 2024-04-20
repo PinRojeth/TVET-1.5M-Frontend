@@ -1,0 +1,39 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button mat-button [routerLink]="'../../../'">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}} <span class="name">| {{student}}</span>
+        </button>
+      </h1>
+    </div>
+  </div>
+
+  <div class="detail-form student-record-attendance">
+    <div class="header-label">{{'គ្រប់គ្រងវត្តមានសិស្ស' | translate}}</div>
+
+    <custom-table
+      [tableData]="tableData"
+      [tableColumns]="tableColumns"
+      [requestUrl]="requestUrl"
+      (goToEvent)="goTo($event)"
+    >
+      <ng-template [appZippy]="'year'" let-element>
+        <div class="el-responsive">{{(element.month | khmerDate: 'MMMM') + ' ' + element.year}}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'attendance'" let-element>
+        <div class="el-responsive">{{element?.average_attendance}}%</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'action'" let-element>
+        <app-action
+          [permission]="{ view: [pAttendance.read] | permission, edit: false, delete: false }"
+          (clickEvent)="actionEvent($event, element)"
+        >
+        </app-action>
+      </ng-template>
+    </custom-table>
+  </div>
+</div>

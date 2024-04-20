@@ -1,0 +1,78 @@
+@use '../variables' as *;
+
+$margin-pixels: 100;
+
+@mixin edge-margins($edge: false, $value) {
+    @if $edge {
+        margin-#{$edge}: $value + px;
+    }
+
+    @else {
+        margin: $value + px;
+    }
+}
+
+@mixin axis-margins($axis, $value) {
+    @if ($axis ==x) {
+        margin-left: $value + px;
+        margin-right: $value + px;
+    }
+
+    @else if ($axis ==y) {
+        margin-top: $value + px;
+        margin-bottom: $value + px;
+    }
+}
+
+@for $i from 0 to $margin-pixels {
+
+    // margin on each edges
+    @each $name,
+    $edge in $edges {
+        .m#{$name}-#{$i} {
+            @include edge-margins($edge, $i);
+        }
+    }
+
+    .m-#{$i} {
+        @include edge-margins(false, $i);
+    }
+
+    // margin on axis
+    @each $axis in $edge-axis {
+        .m#{$axis}-#{$i} {
+            @include axis-margins($axis, $i);
+        }
+    }
+}
+
+// margin on breakpoints
+@each $breaker,
+$breakpoint in $grid-breakpoints {
+    @media screen and (min-width: $breakpoint) {
+        @for $i from 0 through $margin-pixels {
+
+            // Ex: .m-sm-1, .m-md-2, ...
+            .m-#{$breaker}-#{$i} {
+                @include edge-margins(false, $i);
+            }
+
+            @each $name,
+            $edge in $edges {
+
+                // Ex: .mt-sm-1, .mr-md-2, ...
+                .m#{$name}-#{$breaker}-#{$i} {
+                    @include edge-margins($edge, $i);
+                }
+            }
+
+            @each $axis in $edge-axis {
+
+                // Ex: .mx-xs-1, .my-sm-2, ...
+                .m#{$axis}-#{$breaker}-#{$i} {
+                    @include axis-margins($axis, $i);
+                }
+            }
+        }
+    }
+}

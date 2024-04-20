@@ -1,0 +1,38 @@
+.upload-card {
+    text-align: center;
+    .relative-div {
+        height: 43px;
+        display: flex;
+        justify-content: center;
+        .have-file-uplod {
+            display: flex;
+            align-items: center;
+            .file-name {
+                font-size: 14px;
+                color: rgba($color: #000000, $alpha: 0.6);
+            }
+            .clear-icon {
+                background-color: #fc7e7e;
+                border-radius: 50%;
+                color: white;
+                cursor: pointer;
+            }
+        }
+        .profile-picture {
+            margin-left: auto;
+            margin-right: auto;
+            &.svg {
+                width: 63px;
+                height: 43px;
+                border-radius: unset;
+            }
+        }
+    }
+}
+.btn-browse {
+    font-weight: 700;
+    cursor: pointer;
+}
+.border {
+    border: 2px dashed #E8EAEF;
+}

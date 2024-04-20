@@ -1,0 +1,92 @@
+<div class="app-content">
+
+    <div class="app-header">
+        <div class="app-title">
+            <h1 class="title">
+                <button mat-button [routerLink]="'../../'">
+                    <mat-icon>arrow_back</mat-icon>
+                    {{'button.back' | translate}}
+                </button>
+            </h1>
+        </div>
+    </div>
+
+    <div class="detail-form mb-16">
+        <div class="header-label">{{'form.general_info' | translate}}</div>
+        <app-image-uploader [status]="'view'" [payload]="student"></app-image-uploader>
+
+        <div class="grid col-sm-2 detail-text">
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.last_name' | translate}}</label>
+                <div class="value">{{student?.last_name}}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.first_name' | translate}}</label>
+                <div class="value">{{student?.first_name}}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.gender.title' | translate}}</label>
+                <div class="value">
+                    {{student?.gender === 'female' ? ('form.gender.female' | translate) : ('form.gender.male' |
+                    translate) |
+                    titlecase}}
+                </div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.phone' | translate}}</label>
+                <div class="value">{{student?.phone_number || '--//--'}}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'school.title' | translate}}</label>
+                <div class="value">
+                    <div class="group-picture-name">
+                        <img class="profile-picture-list" *ngIf="student?.schools?.profile_image; else elseBlock"
+                            [src]="(student?.schools?.profile_image | staticFile) + '?image_size=s'"
+                            alt="profile picture" onerror="this.onerror=null;this.src='/assets/imgs/school.svg'" />
+                        <ng-template #elseBlock>
+                            <img class="profile-picture-list" [src]="'/assets/imgs/school.svg'" alt="profile picture" />
+                        </ng-template>
+                        <div class="el-responsive">{{student?.schools | translateAPI: translate.currentLang}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'major.title' | translate}}</label>
+                <div class="value">{{student?.apply_majors | translateAPI: translate.currentLang}}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.course_code' | translate}}</label>
+                <div class="value">{{student?.courses?.code || '--/--'}}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.duration' | translate}}</label>
+                <div class="value">{{student?.courses?.duration ? (student?.courses?.duration + 'ថ្ងៃ') : '--/--'}}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.fee' | translate}}</label>
+                <div class="value">{{student?.courses?.fee ? (student?.courses?.fee.toLocaleString() + '៛') : '--/--'}}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.poor_id' | translate}}</label>
+                <div class="value">
+                    {{student?.poor_id || '--/--'}}
+                </div>
+            </div>
+            <div class="grid gap-x-16 col-2 border-none">
+                <label>{{'form.poor_file_datas' | translate}}</label>
+                <div class="value">
+                    <div class="flex items-center flex-wrap gap-8" *ngIf="student?.poor_file_datas; else noFile">
+                        <mat-icon svgIcon="image-placeholder"></mat-icon>
+                        <span>{{student.poor_file_datas.file_name}}</span>
+                        <a [href]="student.poor_file_datas._id | staticFile" target="_blank" matTooltip="មើល" class="flex">
+                            <mat-icon svgIcon="visibility-color"></mat-icon>
+                        </a>
+                        <mat-icon svgIcon="download" matTooltip="ទាញយក"
+                            [appDownload]="{file: (student.poor_file_datas._id | staticFile), fileName: student.poor_file_datas.file_name}"></mat-icon>
+                    </div>
+                    <ng-template #noFile>--/--</ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

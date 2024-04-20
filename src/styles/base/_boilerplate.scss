@@ -1,0 +1,35 @@
+@use '../variables';
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  background-color: variables.$background-grey;
+}
+
+*,
+:after,
+:before {
+  box-sizing: border-box;
+  // border: 0 solid variables.$border-grey;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+@font-face {
+  font-family: 'Khmer';
+  src: url('/assets/fonts/KHMEROSBATTAMBANG.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Moul';
+  src: url('/assets/fonts/Moul.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

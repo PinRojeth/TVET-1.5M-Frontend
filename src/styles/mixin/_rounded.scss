@@ -1,0 +1,11 @@
+$rounded: 36;
+
+@mixin rounded($size) {
+    border-radius: $size * 1px;
+}
+
+@for $size from 0 through $rounded {
+    .rounded-#{$size} {
+        @include rounded($size);
+    }
+}

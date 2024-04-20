@@ -1,0 +1,442 @@
+@use '../variables' as *;
+
+.student-approved {
+  .mat-mdc-form-field {
+    &.mat-form-field-appearance-outline {
+      .mat-mdc-form-field-infix {
+        z-index: 1;
+      }
+    }
+  }
+
+  .mdc-text-field--disabled {
+    .mdc-notched-outline {
+      &__leading {
+        background-color: $color-thin-grey;
+      }
+      &__trailing {
+        background-color: $color-thin-grey;
+      }
+    }
+  }
+
+  .detail-form {
+    .grid {
+      .value {
+        mat-icon {
+          min-width: 24px;
+
+          &:not(:first-child) {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+}
+
+.student-request-dialog {
+  p {
+    margin: 0;
+    padding: 0;
+  }
+
+  .mat-mdc-mini-fab {
+    box-shadow: none;
+  }
+
+  .title {
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .mat-mdc-dialog-title {
+    margin: 0;
+  }
+
+  .mat-mdc-dialog-content {
+    padding: 0 16px !important;
+    padding-top: 16px !important;
+  }
+
+  .mat-mdc-dialog-actions {
+    padding: 16px;
+    justify-content: center;
+
+    button {
+      border-radius: 50px !important;
+      padding: 22px 35px !important;
+    }
+  }
+
+  mat-dialog-content {
+    .detail-form {
+      padding: 0;
+    }
+  }
+
+  &.student-attendance {
+    .mat-mdc-dialog-content {
+      color: $color-text;
+    }
+
+    .mat-mdc-dialog-actions {
+      justify-content: flex-end;
+    }
+  }
+}
+
+.student-finish-wrapper {
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .margin-0 {
+    margin-bottom: 0 !important;
+  }
+
+  p {
+    margin-bottom: 8px;
+  }
+
+  .text-blur {
+    color: $aluminium;
+  }
+
+  nav {
+    .mat-mdc-tab-list {
+      border-bottom: 1px solid $mercury-color;
+    }
+  }
+
+  .student-finish {
+    &__timeline {
+      .line-warpper {
+        position: relative;
+
+        .circle {
+          display: block;
+          margin-top: 18px;
+          width: 15px;
+          height: 15px;
+          border-radius: 100%;
+          border: 4px solid;
+          background-color: #fff;
+
+          &.quit,
+          &.rejected {
+            border-color: $color-light-red;
+          }
+
+          &.approved,
+          &.active {
+            border-color: $salem;
+          }
+
+          &.requesting,
+          &.pending {
+            border-color: $sea-buckthorn;
+          }
+        }
+
+        .horizontal-line {
+          position: absolute;
+          height: 100%;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+
+          .line {
+            border-left: 2px dashed $mercury-color;
+            height: inherit;
+            display: block;
+          }
+        }
+      }
+
+      .create_by {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+
+        &__status {
+          .mobile-on {
+            display: none;
+          }
+
+          p.updated-text {
+            font-size: 16px;
+          }
+        }
+
+        &__quit-reason {
+          width: 100%;
+
+          &__wrapper {
+            background-color: $black-squeeze-light;
+            margin-left: 40px;
+          }
+        }
+      }
+
+      @media screen and (max-width: map-get($map: $grid-breakpoints, $key: 'sm')) {
+        .mobile-off {
+          display: none;
+        }
+
+        .create_by {
+          &__status {
+            .mobile-on {
+              display: block;
+              width: 100%;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.override-button {
+  .filter-menu {
+    position: relative;
+
+    .button-create {
+      position: absolute;
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      @media screen and (min-width: map-get($map: $grid-breakpoints, $key: 'md')) {
+        right: 20px;
+        top: 0;
+        bottom: 0;
+      }
+
+      @media screen and (max-width: map-get($map: $grid-breakpoints, $key: 'sm')) {
+        left: 20px;
+        bottom: 10px;
+        justify-content: flex-start;
+      }
+
+      @media screen and (max-width: map-get($map: $grid-breakpoints, $key: 'md')) {
+        right: 20px;
+        bottom: 10px;
+      }
+    }
+
+    app-filter {
+      .create-btn {
+        visibility: hidden;
+      }
+    }
+  }
+}
+
+.student-record-attendance {
+  .datepicker-filter {
+    width: fit-content;
+  }
+
+  .button-year-picker {
+    width: 215px;
+    border: 1px solid $mercury-color;
+    border-radius: 10px;
+    position: relative;
+
+    .form-year-picker {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      visibility: hidden;
+    }
+
+    .line {
+      width: 1px;
+      height: 2em;
+      display: block;
+      background: $mercury-color;
+    }
+
+    .mat-mdc-icon-button {
+      border-radius: 10px;
+
+      .mat-mdc-button-persistent-ripple {
+        border-radius: 10px;
+      }
+    }
+
+    .mdc-button {
+      .mdc-button {
+        &__label {
+          font-size: 16px;
+          font-weight: 600;
+        }
+      }
+    }
+  }
+}
+
+.student-requests {
+  .poor-id {
+    .search-box {
+      display: flex;
+      align-items: center;
+      height: 40px;
+      border: 1px solid #e8e9ed;
+      background: #fff;
+      border-radius: 8px;
+      padding: 0 4px 0 8px;
+
+      input {
+        width: 100%;
+        background: transparent;
+        line-height: inherit;
+        outline: none;
+        border: none;
+        font-size: 14px;
+        font-weight: 400;
+        font-family: Poppins, Khmer, system ui;
+      }
+
+      .btn-search {
+        height: 30px !important;
+
+        .mat-icon {
+          display: flex;
+          align-items: center;
+          min-width: 22px;
+          min-height: 22px;
+          font-size: 22px;
+          color: white;
+        }
+      }
+    }
+  }
+
+  .pos-relative {
+    position: relative;
+  }
+
+  .file_photo {
+    background-color: transparent;
+    padding: 0;
+
+    .button-browse {
+      height: 30px !important;
+      position: absolute;
+      right: -13px;
+      border-radius: 10px !important;
+    }
+
+    .button-remove {
+      position: absolute;
+      right: -10px;
+      top: 15px;
+
+      &.mdc-fab--mini {
+        width: 22px;
+        height: 22px;
+
+        mat-icon {
+          width: 18px;
+          height: 18px;
+          font-size: 18px;
+        }
+      }
+    }
+
+    .verify-check {
+      mat-checkbox {
+        &.ng-invalid {
+          &.ng-touched {
+            .mdc-checkbox {
+              &__background {
+                border-color: red;
+              }
+            }
+
+            label {
+              color: red;
+            }
+          }
+        }
+      }
+    }
+
+    .mat-mdc-form-field-infix {
+      z-index: 1;
+      // min-height: 50px;
+      border-top: none;
+      padding: 0;
+      display: grid;
+      place-items: center;
+
+      mat-datepicker {
+        position: absolute;
+        bottom: 0;
+      }
+    }
+
+    .mdc-text-field {
+      .mdc-notched-outline {
+        &__leading {
+          background-color: #fff;
+        }
+        &__trailing {
+          background-color: #fff;
+        }
+      }
+    }
+
+    .mat-mdc-text-field-wrapper {
+      .mat-mdc-form-field-flex {
+        .mdc-notched-outline__leading {
+          border-radius: 10px 0 0 10px !important;
+        }
+        .mdc-notched-outline__trailing {
+          border-radius: 0 10px 10px 0 !important;
+        }
+      }
+
+      &:not(.mdc-text-field--disabled, .mdc-text-field--focused, .mdc-text-field--invalid).mdc-text-field {
+        .mdc-notched-outline__leading,
+        .mdc-notched-outline__trailing,
+        .mdc-notched-outline__notch {
+          border-color: #e6e6e6 !important;
+        }
+      }
+    }
+
+    .header-label {
+      color: #000;
+      font-size: 16px;
+    }
+  }
+}
+
+.container_option {
+  display: flex;
+  align-items: center;
+
+  &.selected {
+    padding-left: 40px;
+
+    img {
+      position: absolute;
+      left: 0;
+    }
+  }
+
+  img {
+    width: 28px;
+    height: 28px;
+    object-fit: cover;
+    background-repeat: no-repeat;
+    background-size: cover;
+    border-radius: 50%;
+    border: 1px solid lightgray;
+    margin-right: 8px;
+  }
+}

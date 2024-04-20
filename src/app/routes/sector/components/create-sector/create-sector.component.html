@@ -1,0 +1,53 @@
+<div class="app-content">
+    <div class="app-header">
+      <div class="app-title">
+        <h1 class="title">
+          <button mat-button [routerLink]="sectorId ? '../../' : '../'">
+            <mat-icon>arrow_back</mat-icon>
+            {{'button.back' | translate}}
+          </button>
+        </h1>
+      </div>
+    </div>
+  
+    <form id="major-form" [formGroup]="form" autocomplete="off">
+      <div class="detail-form">
+        <div class="header-label">{{'form.general_info' | translate}}</div>
+        <div class="grid gap-x-16 col-md-3">
+          <div>
+            <label [ngClass]="{'required': form.controls.name?.invalid}">{{ 'form.name' | translate }}</label>
+            <mat-form-field appearance="outline">
+              <input matInput formControlName="name" (keyup)="onCheckExist(f.name.value.trim())" />
+              <mat-error *ngIf="f.name?.errors?.existed">
+                {{ 'form.already_exit' | translate }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <label>{{ 'form.name_en' | translate }}</label>
+            <mat-form-field appearance="outline">
+              <input matInput formControlName="name_en" />
+            </mat-form-field>
+          </div>
+          <div>
+            <label>{{ 'form.code' | translate }}</label>
+            <mat-form-field appearance="outline" class="input">
+              <input matInput formControlName="code" />
+            </mat-form-field>
+          </div>
+          
+        </div>
+      </div>
+    </form>
+  
+    <div class="group-btn btn-left mt-16">
+      <button color="primary" mat-flat-button form="major-form" [disabled]="isLoading" (click)="onSubmit()">
+        <mat-icon *ngIf="!isLoading; else loading" svgIcon="save"></mat-icon>
+        <ng-template #loading>
+          <mat-spinner [diameter]="20" class="loading-spinner"></mat-spinner>
+        </ng-template>
+        {{'button.save' | translate}}
+      </button>
+    </div>
+  </div>
+  

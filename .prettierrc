@@ -1,0 +1,10 @@
+{
+    "printWidth": 120,
+    "singleQuote": true,
+    "quoteProps": "preserve",
+    "bracketSpacing": true,
+    "arrowParens": "avoid",
+    "trailingComma": "none",
+    "embeddedLanguageFormatting": "off",
+    "endOfLine": "auto"
+}

@@ -1,0 +1,10 @@
+<router-outlet></router-outlet>
+<ng-container *ngIf="loadingService.isLoading$ | async as loadingMap">
+  <div class="app-loading" *ngIf="(loadingMap.has('page') && loadingMap.get('page')) || loadingMap.get(loadingService.url)">
+    <div class="loader-wrapper">
+      <div class="loader">
+        <div class="loader loader-inner"></div>
+      </div>
+    </div>
+  </div>
+</ng-container>

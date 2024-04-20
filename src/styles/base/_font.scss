@@ -1,0 +1,23 @@
+/*----------------------------------
+  Font Size
+------------------------------------*/
+
+@for $i from 10 through 20 {
+    .g-font-size-#{$i * 1}--xs {
+        font-size: ($i * 0.0625rem !important);
+    }
+}
+
+@for $i from 11 through 25 {
+    .g-font-size-#{$i * 2}--xs {
+        font-size: ($i * 0.125rem !important);
+    }
+}
+
+@for $i from 11 through 30 {
+    .g-font-size-#{$i * 5}--xs {
+        font-size: ($i * 0.3125rem !important);
+    }
+}
+
+// other media breakpoint here

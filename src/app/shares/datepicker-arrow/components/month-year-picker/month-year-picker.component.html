@@ -1,0 +1,8 @@
+<mat-form-field appearance="outline" (click)="dp.open()">
+  <input matInput readonly [matDatepicker]="dp" [formControl]="date">
+  <mat-datepicker-toggle matSuffix [for]="dp">
+    <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+  </mat-datepicker-toggle>
+  <mat-datepicker #dp startView="multi-year" (monthSelected)="onDateChange($event, dp)">
+  </mat-datepicker>
+</mat-form-field>

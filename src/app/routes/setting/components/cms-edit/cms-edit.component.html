@@ -1,0 +1,48 @@
+<div class="app-content cms-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button mat-button [routerLink]="'../../'">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}}
+        </button>
+      </h1>
+    </div>
+  </div>
+
+  <form [formGroup]="form" id="myForm">
+    <div class="detail-form mb-16">
+      <div class="header-label">គ្រប់គ្រងមាតិកា</div>
+      <div class="grid gap-x-16 col-1 mt-16">
+        <div>
+          <label [ngClass]="{'required': form.controls.name?.invalid}">{{'form.title_cms' | translate}} </label>
+          <div name="name" style="position: relative;">
+            <mat-quill
+              formControlName="name"
+              name="name"
+              class="my-mat-quill"
+              trackChanges="all"
+              [modules]="modules"
+              (onEditorCreated)="editorInit($event)"
+            ></mat-quill>
+          </div>
+        </div>
+        <div>
+          <label [ngClass]="{'required': form.controls.description.invalid}">ការពិពណ៌នា</label>
+          <mat-form-field appearance="outline">
+            <textarea matInput rows="4" formControlName="description"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="group-btn btn-left mt-16">
+    <button color="primary" mat-flat-button form="myForm" [disabled]="isLoading" (click)="onSubmit()">
+      <mat-icon *ngIf="!isLoading; else loading" svgIcon="save"></mat-icon>
+      <ng-template #loading>
+        <mat-spinner [diameter]="20" class="loading-spinner"></mat-spinner>
+      </ng-template>
+      {{'button.save' | translate}}
+    </button>
+  </div>
+</div>

@@ -1,0 +1,7 @@
+@use '../variables';
+
+/* custom mat card */
+.mat-mdc-card {
+  border-radius: variables.$rounded-sm  !important;
+  border: 1px solid variables.$black-squeeze-color;
+}

@@ -1,0 +1,136 @@
+@use "../variables" as *;
+@use "../mixin/background" as *;
+@use "../mixin/flex" as *;
+
+.full-height {
+  min-height: 100vh;
+}
+
+.p-v-20 {
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+}
+
+.p-h-0 {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+.flex-center {
+  @include flexbox;
+  @include justify-content(center);
+  @include align-items(center);
+}
+
+.card-container {
+  width: 100%;
+  max-width: 466px;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.m-h-auto {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.container-fluid {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+// .bg {
+//   background-image: url("/assets/imgs/login-background.png");
+//   @include bg(center center);
+// }
+
+.card {
+  position: relative;
+  background-color: #fff;
+  margin-bottom: 1.25rem;
+  border: 1px solid #edf2f9;
+  border-radius: 12px;
+
+  .card-body {
+    padding: 1.5rem;
+    position: relative;
+
+    .card-header {
+      text-align: center;
+      margin-bottom: 16px
+    }
+
+    .flex-between {
+      @include flexbox;
+      @include align-items(center);
+      @include justify-content(space-between);
+    }
+
+    img {
+      width: 65px;
+    }
+
+    h2,
+    h3 {
+      font-weight: 600;
+    }
+
+    h3 {
+      color: $color-primary;
+    }
+
+    h2 {
+      margin-bottom: 8px;
+    }
+
+    .header-hint {
+      color: rgba($color: #000000, $alpha: 0.6);
+    }
+
+    .label {
+      font-size: 18px;
+      font-weight: 500;
+    }
+
+    .btn-login {
+      width: 100%;
+
+      &[disabled] {
+        background-color: rgba($color: $color-primary, $alpha: 0.6);
+        color: white;
+      }
+    }
+
+    .btn-visibility {
+      width: 36px !important;
+      height: 36px !important;
+      display: flex;
+      align-items: center;
+      place-content: center;
+      padding: 0px 4px !important;
+      color: rgba($color: #000000, $alpha: 0.9);
+    }
+  }
+}
+
+.shadow-lg {
+  box-shadow: 0 1rem 3rem rgb(77 84 124 / 9%) !important;
+}
+
+.img-fluid {
+  max-width: 100%;
+  height: auto;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+.font-size-13 {
+  font-size: 13px !important;
+}

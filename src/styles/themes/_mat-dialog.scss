@@ -1,0 +1,117 @@
+@use '../variables';
+@use '../functions/pixel-to-rem' as f;
+
+.mat-dialog-container {
+  border-radius: variables.$rounded-sm !important;
+  box-shadow: none;
+
+  .app-content {
+    padding: 0;
+    .app-title {
+      justify-content: space-between;
+      flex-wrap: wrap;
+      position: relative;
+
+      .title {
+        margin-left: 0;
+      }
+
+      .btn-sm {
+        transform: translateY(-10px);
+        background-color: rgba(28, 28, 28, 0.05);
+        position: absolute;
+        right: 0;
+
+        mat-icon {
+          width: 18px;
+          height: 18px;
+          line-height: 0;
+        }
+      }
+    }
+  }
+
+  .mat-dialog-actions {
+    padding: 20px 0 !important;
+  }
+}
+
+// image display
+.transparent .mat-mdc-dialog-container {
+  background: transparent;
+  box-shadow: none;
+  position: relative;
+  padding: 0px;
+  border-radius: 0px;
+  overflow: inherit !important;
+
+  .mat-mdc-dialog-surface {
+    background: transparent;
+    box-shadow: none;
+    overflow: inherit;
+
+    .close-button {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      transform: translate(50%, -50%);
+    }
+
+    .close-icon {
+      transition: 1s ease-in-out;
+    }
+
+    .close-icon:hover {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.backdropBackground {
+  background-color: #000000;
+  opacity: 0.7 !important;
+}
+
+.app-content.dialog-password {
+  .app-title {
+    .title {
+      margin: 0;
+      margin-left: 0;
+    }
+  }
+  .mat-mdc-dialog-content {
+    padding: 0 !important;
+  }
+  .mat-mdc-dialog-actions {
+    padding: 0 !important;
+    margin-top: f.rem(18);
+  }
+
+  form {
+    border: 1px solid variables.$black-squeeze-color;
+  }
+}
+
+.mat-dialog {
+  &__padding-none {
+    mat-dialog-content {
+      padding: 0 !important;
+    }
+  }
+}
+
+//custom dialog scrollbar
+.mat-mdc-dialog-content::-webkit-scrollbar-track {
+  -webkit-box-shadow: none;
+  background-color: transparent;
+}
+
+.mat-mdc-dialog-content::-webkit-scrollbar {
+  width: 10px;
+  background-color: variables.$athens-gray-color;
+}
+
+.mat-mdc-dialog-content::-webkit-scrollbar-thumb {
+  background-color: variables.$color-primary;
+  border-radius: 6px;
+}

@@ -1,0 +1,37 @@
+<!-- eslint-disable @angular-eslint/template/click-events-have-key-events -->
+<section lass="grid gap-x-16 col-1">
+    <div class="upload-card">
+      <div class="profile-with-name mb-16">
+        <div class="relative-div">
+          <mat-icon *ngIf="hasFile && status === 'upload'" (click)="removeFile()">clear</mat-icon>
+          <img
+            *ngIf="hasFile; else Else"
+            class="lecturer-profile"
+            [src]="imageUrl ? imageUrl : 'assets/imgs/school.svg'"
+            [appPreviewFile]="imagePreview"
+            alt="profile picture"
+          />
+          <ng-template #Else>
+            <img
+              class="lecturer-profile"
+              [src]="imageUrl ? imageUrl  : 'assets/imgs/school.svg'"
+              alt="profile picture"
+            />
+          </ng-template>
+          <div *ngIf="status === 'upload' && !hasFile">
+            <button (click)="pickFile.value = ''; pickFile.click()" type="button" mat-icon-button class="upload-hover">
+              <mat-icon svgIcon="upload-photo"></mat-icon>
+            </button>
+            <input
+              type="file"
+              #pickFile
+              (change)="fileChangeEvent($event)"
+              accept="image/png, image/jpeg, image/jpg"
+              hidden
+            />
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </section>

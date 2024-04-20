@@ -1,0 +1,303 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button mat-button [routerLink]="'../../'">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}}
+        </button>
+      </h1>
+
+      <div class="group-btn">
+        <button
+          color="print"
+          *ngIf="([pStudent.writeApproved] | permission) && student?.change_course === 1"
+          mat-flat-button
+          (click)="onChangeCourse()"
+        >
+          ប្ដូរវគ្គសិក្សា
+          <mat-icon>book_4</mat-icon>
+        </button>
+        <button
+          color="reset"
+          *ngIf="([pStudent.addPoorId] | permission) && !student?.poor_id && isLoading"
+          mat-flat-button
+          (click)="onAddPoorId()"
+        >
+          បញ្ចូលបណ្ណសមធម៌
+          <mat-icon svgIcon="add-poor-id"></mat-icon>
+        </button>
+
+        <button
+          *ngIf="([pStudent.request] | permission) && student?.scholarship_status === -3 && isLoading"
+          style="background-color: #0093E9; color: white;"
+          mat-flat-button
+          (click)="openResendDialog(2)"
+        >
+          {{'button.resend_scholarship' | translate}}
+          <mat-icon svgIcon="resend"></mat-icon>
+        </button>
+        <button *ngIf="[pStudent.write] | permission" color="accent" mat-flat-button (click)="onEdit()">
+          {{'button.edit' | translate}}
+          <mat-icon svgIcon="edit"></mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-form mb-16">
+    <div *ngIf="student?.request_timelines && isLoading" class="reason p-16 rounded-md mb-16">
+      <p class="reason__title">សំណើត្រូវបានបដិសេធ</p>
+      <span class="mt-16">{{student?.request_timelines?.reason}}</span>
+  </div>
+    <div class="header-label">{{'form.candidate_info' | translate}}</div>
+    <app-image-uploader [status]="'view'" [payload]="student"></app-image-uploader>
+
+    <div class="grid col-sm-2 detail-text">
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.last_name' | translate}}</label>
+        <div class="value">{{student?.last_name}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.first_name' | translate}}</label>
+        <div class="value">{{student?.first_name}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.gender.title' | translate}}</label>
+        <div class="value">
+          {{student?.gender === 'female' ? ('form.gender.female' | translate) : ('form.gender.male' | translate) |
+                    titlecase}}
+        </div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.date_birth' | translate}}</label>
+        <div class="value">{{(student?.date_of_birth | date: 'dd/MM/yyyy')|| '--/--'}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.phone' | translate}}</label>
+        <div class="value">{{student?.phone_number || '--/--'}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.id_card_number' | translate}}</label>
+        <div class="value">{{student?.id_card_number || '--/--'}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'school.title' | translate}}</label>
+        <div class="value">
+          <div class="group-picture-name">
+            <img
+              class="profile-picture-list"
+              *ngIf="student?.schools?.profile_image; else elseBlock"
+              [src]="(student?.schools?.profile_image | staticFile) + '?image_size=s'"
+              alt="profile picture"
+              onerror="this.onerror=null;this.src='/assets/imgs/school.svg'"
+            />
+            <ng-template #elseBlock>
+              <img class="profile-picture-list" [src]="'/assets/imgs/school.svg'" alt="profile picture" />
+            </ng-template>
+            <div class="el-responsive">{{student?.schools | translateAPI: translate.currentLang}}</div>
+          </div>
+        </div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'major.title' | translate}}</label>
+        <div class="value">{{student?.apply_majors | translateAPI: translate.currentLang}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.course_code' | translate}}</label>
+        <div class="value">{{student?.courses?.code || '--/--'}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.duration' | translate}}</label>
+        <div class="value">{{student?.courses?.duration ? (student?.courses?.duration + 'ថ្ងៃ') : '--/--'}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.fee' | translate}}</label>
+        <div class="value">{{student?.courses?.fee ? (student?.courses?.fee.toLocaleString() + '៛') : '--/--'}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.poor_id' | translate}}</label>
+        <div class="value">
+          {{student?.poor_id || '--/--'}}
+        </div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.type_scholarship_document' | translate}}</label>
+        <div class="value">
+          {{student?.type_scholarship_documents?.name || '--/--'}}
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-16">
+      <label>ឯកសារភ្ជាប់ (បណ្ណសមធម៌ ឬបណ្ណសម្គាល់គ្រួសារងាយរងហានិភ័យ អត្តសញ្ញាណប័ណ្ណ លិខិតបញ្ជាក់ការសិក្សា)</label>
+      <div class="value">
+        <div
+          class="image-wrapper mt-8 flex gap-16 flex-wrap"
+          *ngIf="student?.attachment_files?.length > 0; else noFile"
+        >
+          <div
+            class="flex gap-16 image-box-wrapper flex-wrap"
+            *ngFor="let item of student?.attachment_files; trackBy: trackByFn"
+          >
+            <div class="image-box">
+              <img
+                class="rounded-md"
+                [appPreviewFile]="(item?.image_binary || ((item?.attachment_data?.toString() || item?.toString()) | staticFile))?.toString()"
+                [src]="item.image_binary || ((item?.attachment_data?.toString() || item?.toString()) | staticFile) + '?image_size=m'"
+                alt="file attachment"
+              />
+            </div>
+          </div>
+        </div>
+        <ng-template #noFile> (មិនមានឯកសារភ្ជាប់) </ng-template>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-form mt-16">
+    <div class="header-label">{{'form.place_birth.title' | translate}}</div>
+    <div class="grid col-sm-2 detail-text">
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.address.city' | translate}}</label>
+        <div class="value">
+          {{(student?.place_of_birth?.city_provinces | translateAPI: translate.currentLang) || "--//--"}}
+        </div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.address.district' | translate}}</label>
+        <div class="value">
+          {{(student?.place_of_birth?.districts | translateAPI: translate.currentLang) || "--//--"}}
+        </div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.address.commune' | translate}}</label>
+        <div class="value">
+          {{(student?.place_of_birth?.communes | translateAPI: translate.currentLang) || "--//--"}}
+        </div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.address.village' | translate}}</label>
+        <div class="value">
+          {{(student?.place_of_birth?.villages | translateAPI: translate.currentLang) || "--//--"}}
+        </div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.address.detail' | translate}}</label>
+        <div class="value">{{student?.place_of_birth?.detail || '--//--'}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2"></div>
+    </div>
+  </div>
+
+  <div class="detail-form mt-16">
+    <div class="header-label">{{'form.address.title' | translate}}</div>
+    <div class="grid col-sm-2 detail-text">
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.address.city' | translate}}</label>
+        <div class="value">
+          {{(student?.address?.city_provinces | translateAPI: translate.currentLang) || "--//--"}}
+        </div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.address.district' | translate}}</label>
+        <div class="value">{{(student?.address?.districts | translateAPI: translate.currentLang) || "--//--"}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.address.commune' | translate}}</label>
+        <div class="value">{{(student?.address?.communes | translateAPI: translate.currentLang) || "--//--"}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.address.village' | translate}}</label>
+        <div class="value">{{(student?.address?.villages | translateAPI: translate.currentLang) || "--//--"}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>{{'form.address.detail' | translate}}</label>
+        <div class="value">{{student?.address?.detail || '--//--'}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2"></div>
+    </div>
+  </div>
+
+  <div class="detail-form mt-16" *ngIf="student?.poor_id">
+    <div class="header-label">ទិន្នន័យបណ្ណសមធម៍ពីប្រព័ន្ធ IDPoor</div>
+    <div class="grid col-sm-2 detail-text">
+      <div class="grid gap-x-16 col-2">
+        <label>លេខបណ្ណសមធម៍</label>
+        <div class="value">{{student?.poor_id}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>កម្រិតភាពក្រីក្រ</label>
+        <div class="value">{{student?.poor_card_data?.poverty_status}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>ថ្ងៃខែឆ្នាំចេញបណ្ណ</label>
+        <div class="value">{{student?.poor_card_data?.created_at | date: 'dd/MM/yyyy'}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>ថ្ងៃខែឆ្នាំផុតសុពលភាព</label>
+        <div class="value">{{student?.poor_card_data?.expire_at | date: 'dd/MM/yyyy'}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>ភូមិ</label>
+        <div class="value">{{address?.villages.name}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>ក្រុង/ស្រុក/ខណ្ឌ</label>
+        <div class="value">{{address?.communes.name}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>ឃុំ/សង្កាត់</label>
+        <div class="value">{{address?.districts.name}}</div>
+      </div>
+      <div class="grid gap-x-16 col-2">
+        <label>រាជធានី/ខេត្ដ</label>
+        <div class="value">{{address?.city_provinces.name}}</div>
+      </div>
+    </div>
+
+    <div class="header-label mt-16">សមាជិកគ្រួសារ</div>
+    <custom-table [tableData]="tableData" [tableColumns]="tableColumns">
+      <ng-template [appZippy]="'name'" let-element>
+        <div class="el-responsive">{{element | fullName}}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'gender'" let-element>
+        {{(element.gender === 'female' ? ('form.gender.female' | translate) : ('form.gender.male' | translate) |
+                titlecase)|| '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'dob'" let-element>
+        {{(element.date_of_birth | date: 'dd/MM/yyyy') || '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'rth'" let-element>
+        {{ element.relation_to_head || '--/--' }}
+      </ng-template>
+
+      <ng-template [appZippy]="'candidate'" let-element>
+        <mat-checkbox
+          [disabled]=""
+          color="primary"
+          (change)="onCheck(element)"
+          [checked]="exists(element)"
+        ></mat-checkbox>
+      </ng-template>
+    </custom-table>
+  </div>
+  <div class="group-btn btn-left mt-16" *ngIf="isLoading && student.scholarship_status === 3">
+    <button *ngIf="[pStudent.writeApproved] | permission" color="warn" mat-flat-button (click)="openApprovalDialog(-3)">
+      {{'button.reject' | translate}}
+      <mat-icon>clear</mat-icon>
+    </button>
+    <button
+      *ngIf="[pStudent.writeApproved] | permission"
+      color="success"
+      mat-flat-button
+      (click)="openApprovalDialog(1)"
+    >
+      {{'button.approve' | translate}}
+      <mat-icon>done</mat-icon>
+    </button>
+  </div>
+</div>

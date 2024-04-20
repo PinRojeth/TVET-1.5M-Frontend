@@ -1,0 +1,120 @@
+<div class="app-content">
+    <div class="app-header">
+        <div class="app-title">
+            <h1 class="title">
+                <button mat-button [routerLink]="'../../'">
+                    <mat-icon>arrow_back</mat-icon>
+                    {{'button.back' | translate}} <span class="name">| {{ info?.apply_majors?.name }}</span>
+                </button>
+            </h1>
+
+            <div class="group-btn">
+                <button *ngIf="[pCourse.write] | permission" color="accent" mat-flat-button
+                    [routerLink]="['../../edit', courseId]">
+                    {{'button.edit' | translate}}
+                    <mat-icon svgIcon="edit"></mat-icon>
+                </button>
+                <button *ngIf="[pCourse.delete] | permission" color="warn" mat-flat-button (click)="onDelete()">
+                    {{'button.delete' | translate}}
+                    <mat-icon svgIcon="delete"></mat-icon>
+                </button>
+                <button *ngIf="[pCourse.setActive] | permission" mat-flat-button
+                    [color]="info?.status === 1 ? 'warn' : 'primary'" (click)="onSetStatus()">
+                    <mat-icon [svgIcon]="info?.status === 1 ? 'disable' : 'checked'"></mat-icon>
+                    {{(info?.status === 1 ? 'button.disable_course' : 'button.enable_course') | translate}}
+                </button>
+                <button *ngIf="[pCourse.setActive] | permission" mat-flat-button
+                    [color]="info?.archive === 1 ? 'primary' : 'warn'" (click)="onSetArchive()">
+                    <mat-icon [svgIcon]="info?.archive === 1 ? 'checked' : 'disable'"></mat-icon>
+                    {{info?.archive === 1 ? 'Unarchive' : 'Archive'}}
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="detail-form">
+        <div class="header-label">{{'form.general_info' | translate}}</div>
+        <div class="grid col-sm-2 detail-text">
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.code' | translate}}</label>
+                <div class="value">{{ info?.code || '--/--' }}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.major' | translate}}</label>
+                <div class="value">{{ info?.apply_majors?.name || '--/--' }}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.res_date' | translate}}</label>
+                <div class="value">{{ (info?.registation_start | date: 'dd-MM-yyyy') || '--/--' }}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.res_end' | translate}}</label>
+                <div class="value">{{ (info?.registation_end | date: 'dd-MM-yyyy') || '--/--' }}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.student_amount' | translate}}</label>
+                <div class="value">{{ info?.student_amount + ' នាក់' || '--/--' }}</div>
+            </div>
+            <!-- <div class="grid gap-x-16 col-2">
+                <label>{{'form.duration' | translate}}</label>
+                <div class="value">{{ info?.duration || '--/--' }}</div>
+            </div> -->
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.shift' | translate}}</label>
+                <div class="value">{{ info?.shifts?.name || '--/--' }}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.course_start' | translate}}</label>
+                <div class="value">{{ (info?.course_start | date: 'dd-MM-yyyy') || '--/--' }}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.course_end' | translate}}</label>
+                <div class="value">{{ (info?.course_end | date: 'dd-MM-yyyy') || '--/--' }}</div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.fee' | translate}}</label>
+                <div class="value">
+                    <div *ngIf="info?.fee; else noFee">{{ (info.fee | number: '1.0-0') + ' ៛' }}</div>
+                    <ng-template #noFee>--/--</ng-template>
+                </div>
+            </div>
+            <div class="grid gap-x-16 col-2">
+                <label>{{'form.school' | translate}}</label>
+                <div class="value">
+                    <div class="group-picture-name" *ngIf="info?.schools">
+                        <img class="profile-picture-list" *ngIf="info?.schools?.profile_image; else elseBlock"
+                            [src]="(info?.schools?.profile_image | staticFile) + '?image_size=s'" alt="profile picture"
+                            onerror="this.onerror=null;this.src='/assets/imgs/school.svg'" />
+                        <ng-template #elseBlock>
+                            <img class="profile-picture-list" [src]="'/assets/imgs/school.svg'" alt="profile picture" />
+                        </ng-template>
+                        <div class="el-responsive">{{info?.schools?.name}}</div>
+                    </div>
+                    <div *ngIf="!info?.schools">{{'--//--'}}</div>
+                </div>
+            </div>
+        </div>
+        <div class="grid detail-text">
+            <div class="grid gap-x-16 col-sm-2 col-md-6 border-none">
+                <label>{{'form.requirement' | translate}}</label>
+                <div class="col-span-md-5" *ngIf="info?.requirement; else noRequired"
+                    [innerHTML]="info?.requirement"></div>
+                <ng-template #noRequired>
+                    <div class="col-span-md-5 value">--/--</div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+    <div class="detail-form mt-16">
+      <section>
+      <mat-tab-group mat-stretch-tabs="false" mat-align-tabs="start">
+        <mat-tab label="{{'table.total_male' | translate}} {{'('+ total +')'}}">
+          <app-table-student-list (total)="total = $event"></app-table-student-list>
+        </mat-tab>
+        <mat-tab label="{{'table.total_female' | translate}} {{'('+ totalFemale +')'}}">
+          <app-table-student-female (total)="totalFemale = $event"></app-table-student-female>
+        </mat-tab>
+      </mat-tab-group>
+    </section>
+  </div>
+</div>

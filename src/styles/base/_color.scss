@@ -1,0 +1,49 @@
+$color-primary: #1F71DF;
+$color-secondary: #63677d;
+$color-grey: #b4b4b4;
+$color-white: #ffffff;
+$color-red: #ff0000;
+$color-black: #000000;
+$color-thin-grey: #e8e9ed;
+$color-warn: #ffc42a;
+$color-light-red: #ff6464;
+$color-short-course: #39cada;
+$color-long-course: #194f82;
+$color-required: #fc7e7e;
+
+//general text color
+$scarpa-flow: #53535f;
+$color-text: $scarpa-flow;
+
+$silver-chalice: #a0a0a0;
+$athens-gray-color: #f4f4f7;
+$mercury-color: #e6e6e6;
+$waterloo-color: #757b97;
+$tapestry-color: #ad5389;
+$black-squeeze-color: #edf2f9;
+$black-squeeze-light: #f8fafd;
+$harlequin: #1fdb00;
+$sea-buckthorn: #f89f37;
+$aluminium: #a6a7ae;
+$table-header: hsla(221, 96%, 81%, 0.1);
+$thunderbird-color: #c71010;
+$victoria-color: #453D83;
+$mercury-dark-color: #E1E1E1;
+$ship-cove-color: #748BBE;
+
+//attendance status
+$salem: #0fa958;
+$bittersweet: #ff755f;
+$deluge: #76629f;
+
+/* border color */
+$border-grey: #e8eaef;
+$border-red: red;
+
+/* background color */
+$background-grey: #f5f5f5;
+$background-light-grey: $black-squeeze-light;
+
+/* linear gradient */
+$linear-gradient-primary: linear-gradient(270deg, #1F71DF 0%, #1F71DF 0.01%, #2872F0 100%);
+$linear-light-gradient-primary: linear-gradient(270deg, #237a576b 0%, #134e5e33 100%);

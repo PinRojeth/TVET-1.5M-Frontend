@@ -1,0 +1,101 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title flex items-center justify-content-between">
+      <h1 class="title">{{"menu.approved_student.title" | translate}}</h1>
+      <button mat-flat-button color="print" (click)="redirectIntern()">
+        <mat-icon>assignment</mat-icon>
+        {{'button.internship' | translate}}
+      </button>
+    </div>
+  </div>
+
+  <div class="detail-form">
+    <app-filter (queryEvent)="onSearch($event)" [apiRoute]="filterData$" (queryFilter)="setParams($event)"></app-filter>
+    <custom-table
+      [tableData]="tableData"
+      [tableColumns]="tableColumns"
+      [requestUrl]="requestUrl"
+      (goToEvent)="goTo($event)"
+    >
+      <ng-template [appZippy]="'name'" let-element>
+        <div class="group-picture-name">
+          <img
+            class="profile-picture-list"
+            *ngIf="element.profile_image; else elseBlock"
+            [src]="(element.profile_image | staticFile) + '?image_size=s'"
+            alt="profile picture"
+          />
+          <ng-template #elseBlock>
+            <img
+              class="profile-picture-list"
+              [src]="(element.gender === 'female' ? '/assets/imgs/female.svg' : '/assets/imgs/male.svg')"
+              alt="profile picture"
+            />
+          </ng-template>
+          <div class="el-responsive">{{element | fullName: translate.currentLang}}</div>
+        </div>
+      </ng-template>
+
+      <ng-template [appZippy]="'phone'" let-element>
+        {{element.phone_number || '--/--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'poor_id'" let-element>
+        <div class="el-responsive" *ngIf="element.poor_status; else noPoorStatus">
+          <section *ngIf="element.poor_status === 1" class="flex">
+            <mat-icon svgIcon="mat-approved"></mat-icon>
+            <span class="pl-6">{{element.poor_id}}</span>
+          </section>
+          <section *ngIf="element.poor_status === 2" class="flex">
+            <mat-icon svgIcon="mat-draft"></mat-icon>
+            <span class="pl-6">{{element.poor_id}}</span>
+          </section>
+          <section *ngIf="element.poor_status === 3" class="flex">
+            <mat-icon svgIcon="mat-pending"></mat-icon>
+            <span class="pl-6">{{element.poor_id}}</span>
+          </section>
+          <section *ngIf="element.poor_status === -3" class="flex">
+            <mat-icon svgIcon="mat-rejected"></mat-icon>
+            <span class="pl-6">{{element.poor_id}}</span>
+          </section>
+        </div>
+        <ng-template #noPoorStatus>{{'--//--'}}</ng-template>
+      </ng-template>
+
+      <ng-template [appZippy]="'schools'" let-element>
+        <div class="group-picture-name">
+          <img
+            class="profile-picture-list"
+            *ngIf="element?.schools?.profile_image; else elseBlock"
+            [src]="(element?.schools?.profile_image | staticFile) + '?image_size=s'"
+            alt="profile picture"
+            onerror="this.onerror=null;this.src='/assets/imgs/school.svg'"
+          />
+          <ng-template #elseBlock>
+            <img class="profile-picture-list" [src]="'/assets/imgs/school.svg'" alt="profile picture" />
+          </ng-template>
+          <div class="el-responsive">{{element.schools | translateAPI: translate.currentLang}}</div>
+        </div>
+      </ng-template>
+
+      <ng-template [appZippy]="'major'" let-element>
+        {{ element.apply_majors || '--/--' | translateAPI: translate.currentLang}}
+      </ng-template>
+
+      <ng-template [appZippy]="'status'" let-element>
+        <span class="status-fill rounded-sm" [ngClass]="element.scholarship_status | approvedStudent | lowercase">
+          {{'enum_status.' + (element.scholarship_status | scholarshipStatus) | translate}}
+        </span>
+      </ng-template>
+
+      <ng-template [appZippy]="'action'" let-element>
+        <app-action
+          [useRouter]="{view: {routerLink: 'info/' + element._id}}"
+          [permission]="{ delete: false, edit: false }"
+          [addButton]="[{label: 'វត្តមាន', svgIcon: 'attendance', router: {routerLink: 'attendance/' + element._id + '/' + (element | fullName)}, permission: ([pAttendance.read] | permission)}]"
+        >
+        </app-action>
+      </ng-template>
+    </custom-table>
+  </div>
+</div>

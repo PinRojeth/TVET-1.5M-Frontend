@@ -1,0 +1,101 @@
+@use '../variables' as var;
+
+$tab-height: 38px;
+
+.mat-tab-nav-bar {
+    .mat-tab-link {
+        height: $tab-height;
+
+        &.mat-tab-label-active {
+            border-width: 1px;
+            border-style: none solid;
+            border-color: rgba(#000, 10%);
+            border-radius: calc($tab-height / 2);
+            background-color: var.$color-primary;
+            color: #fff;
+            opacity: 1;
+            font-weight: 500;
+
+            &:first-child {
+                border-left: none;
+            }
+
+            &:last-child {
+                border-right: none;
+            }
+        }
+    }
+
+    .mat-ink-bar {
+        display: none
+    }
+
+    &.control-nav-bar {
+        .mat-tab-links {
+            border: 1px solid rgba(#000, 10%);
+            border-radius: 20px;
+        }
+    }
+
+}
+
+.mat-tab-header {
+    border-bottom: none;
+}
+
+.custom-tab-group {
+    .mat-tab-label {
+        border-radius: 100px;
+        height: $tab-height;
+    }
+
+    .mat-tab-label-active {
+        .mat-tab-label-content {
+            color: white;
+        }
+    }
+
+    .mat-ink-bar {
+        height: 100%;
+        z-index: -1;
+        border-radius: 100px;
+    }
+}
+
+// mat-tab-group {
+//     &.mat-mdc-tab-group {
+//         &.mat-mdc-tab-group-stretch-tabs>.mat-mdc-tab-header .mat-mdc-tab {
+//             flex-grow: 0;
+//         }
+
+//         .mat-mdc-tab-header {
+//             .mat-mdc-tab-label-container {
+//                 flex-grow: 0;
+//                 border-radius: 26px;
+//                 background-color: rgba(159, 188, 253, 0.1)
+//             }
+
+//             .mat-mdc-tab.mdc-tab {
+//                 height: 40px;
+//             }
+
+//             .mdc-tab[role='tab'] {
+
+//                 &.mdc-tab-indicator--active {
+//                     overflow: hidden;
+//                     background-color: var.$color-primary;
+//                     border-radius: 26px;
+
+//                     .mdc-tab__text-label {
+//                         color: white;
+//                         font-weight: normal;
+//                     }
+//                 }
+
+//                 .mdc-tab-indicator {
+//                     display: none;
+//                 }
+//             }
+//         }
+//     }
+// }

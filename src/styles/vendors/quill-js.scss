@@ -1,0 +1,46 @@
+@use '../variables' as *;
+.ql-toolbar.ql-snow {
+  border-radius: $rounded-sm $rounded-sm 0 0;
+  padding: 12px 8px;
+}
+.ql-container {
+  margin-bottom: 1.34375em;
+  border-radius: 0px 0px $rounded-sm $rounded-sm;
+  min-height: 150px;
+  p {
+    line-height: 1.7;
+  }
+}
+.ql-toolbar {
+  margin-top: 0.35em;
+  // background-color: $background-light-grey;
+}
+.ql-container.ql-snow {
+  // background-color: $background-light-grey;
+}
+.disabled-toolbar {
+  .ql-toolbar {
+    border: 1px solid $border-grey;
+    position: relative;
+    overflow: hidden;
+    ::after {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(white, 0.5);
+    }
+  }
+  .ql-container.ql-snow {
+    border: 1px solid $border-grey;
+    ::after {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: inherit;
+    }
+  }
+}

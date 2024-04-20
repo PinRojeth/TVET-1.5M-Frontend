@@ -1,0 +1,132 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">{{'report.approve_students_report' | translate}}</h1>
+    </div>
+  </div>
+
+  <div class="detail-form">
+    <div class="flex wrap items-center place-content-space-between">
+      <app-filter
+        [hide]="['search', 'date', 'yearDate']"
+        [apiRoute]="filterData$"
+        (queryFilter)="setParams($event)"
+        (dateRangeEvent)="dateRangeEvent($event)"
+      >
+      </app-filter>
+      <div class="mb-16">
+        <button mat-flat-button [matMenuTriggerFor]="menu" color="print" [disabled]="tableData?.list?.length < 1">
+          <mat-icon>print</mat-icon>
+          {{'button.export_file' | translate}}
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item [appExportAsExcelApproveStudents]="{ params, filterParams }">
+            <mat-icon svgIcon="csv"></mat-icon>
+            {{'export.excel' | translate}}
+          </button>
+          <!-- <button mat-menu-item [appExportAsPdfApproveStudents]="{ params, filterParams }">
+            <mat-icon svgIcon="pdf"></mat-icon>
+            {{'export.pdf' | translate}}
+          </button> -->
+        </mat-menu>
+      </div>
+    </div>
+    <custom-table
+      [tableData]="tableData"
+      [tableColumns]="tableColumns"
+      [requestUrl]="requestUrl"
+      (goToEvent)="goTo($event)"
+      id="table-approve-student-report"
+    >
+      <ng-template [appZippy]="'name'" let-element>
+        <div class="group-picture-name">
+          <img
+            class="profile-picture-list"
+            *ngIf="element.profile_image; else elseBlock"
+            [src]="(element.profile_image | staticFile) + '?image_size=s'"
+            alt="profile picture"
+          />
+          <ng-template #elseBlock>
+            <img
+              class="profile-picture-list"
+              [src]="(element.gender === 'female' ? '/assets/imgs/female.svg' : '/assets/imgs/male.svg')"
+              alt="profile picture"
+            />
+          </ng-template>
+          <div class="el-responsive">{{element | fullName}}</div>
+        </div>
+      </ng-template>
+
+      <ng-template [appZippy]="'name_en'" let-element>
+        <div class="el-responsive">{{element | fullName: 'en'}}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'gender'" let-element>
+        {{(element.gender === 'female' ? ('form.gender.female' | translate) : ('form.gender.male' | translate) |
+                titlecase)|| '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'dob'" let-element>
+        <div class="el-responsive">{{(element.date_of_birth | date: 'dd-MM-yyyy') || '--//--'}}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'phone'" let-element>
+        <div class="el-responsive">{{element.phone_number || '--//--'}}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'id_card_number'" let-element>
+        <div class="el-responsive">{{element.id_card_number || '--//--'}}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'place_of_birth'" let-element>
+        <div class="el-responsive">{{element?.place_of_birth?.name || '--//--'}}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'address'" let-element>
+        <div class="el-responsive">{{element.address.name || '--//--'}}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'poor_id'" let-element>
+        <div class="el-responsive">{{ element.poor_id || '--/--' }}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'type_poverty_status'" let-element>
+        <div class="el-responsive">{{ element.type_poverty_status || '--/--' }}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'schools'" let-element>
+        <div class="group-picture-name">
+          <img
+            class="profile-picture-list"
+            *ngIf="element?.schools?.profile_image; else elseBlock"
+            [src]="(element?.schools?.profile_image | staticFile) + '?image_size=s'"
+            alt="profile picture"
+            onerror="this.onerror=null;this.src='/assets/imgs/school.svg'"
+          />
+          <ng-template #elseBlock>
+            <img class="profile-picture-list" [src]="'/assets/imgs/school.svg'" alt="profile picture" />
+          </ng-template>
+          <div class="el-responsive">{{element.schools | translateAPI: translate.currentLang}}</div>
+        </div>
+      </ng-template>
+
+      <ng-template [appZippy]="'major'" let-element>
+        <div class="el-responsive">{{ element.apply_majors || '--/--' | translateAPI: translate.currentLang}}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'shifts'" let-element>
+        <div class="el-responsive">{{ element.shifts || '--/--' | translateAPI: translate.currentLang}}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'average_attendance'" let-element>
+        <div class="el-responsive">{{ element?.average_attendance || '--/--'}}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'status'" let-element>
+        <span class="status-fill rounded-sm" [ngClass]="element.scholarship_status | approvedStudent | lowercase">
+          {{'enum_status.' + (element.scholarship_status | scholarshipStatus) | translate}}
+        </span>
+      </ng-template>
+    </custom-table>
+  </div>
+</div>

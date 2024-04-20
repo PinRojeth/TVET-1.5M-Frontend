@@ -1,0 +1,288 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button mat-button routerLink="/attendance/record-list">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}}
+        </button>
+      </h1>
+    </div>
+  </div>
+
+  <form [formGroup]="form">
+    <div class="detail-form mt-16">
+      <div class="header-label">កត់ត្រាវត្តមាន</div>
+      <div class="grid gap-x-16 col-sm-3">
+        <div>
+          <label [ngClass]="{'required': form.controls.courses?.invalid}">វគ្គសិក្សា</label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="courses" (selectionChange)="onCourseChange()">
+              <app-searchbar-in-select-option (queryEvent)="onSearch($event)"></app-searchbar-in-select-option>
+              <mat-option *ngIf="course?.length < 1" disabled>
+                <span class="flex" [ngStyle]="{'justify-content': 'center'}">{{'filter.no_data' | translate}}</span>
+              </mat-option>
+              <mat-option *ngFor="let item of course" [value]="item._id">
+                {{item.name}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix *ngIf="!form.controls.courses?.disabled">expand_more</mat-icon>
+          </mat-form-field>
+        </div>
+
+        <div>
+          <label [ngClass]="{'required': form.get('date').invalid}">កាលបរិច្ឆេទ</label>
+          <mat-form-field appearance="outline">
+            <input
+              readonly
+              matInput
+              [matDatepicker]="pickerStart"
+              (click)="pickerStart.open()"
+              formControlName="date"
+              (dateChange)="onDateChange()"
+            />
+            <mat-datepicker-toggle matSuffix [for]="pickerStart" *ngIf="!form.controls.date?.disabled">
+              <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker #pickerStart></mat-datepicker>
+
+            <mat-error *ngIf="form.get('date')?.errors?.dateError">មានរួចហើយ</mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <div class="detail-form mt-16 student-attendance-content" *ngIf="form.value?.date && form.value?.courses">
+    <div class="header-label">
+      ចំនួនសិស្ស <span class="title__present">({{tableDataSource.data?.length ?? 0}}នាក់)</span>
+    </div>
+
+    <div class="table-container">
+      <ng-container *ngIf="loadingService.isLoading$ | async as loadingMap">
+        <mat-progress-bar
+          class="progress-bar"
+          mode="indeterminate"
+          *ngIf="loadingMap.get(requestUrl)"
+        ></mat-progress-bar>
+      </ng-container>
+
+      <!-- Table -->
+      <table #table mat-table [dataSource]="tableDataSource">
+        <ng-container matColumnDef="position">
+          <th mat-header-cell *matHeaderCellDef>#</th>
+          <td mat-cell *matCellDef="let element; let i = index">
+            {{i + 1}}
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef>ឈ្មោះ</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="group-picture-name">
+              <img
+                class="profile-picture-list"
+                *ngIf="element?.profile_image; else elseBlock"
+                [src]="(element.profile_image | staticFile) + '?image_size=s'"
+                alt="profile picture"
+              />
+              <ng-template #elseBlock>
+                <img
+                  class="profile-picture-list"
+                  [src]="(element.gender === 'female' ? '/assets/imgs/female.svg' : '/assets/imgs/male.svg')"
+                  alt="profile picture"
+                />
+              </ng-template>
+              <div class="el-responsive">{{element | staffFullName}}</div>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="poor_id">
+          <th mat-header-cell *matHeaderCellDef>លេខប័ណ្ណក្រីក្រ</th>
+          <td mat-cell *matCellDef="let element">
+            <div class="el-responsive">
+              <section *ngIf="element?.poor_status === 1" class="flex items-center">
+                <mat-icon svgIcon="mat-approved"></mat-icon>
+                <span class="pl-6">{{(element?.poor_id)}}</span>
+              </section>
+              <section *ngIf="element?.poor_status === 2" class="flex items-center">
+                <mat-icon svgIcon="mat-draft"></mat-icon>
+                <span class="pl-6">{{(element?.poor_id)}}</span>
+              </section>
+              <section *ngIf="element?.poor_status === 3" class="flex items-center">
+                <mat-icon svgIcon="mat-pending"></mat-icon>
+                <span class="pl-6">{{(element?.poor_id)}}</span>
+              </section>
+              <section *ngIf="element?.poor_status === -3" class="flex items-center">
+                <mat-icon svgIcon="mat-rejected"></mat-icon>
+                <span class="pl-6">{{(element?.poor_id)}}</span>
+              </section>
+            </div>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="0">
+          <th mat-header-cell *matHeaderCellDef class="align-center">
+            <div class="vertical-line"><span></span></div>
+            0%
+          </th>
+          <td mat-cell *matCellDef="let element" class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <mat-checkbox
+              [color]="checkboxStatus(element)"
+              (change)="onCheckboxChange($event, element ,0)"
+              [checked]="element?.attendance_score === 0"
+            ></mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="25">
+          <th mat-header-cell *matHeaderCellDef class="align-center">
+            <div class="vertical-line"><span></span></div>
+            25%
+          </th>
+          <td mat-cell *matCellDef="let element" class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <mat-checkbox
+              [color]="checkboxStatus(element)"
+              (change)="onCheckboxChange($event, element ,25)"
+              [checked]="element?.attendance_score === 25"
+            ></mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="50">
+          <th mat-header-cell *matHeaderCellDef class="align-center">
+            <div class="vertical-line"><span></span></div>
+            50%
+          </th>
+          <td mat-cell *matCellDef="let element" class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <mat-checkbox
+              [color]="checkboxStatus(element)"
+              (change)="onCheckboxChange($event, element ,50)"
+              [checked]="element?.attendance_score === 50"
+            ></mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="75">
+          <th mat-header-cell *matHeaderCellDef class="align-center">
+            <div class="vertical-line"><span></span></div>
+            75%
+          </th>
+          <td mat-cell *matCellDef="let element" class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <mat-checkbox
+              [color]="checkboxStatus(element)"
+              (change)="onCheckboxChange($event, element ,75)"
+              [checked]="element?.attendance_score === 75"
+            ></mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="100">
+          <th mat-header-cell *matHeaderCellDef class="align-center">
+            <div class="vertical-line"><span></span></div>
+            100%
+          </th>
+          <td mat-cell *matCellDef="let element" class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <mat-checkbox
+              [color]="checkboxStatus(element)"
+              (change)="onCheckboxChange($event, element ,100)"
+              [checked]="element?.attendance_score === 100"
+            ></mat-checkbox>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="3"></th>
+        </ng-container>
+
+        <ng-container matColumnDef="0-check-all">
+          <th mat-header-cell *matHeaderCellDef class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <mat-checkbox
+              color="primary"
+              [indeterminate]="checkStatus0 === 0"
+              [checked]="checkStatus0 === 1"
+              (change)="onCheckAllChange($event, 0)"
+            ></mat-checkbox>
+          </th>
+        </ng-container>
+
+        <ng-container matColumnDef="25-check-all">
+          <th mat-header-cell *matHeaderCellDef class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <mat-checkbox
+              color="primary"
+              [indeterminate]="checkStatus25 === 0"
+              [checked]="checkStatus25 === 1"
+              (change)="onCheckAllChange($event, 25)"
+            ></mat-checkbox>
+          </th>
+        </ng-container>
+
+        <ng-container matColumnDef="50-check-all">
+          <th mat-header-cell *matHeaderCellDef class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <mat-checkbox
+              color="primary"
+              [indeterminate]="checkStatus50 === 0"
+              [checked]="checkStatus50 === 1"
+              (change)="onCheckAllChange($event, 50)"
+            ></mat-checkbox>
+          </th>
+        </ng-container>
+
+        <ng-container matColumnDef="75-check-all">
+          <th mat-header-cell *matHeaderCellDef class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <mat-checkbox
+              color="primary"
+              [indeterminate]="checkStatus75 === 0"
+              [checked]="checkStatus75 === 1"
+              (change)="onCheckAllChange($event, 75)"
+            ></mat-checkbox>
+          </th>
+        </ng-container>
+
+        <ng-container matColumnDef="100-check-all">
+          <th mat-header-cell *matHeaderCellDef class="align-center">
+            <div class="vertical-line"><span></span></div>
+            <mat-checkbox
+              color="primary"
+              [indeterminate]="checkStatus100 === 0"
+              [checked]="checkStatus100 === 1"
+              (change)="onCheckAllChange($event, 100)"
+            ></mat-checkbox>
+          </th>
+        </ng-container>
+
+        <tr class="mat-row" *matNoDataRow>
+          <td class="mat-cell" colspan="12">
+            <div class="empty grid p-32  content-center" *ngIf="loadingService.isLoading$ | async as loadingMap">
+              <app-empty [width]="100" [height]="70" *ngIf="!loadingMap.get(requestUrl); else loading"></app-empty>
+              <ng-template #loading>
+                <h4>{{'table.loading' | translate}}...</h4>
+              </ng-template>
+            </div>
+          </td>
+        </tr>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsMain" class="sub-th-header"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="flex gap-8 justify-content-end mt-16" *ngIf="[pAttendance.write] | permission">
+    <button mat-flat-button color="primary" (click)="onSubmit()">
+      <mat-icon svgIcon="save"></mat-icon>
+      រក្សាទុក
+    </button>
+  </div>
+</div>

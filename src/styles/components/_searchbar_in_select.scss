@@ -1,0 +1,57 @@
+.mdc-menu-surface.mat-mdc-select-panel {
+  padding: 0 !important;
+}
+
+.search-box {
+  &__select-option {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    background: #fff;
+    z-index: 1;
+
+    .mat-mdc-form-field-wrapper {
+      margin: 0;
+      padding: 0;
+
+      .mat-mdc-form-field-flex {
+        width: 100%;
+        padding-top: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #fff;
+      }
+    }
+
+    .mat-mdc-form-field-focus-overlay {
+      background-color: #fff;
+    }
+
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .mat-mdc-form-field-underline {
+      bottom: 0;
+    }
+
+    .mat-mdc-form-field-infix {
+      padding: 8px 0 !important;
+      border-top: 0;
+      min-height: 40px;
+      margin-top: 6px;
+    }
+
+    .mat-mdc-form-field-label-wrapper {
+      padding-top: 0 !important;
+    }
+  }
+}
+
+.mat-mdc-option.mdc-list-item--disabled {
+  width: 100%;
+  .mdc-list-item__primary-text {
+    width: inherit;
+  }
+}

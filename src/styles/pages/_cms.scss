@@ -1,0 +1,45 @@
+@use '../variables' as *;
+
+@font-face {
+  font-family: 'Khmer OS Muol';
+  src: url('../../assets/fonts/Moul.ttf');
+}
+
+.cms-content {
+  .d-flex {
+    display: flex;
+    flex-wrap: nowrap;
+    .value {
+      margin-left: 100px;
+      margin-bottom: 20px;
+      font-weight: normal;
+    }
+    .title {
+      margin: 0 0 20px 100px;
+      width: 100%;
+
+      & > * {
+        font-family: 'Khmer OS Muol', Inter, Khmer, system ui;
+        line-height: normal;
+      }
+    }
+  }
+
+  mat-quill {
+    .ql-editor {
+      & > * {
+        font-family: 'Khmer OS Muol', Inter, Khmer, system ui;
+        line-height: normal;
+      }
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+    .value {
+      margin-left: 20px !important;
+    }
+    .title {
+      margin: 0 0 20px 20px !important;
+    }
+  }
+}

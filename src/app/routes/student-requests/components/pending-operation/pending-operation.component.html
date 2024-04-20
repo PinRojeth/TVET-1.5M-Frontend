@@ -1,0 +1,151 @@
+<div class="app-content student-requests">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button mat-button [routerLink]="'../../'">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}}
+        </button>
+      </h1>
+    </div>
+  </div>
+
+  <div>
+    <form id="apply-student-form" [formGroup]="form" autocomplete="off">
+      <div class="detail-form">
+        <div class="header-label">ប្រវត្តិរូបបេក្ខជន</div>
+        <div class="grid gap-x-16 col-sm-2 col-md-3">
+          <div>
+            <label [ngClass]="{'required': form.get('last_name').invalid}" for="">
+              {{'form.last_name' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <input matInput formControlName="last_name" required />
+            </mat-form-field>
+          </div>
+          <div>
+            <label [ngClass]="{'required': form.get('first_name').invalid}">
+              {{'form.first_name' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <input matInput formControlName="first_name" required />
+            </mat-form-field>
+          </div>
+          <div>
+            <label [ngClass]="{'required': form.get('last_name').invalid}" for="">
+              {{'form.gender.title' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="gender">
+                <mat-option value="male">{{'form.gender.male' | translate}}</mat-option>
+                <mat-option value="female">{{'form.gender.female' | translate}}</mat-option>
+              </mat-select>
+              <mat-icon matSuffix>expand_more</mat-icon>
+            </mat-form-field>
+          </div>
+          <div>
+            <label [ngClass]="{'required': form.get('phone_number').invalid}">
+              {{'form.phone' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <input matInput formControlName="phone_number" />
+            </mat-form-field>
+          </div>
+          <div>
+            <label [ngClass]="{'required': form.get('date_of_birth').invalid}">
+              {{'form.date_birth' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <input
+                readonly
+                matInput
+                [matDatepicker]="picker"
+                [max]="maxDate"
+                (click)="picker.open()"
+                formControlName="date_of_birth"
+                required
+              />
+              <mat-datepicker-toggle matSuffix [for]="picker">
+                <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+              </mat-datepicker-toggle>
+              <mat-datepicker startView="multi-year" #picker></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div>
+            <label>
+              {{'form.id_card_number' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <input matInput formControlName="id_card_number" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-sm-2 col-md-3"></div>
+
+        <div class="header-label">ជ្រើសរើសវគ្គសិក្សា</div>
+        <div class="grid gap-x-16 col-sm-2">
+          <div>
+            <label [ngClass]="{'required': form.get('schools').invalid}" for="">
+              {{'school.title' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="schools" (selectionChange)="onSchoolChange($event.value)">
+                <mat-select-trigger>
+                  <ng-container *ngIf="schoolsCtr?.value; else noneSelect">
+                    <div class="container_option selected">
+                      <img
+                        [src]="schoolsCtr?.value?.profile_image
+                                                ? (schoolsCtr?.value?.profile_image | staticFile)
+                                                : 'assets/img/school.svg'"
+                        alt=""
+                      />
+                      {{schoolsCtr?.value?.name}}
+                    </div>
+                  </ng-container>
+                  <ng-template #noneSelect>-- ជ្រើសរើស --</ng-template>
+                </mat-select-trigger>
+                <mat-option value="">-- ជ្រើសរើស --</mat-option>
+                <mat-option *ngFor="let item of schools" [value]="item">
+                  <div class="container_option">
+                    <img
+                      [src]="item?.profile_image
+                                            ? (item?.profile_image | staticFile)
+                                            : 'assets/img/school.svg'"
+                      alt=""
+                    />
+                    {{item?.name}}
+                  </div>
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>expand_more</mat-icon>
+            </mat-form-field>
+          </div>
+          <div>
+            <label [ngClass]="{'required': form.get('courses').invalid}">
+              {{'menu.course' | translate}}
+            </label>
+            <mat-form-field appearance="outline">
+              <mat-select formControlName="courses">
+                <mat-option value="">--ជ្រើសរើស--</mat-option>
+                <mat-option *ngFor="let item of courseBySchool" [value]="item._id">
+                  <span>{{item?.name}}</span>
+                </mat-option>
+              </mat-select>
+              <mat-icon matSuffix>expand_more</mat-icon>
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="group-btn btn-left mt-16">
+    <button color="primary" mat-flat-button form="apply-student-form" [disabled]="isLoading" (click)="onSubmit()">
+      <mat-icon *ngIf="!isLoading; else loading" svgIcon="save"></mat-icon>
+      <ng-template #loading>
+        <mat-spinner [diameter]="20" class="loading-spinner"></mat-spinner>
+      </ng-template>
+      {{'button.save' | translate}}
+    </button>
+  </div>
+</div>

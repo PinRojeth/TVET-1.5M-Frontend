@@ -1,0 +1,78 @@
+<div class="app-content dialog-password">
+    <div class="app-title">
+      <h1 class="title">បញ្ចូលគណនីចូលប្រើប្រាស់</h1>
+    </div>
+  
+    <div mat-dialog-content>
+      <form id="form" [formGroup]="form" class="creation-form" autocomplete="off">
+        <div class="grid gap-x-16 col-sm-2">
+          <div class="grid gap-x-16 col-sm-2 col-span-sm-2">
+            <div>
+              <label class="required">{{'form.username' | translate}}</label>
+              <mat-form-field appearance="outline">
+                <input
+                  matInput
+                  [type]="'text'"
+                  formControlName="username"
+                />
+                <mat-error *ngIf="form.get('username').errors?.minlength">
+                    {{'form.at_least_6' | translate}}
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <div></div>
+          </div>
+          <div>
+            <label class="required">{{'form.password' | translate}}</label>
+            <mat-form-field appearance="outline">
+              <input
+                matInput
+                [type]="hideNewPassword ? 'password' : 'text'"
+                formControlName="password"
+                autocomplete="new-password"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hideNewPassword = !hideNewPassword"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hideNewPassword"
+              >
+                <mat-icon class="text-primary">{{hideNewPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+              </button>
+              <mat-error *ngIf="form.get('password').errors?.minlength">
+                {{'form.at_least_8' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div>
+            <label>{{'form.confirm_pwd' | translate}}</label>
+            <mat-form-field appearance="outline">
+              <input
+                matInput
+                [type]="hideConfirmPassword ? 'password' : 'text'"
+                formControlName="confirm_password"
+                autocomplete="off"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="hideConfirmPassword = !hideConfirmPassword"
+                [attr.aria-label]="'Hide password'"
+                [attr.aria-pressed]="hideConfirmPassword"
+              >
+                <mat-icon class="text-primary">{{hideConfirmPassword ? 'visibility_off' : 'visibility'}} </mat-icon>
+              </button>
+              <mat-error *ngIf="form.get('confirm_password').errors?.nomatch">
+                {{'form.pwd_must_match' | translate}}
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div mat-dialog-actions align="end">
+      <button mat-raised-button color="primary" form="form" (click)="onSubmit()">{{'button.save' | translate}}</button>
+    </div>
+  </div>
+  

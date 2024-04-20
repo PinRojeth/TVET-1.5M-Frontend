@@ -1,0 +1,6 @@
+<mat-form-field appearance="outline">
+    <input matInput [matDatepicker]="yearPicker" [formControl]="yearDate" readonly>
+    <mat-datepicker-toggle matSuffix [for]="yearPicker"></mat-datepicker-toggle>
+    <mat-datepicker #yearPicker startView="multi-year" (yearSelected)="chosenYearHandler($event, yearPicker)">
+    </mat-datepicker>
+</mat-form-field>

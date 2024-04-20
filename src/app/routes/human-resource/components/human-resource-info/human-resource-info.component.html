@@ -1,0 +1,183 @@
+<div class="app-content">
+
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button *ngIf="[pStaff.write] | permission" mat-button [routerLink]="'../../'">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}}
+        </button>
+      </h1>
+
+      <div class="group-btn">
+        <button *ngIf="[pStaff.write] | permission" mat-flat-button color="accent"
+          [routerLink]="['../../', 'edit', staffId]">
+          <mat-icon svgIcon="edit"></mat-icon>
+          {{'button.edit' | translate}}
+        </button>
+        <button *ngIf="[pStaff.resetPwd] | permission" mat-flat-button color="primary"
+          (click)="openResetPasswordDialog()">
+          <mat-icon>lock</mat-icon>
+          {{'button.reset_pwd' | translate}}
+        </button>
+        <button *ngIf="[pStaff.setActive] | permission" mat-flat-button
+          [color]="staff?.status === 1 ? 'warn' : 'primary'" (click)="onSetStatus()">
+          <mat-icon>{{staff?.status === 1 ? 'person_off' : 'person'}}</mat-icon>
+          {{(staff?.status === 1 ? 'button.disable' : 'button.enable') | translate}}
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="detail-form">
+      <div class="header-label">{{'staff.staff_info' | translate}}</div>
+      <app-image-uploader [status]="'view'" [payload]="staff"></app-image-uploader>
+      <div class="grid col-sm-2 detail-text">
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.last_name' | translate}}</label>
+          <div class="value">{{staff?.last_name}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.first_name' | translate}}</label>
+          <div class="value">{{staff?.first_name}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.last_name_en' | translate}}</label>
+          <div class="value">{{staff?.last_name_en}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.first_name_en' | translate}}</label>
+          <div class="value">{{staff?.first_name_en}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.date_birth' | translate}}</label>
+          <div class="value">{{staff?.date_of_birth | date: 'dd/MM/yyyy'}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.gender.title' | translate}}</label>
+          <div class="value">
+            {{staff?.gender === 'female' ? ('form.gender.female' | translate) : ('form.gender.male' | translate) |
+            titlecase}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.nationality' | translate}}</label>
+          <div class="value">
+            {{(staff?.nationality | translateAPI: translate.currentLang) || '--//--'}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.ethnicity' | translate}}</label>
+          <div class="value">
+            {{(staff?.ethnicity | translateAPI: translate.currentLang) || '--//--'}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.phone' | translate}}</label>
+          <div class="value">{{staff?.phone_number || '--//--'}}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-form mt-16">
+      <div class="header-label">{{'form.place_birth.title' | translate}}</div>
+      <div class="grid col-sm-2 detail-text">
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.city' | translate}}</label>
+          <div class="value">
+            {{(staff?.place_of_birth?.city_provinces | translateAPI: translate.currentLang) || "--//--"}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.district' | translate}}</label>
+          <div class="value">
+            {{(staff?.place_of_birth?.districts | translateAPI: translate.currentLang) || "--//--"}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.commune' | translate}}</label>
+          <div class="value">
+            {{(staff?.place_of_birth?.communes | translateAPI: translate.currentLang) || "--//--"}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.village' | translate}}</label>
+          <div class="value">
+            {{(staff?.place_of_birth?.villages | translateAPI: translate.currentLang) || "--//--"}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.detail' | translate}}</label>
+          <div class="value">{{staff?.place_of_birth?.detail || '--//--'}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2"></div>
+      </div>
+    </div>
+
+    <div class="detail-form mt-16">
+      <div class="header-label">{{'form.address.title' | translate}}</div>
+      <div class="grid col-sm-2 detail-text">
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.city' | translate}}</label>
+          <div class="value">
+            {{(staff?.address?.city_provinces | translateAPI: translate.currentLang) || "--//--"}}
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.district' | translate}}</label>
+          <div class="value">{{(staff?.address?.districts | translateAPI: translate.currentLang) || "--//--"}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.commune' | translate}}</label>
+          <div class="value">{{(staff?.address?.communes | translateAPI: translate.currentLang) || "--//--"}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.village' | translate}}</label>
+          <div class="value">{{(staff?.address?.villages | translateAPI: translate.currentLang) || "--//--"}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.address.detail' | translate}}</label>
+          <div class="value">{{staff?.address?.detail || '--//--'}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2"></div>
+      </div>
+    </div>
+
+    <div class="detail-form mt-16">
+      <div class="header-label">{{'form.auth' | translate}}</div>
+      <div class="grid col-sm-2 detail-text">
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.username' | translate}}</label>
+          <div class="value">{{staff?.users?.username || '--//--'}}</div>
+        </div>
+        <div class="grid gap-x-16 col-2">
+          <label>{{'form.role' | translate}}</label>
+          <div class="value">{{staff?.users?.roles?.name || (staff?.users?.roles?._id | rolePipe)}}</div>
+        </div>
+
+        <div class="grid gap-x-16 col-2" *ngIf="staff?.schools as school">
+          <label>គ្រឹះស្ថាន អ.ប.វ.</label>
+          <div class="value">
+            <div class="group-picture-name">
+              <img class="profile-picture-list" *ngIf="school.profile_image; else elseBlock"
+                  [src]="(school.profile_image | staticFile) + '?image_size=s'" alt="profile picture"
+                  onerror="this.onerror=null;this.src='/assets/imgs/school.svg'" />
+              <ng-template #elseBlock>
+                  <img class="profile-picture-list" [src]="'/assets/imgs/school.svg'" alt="profile picture" />
+              </ng-template>
+              <div class="el-responsive">{{school.name}}</div>
+          </div>
+          </div>
+        </div>
+        <div class="grid gap-x-16 col-2" *ngIf="staff?.user_departments as depart">
+          <label>ស្ថាប័ន</label>
+          <div class="value">
+              <div class="el-responsive">{{depart.name}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

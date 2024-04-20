@@ -1,0 +1,89 @@
+@use '../variables' as *;
+
+$border-width: 10;
+$border-colors: (
+    'grey': $border-grey,
+    'red': $border-red
+);
+
+/* border style */
+@mixin border-styles($style) {
+    border-style: $style;
+}
+
+/* border width */
+@mixin edge-borders($edge: false, $value: false) {
+    @if ($edge and $value) {
+        border-#{$edge}-width: $value + px;
+    } @else if ($value) {
+        border-width: $value + px;
+    } @else {
+        border-width: 1px;
+    }
+}
+
+@mixin axis-borders($axis, $value) {
+    @if ($axis == x) {
+        border-left-width: $value + px;
+        border-right-width: $value + px;
+    } @else if ($axis == y) {
+        border-top-width: $value + px;
+        border-bottom-width: $value + px;
+    }
+}
+
+/* border color */
+@mixin border-colors($color) {
+    border-color: $color;
+}
+
+/* 
+    ** border styles
+    ** class name: border-solid, border-dashed, ...
+*/
+@each $style in $border-styles {
+    .border-#{$style} {
+        @include border-styles($style);
+    }
+}
+
+/* border width */
+@for $i from 0 to $border-width {
+
+    // class name: border-[0,1,...]
+    .border-#{$i} {
+        @include edge-borders(false, $i);
+    }
+    /*
+        ** border on each edges
+        ** class name: border-t-[0,1,...], border-r-[0,1,...], ...
+    */
+    @each $name, $edge in $edges {
+        .border-#{$name}-#{$i} {
+            @include edge-borders($edge, $i);
+        }
+    }
+    /*
+        ** border on axis
+        ** class name: border-x-[0,1,...], border-y-[0,1,...]
+    */
+    @each $axis in $edge-axis {
+        .border-#{$axis}-#{$i} {
+            @include axis-borders($axis, $i);
+        }
+    }
+}
+
+.border {
+    @include edge-borders(false, false);
+}
+
+/*
+    ** border color
+    ** class name: border-grey, border-red, ...
+*/
+@each $name, $color in $border-colors {
+    .border-#{$name} {
+        @include border-colors($color);
+    }
+}

@@ -1,0 +1,150 @@
+<div class="app-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">Table and Form</h1>
+
+      <div class="group-btn">
+        <button color="primary" mat-flat-button (click)="onSubmit()">
+          {{'button.save' | translate}}
+          <mat-icon svgIcon="save"></mat-icon>
+        </button>
+        <button color="accent" mat-flat-button>
+          {{'button.edit' | translate}}
+          <mat-icon svgIcon="edit"></mat-icon>
+        </button>
+        <button color="warn" mat-flat-button>
+          {{'button.delete' | translate}}
+          <mat-icon svgIcon="delete"></mat-icon>
+        </button>
+        <button color="reset" mat-flat-button>
+          Reset
+          <mat-icon>lock_reset</mat-icon>
+        </button>
+        <button color="print" mat-flat-button>
+          Print
+          <mat-icon>print</mat-icon>
+        </button>
+        <button color="success" mat-flat-button>
+          Success
+          <mat-icon>done</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="detail-form mb-16">
+    <app-filter [hasButton]="true"></app-filter>
+    <custom-table [tableData]="tableData" [tableColumns]="tableColumns">
+      <ng-template [appZippy]="'name'" let-element>
+        <div class="el-responsive">{{element | fullName}}</div>
+      </ng-template>
+
+      <ng-template [appZippy]="'gender'" let-element>
+        {{(element.gender === 'female' ? ('form.gender.female' | translate) : ('form.gender.male' | translate) | titlecase)|| '--/--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'phone'" let-element>
+        {{element.phone_number || '--/--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'action'" let-element>
+        <app-action
+          [useRouter]="{view: {routerLink: 'info/' + element._id}, edit: {routerLink: 'edit/' + element._id}}"
+        ></app-action>
+      </ng-template>
+    </custom-table>
+  </div>
+
+  <form id="form" [formGroup]="form" #ngForm="ngForm">
+    <div class="detail-form">
+      <div class="header-label"></div>
+      <div class="grid gap-x-16 col-sm-2">
+        <div>
+          <label>{{('form.staff_code' | translate)}}</label>
+          <mat-form-field appearance="outline">
+            <input matInput formControlName="code" />
+          </mat-form-field>
+        </div>
+        <div>
+          <label>{{'form.titles' | translate}}</label>
+          <mat-form-field appearance="outline">
+            <mat-select formControlName="titles">
+              <mat-option *ngFor="let item of [1, 2, 3]" [value]="item">
+                {{item}}
+              </mat-option>
+            </mat-select>
+            <mat-icon matSuffix>expand_more</mat-icon>
+          </mat-form-field>
+        </div>
+        <div>
+          <label [ngClass]="{'required': form.get('last_name').invalid}" for=""
+            >{{'form.last_name' | translate}}
+          </label>
+          <mat-form-field appearance="outline">
+            <input matInput formControlName="last_name" required />
+          </mat-form-field>
+        </div>
+        <div>
+          <label [ngClass]="{'required': form.get('first_name').invalid}">{{'form.first_name' | translate}} </label>
+          <mat-form-field appearance="outline">
+            <input matInput formControlName="first_name" required />
+          </mat-form-field>
+        </div>
+        <div>
+          <label [ngClass]="{'required': form.get('last_name_en').invalid}">{{'form.last_name_en' | translate}} </label>
+          <mat-form-field appearance="outline">
+            <input matInput formControlName="last_name_en" required />
+          </mat-form-field>
+        </div>
+        <div>
+          <label [ngClass]="{'required': form.get('first_name_en').invalid}"
+            >{{'form.first_name_en' | translate}}
+          </label>
+          <mat-form-field appearance="outline">
+            <input matInput formControlName="first_name_en" required />
+          </mat-form-field>
+        </div>
+        <div>
+          <label [ngClass]="{'required': form.get('gender').invalid}">{{'form.gender.title' | translate}} </label>
+          <mat-radio-group
+            color="primary"
+            [ngClass]="{'invalid': ngForm.submitted &amp;&amp; form.get('gender').invalid}"
+            formControlName="gender"
+          >
+            <mat-radio-button value="male">{{'form.gender.male' | translate}}</mat-radio-button>
+            <mat-radio-button value="female">{{'form.gender.female' | translate}}</mat-radio-button>
+          </mat-radio-group>
+        </div>
+
+        <div>
+          <label [ngClass]="{'required': form.get('date_of_birth').invalid}">{{'form.date_birth' | translate}} </label>
+          <mat-form-field appearance="outline">
+            <input
+              readonly
+              matInput
+              [matDatepicker]="picker"
+              (click)="picker.open()"
+              formControlName="date_of_birth"
+              required
+            />
+            <mat-datepicker-toggle matSuffix [for]="picker">
+              <mat-icon matDatepickerToggleIcon>calendar_month</mat-icon>
+            </mat-datepicker-toggle>
+            <mat-datepicker startView="multi-year" #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div>
+          <label>{{'form.phone' | translate}}</label>
+          <mat-form-field appearance="outline">
+            <input matInput formControlName="phone_number" />
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+
+    <div class="detail-form mt-16">
+      <div class="header-label">{{'form.address.title' | translate}}</div>
+      <app-address [addressData]="addressData" [formGroupName]="'address'"></app-address>
+    </div>
+  </form>
+</div>

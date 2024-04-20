@@ -1,0 +1,11 @@
+<nav mat-tab-nav-bar class="control-nav-bar"
+  [ngClass]="activeLink === 0 ? 'first-tab' : (activeLink === lastIn) ? 'last-tab' :''">
+  <ng-container *ngFor="let link of links">
+    <a mat-tab-link *ngIf="link?.permissions && link?.permissions.length > 0 ? (link.permissions|permission): true"
+      [routerLink]="[link.route ? link.route : '../', link.tab]" [active]="activeLink === link.index"
+      (click)="onTabSelectedIndexChange(link.index)">
+      {{link.label | translate}}
+    </a>
+  </ng-container>
+
+</nav>

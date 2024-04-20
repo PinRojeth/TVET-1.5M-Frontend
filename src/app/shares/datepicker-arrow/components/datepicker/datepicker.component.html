@@ -1,0 +1,19 @@
+<div class="datepicker-arrow" id="datepicker-arrow">
+  <button (click)="onPrevDate()" mat-stroked-button color="print" class="btn-sm create-btn" #tooltip="matTooltip" matTooltip="Previous Day"
+    matTooltipPosition="below">
+    <mat-icon matPrefix>chevron_left</mat-icon>
+  </button>
+  <mat-form-field appearance="outline" (click)="picker.open()">
+    <input matInput [matDatepicker]="picker" readonly [formControl]="date"
+      (dateChange)="onDateChange($event.target.value)" (click)="picker.open()">
+    <mat-datepicker-toggle matPrefix>
+      <mat-icon matDatepickerToggleIcon>date_range</mat-icon>
+    </mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <span></span>
+  <button (click)="onNextDate()" mat-stroked-button color="print" class="btn-sm create-btn" #tooltip="matTooltip" matTooltip="Next Day"
+    matTooltipPosition="below">
+    <mat-icon matPrefix>navigate_next</mat-icon>
+  </button>
+</div>

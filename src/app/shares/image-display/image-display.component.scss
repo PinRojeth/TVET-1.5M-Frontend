@@ -1,0 +1,28 @@
+@use '../../../styles/mixin/flex' as *;
+.image-container {
+  position: relative;
+  @include flexbox;
+  @include flex-direction(row);
+  justify-content: center;
+  align-items: center;
+
+  img {
+    max-width: 900px;
+  }
+
+  mat-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+
+.mat-mdc-dialog-content {
+  display: block;
+  margin: 0 0px;
+  padding: 0px 0px;
+  max-height: 91vh;
+  /* overflow: auto; */
+  -webkit-overflow-scrolling: touch;
+}

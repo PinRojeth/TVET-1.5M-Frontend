@@ -1,0 +1,30 @@
+<div class="app-content cms-content">
+  <div class="app-header">
+    <div class="app-title">
+      <h1 class="title">
+        <button mat-button [routerLink]="'..'">
+          <mat-icon>arrow_back</mat-icon>
+          {{'button.back' | translate}}
+        </button>
+      </h1>
+    </div>
+  </div>
+
+  <div class="detail-form mb-16">
+    <div class="header-label">MOP Token</div>
+    <div class="grid gap-x-16 col-1 mt-16">
+      <div>
+        <label [ngClass]="{'required': nsaf_token?.invalid}">Token</label>
+        <mat-form-field appearance="outline">
+          <textarea matInput rows="4" [formControl]="nsaf_token"></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+  <div class="group-btn btn-left mt-16" *ngIf="[pToken.write] | permission">
+    <button color="primary" mat-flat-button form="myForm" (click)="onSubmit()">
+      <mat-icon svgIcon="save"></mat-icon>
+      {{'button.save' | translate}}
+    </button>
+  </div>
+</div>

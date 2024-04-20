@@ -1,0 +1,103 @@
+<!-- eslint-disable @angular-eslint/template/accessibility-label-has-associated-control -->
+<form [formGroup]="form">
+  <div class="grid gap-x-16 col-sm-2">
+    <div>
+      <label [ngClass]="{'required': form.get('city_provinces').invalid}">{{'form.address.city' | translate}} </label>
+      <mat-form-field appearance="outline">
+        <mat-select
+          (openedChange)="selectEvent = $event"
+          (selectionChange)="onCityProvinceChange($event.value)"
+          formControlName="city_provinces"
+        >
+          <app-searchbar-in-select-option
+            [baseData]="this[baseAddressEnum.BASE_PROVINCE]"
+            [clearInput]="selectEvent === false ? 1 : 0"
+            (emitData)="cityProvince = $event"
+            (emitSearchedValue)="searchValue = $event"
+          ></app-searchbar-in-select-option>
+          <mat-option *ngIf="searchValue && cityProvince?.length < 1" disabled>
+            <span class="flex" [ngStyle]="{'justify-content': 'center'}">{{'filter.no_data' | translate}}</span>
+          </mat-option>
+          <mat-option *ngFor="let item of cityProvince" [value]="item._id">
+            {{item | translateAPI: translate.currentLang}}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>expand_more</mat-icon>
+      </mat-form-field>
+    </div>
+    <div>
+      <label [ngClass]="{'required': form.get('districts').invalid}">{{'form.address.district' | translate}} </label>
+      <mat-form-field appearance="outline" (click)="onDistrictClick()">
+        <mat-select
+          (openedChange)="selectEvent = $event"
+          (selectionChange)="onDistrictsChange($event.value)"
+          formControlName="districts"
+        >
+          <app-searchbar-in-select-option
+            [baseData]="this[baseAddressEnum.BASE_DISTRICT]"
+            [clearInput]="selectEvent === false ? 1 : 0"
+            (emitData)="district = $event"
+            (emitSearchedValue)="searchValue = $event"
+          ></app-searchbar-in-select-option>
+          <mat-option *ngIf="searchValue && district?.length < 1" disabled>
+            <span class="flex" [ngStyle]="{'justify-content': 'center'}">{{'filter.no_data' | translate}}</span>
+          </mat-option>
+          <mat-option *ngFor="let item of district" [value]="item._id">
+            {{item | translateAPI: translate.currentLang}}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>expand_more</mat-icon>
+      </mat-form-field>
+    </div>
+    <div>
+      <label [ngClass]="{'required': form.get('communes').invalid}">{{'form.address.commune' | translate}} </label>
+      <mat-form-field appearance="outline" (click)="onCommuneClick()">
+        <mat-select
+          (openedChange)="selectEvent = $event"
+          (selectionChange)="onCommuneChange($event.value)"
+          formControlName="communes"
+        >
+          <app-searchbar-in-select-option
+            [baseData]="this[baseAddressEnum.BASE_COMMUNE]"
+            [clearInput]="selectEvent === false ? 1 : 0"
+            (emitData)="commune = $event"
+            (emitSearchedValue)="searchValue = $event"
+          ></app-searchbar-in-select-option>
+          <mat-option *ngIf="searchValue && commune?.length < 1" disabled>
+            <span class="flex" [ngStyle]="{'justify-content': 'center'}">{{'filter.no_data' | translate}}</span>
+          </mat-option>
+          <mat-option *ngFor="let item of commune" [value]="item._id">
+            {{item | translateAPI: translate.currentLang}}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>expand_more</mat-icon>
+      </mat-form-field>
+    </div>
+    <div>
+      <label [ngClass]="{'required': form.get('villages').invalid}">{{'form.address.village' | translate}} </label>
+      <mat-form-field appearance="outline" (click)="onVillageClick()">
+        <mat-select (openedChange)="selectEvent = $event" formControlName="villages">
+          <app-searchbar-in-select-option
+            [baseData]="this[baseAddressEnum.BASE_VILLAGE]"
+            [clearInput]="selectEvent === false ? 1 : 0"
+            (emitData)="village = $event"
+            (emitSearchedValue)="searchValue = $event"
+          ></app-searchbar-in-select-option>
+          <mat-option *ngIf="searchValue && village?.length < 1" disabled>
+            <span class="flex" [ngStyle]="{'justify-content': 'center'}">{{'filter.no_data' | translate}}</span>
+          </mat-option>
+          <mat-option *ngFor="let item of village" [value]="item._id">
+            {{item | translateAPI: translate.currentLang}}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix>expand_more</mat-icon>
+      </mat-form-field>
+    </div>
+    <div class="col-span-sm-2">
+      <label>{{"form.address.detail" | translate}}</label>
+      <mat-form-field appearance="outline">
+        <textarea matInput rows="2" formControlName="detail"></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+</form>

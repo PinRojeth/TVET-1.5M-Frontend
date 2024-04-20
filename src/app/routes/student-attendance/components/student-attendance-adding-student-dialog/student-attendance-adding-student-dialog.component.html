@@ -1,0 +1,99 @@
+<div class="detail-form">
+  <div class="flex items-center justify-content-between">
+    <div class="header-label">បញ្ចូលសិស្ស</div>
+    <button mat-icon-button mat-dialog-close>
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <section class="mb-16"><mat-divider></mat-divider></section>
+
+  <app-filter (queryEvent)="onSearch($event)" [apiRoute]="filterData$" (queryFilter)="setParams($event)"> </app-filter>
+
+  <mat-dialog-content>
+    <custom-table
+      [tableData]="tableData"
+      [tableColumns]="tableColumns"
+      [requestUrl]="requestUrl"
+      (goToEvent)="goTo($event)"
+    >
+      <ng-template [appZippy]="'name'" let-element>
+        <div class="group-picture-name">
+          <img
+            class="profile-picture-list"
+            *ngIf="element?.profile_image; else elseBlock"
+            [src]="(element.profile_image | staticFile) + '?image_size=s'"
+            alt="profile picture"
+          />
+          <ng-template #elseBlock>
+            <img
+              class="profile-picture-list"
+              [src]="(element.gender === 'female' ? '/assets/imgs/female.svg' : '/assets/imgs/male.svg')"
+              alt="profile picture"
+            />
+          </ng-template>
+          <div class="el-responsive">{{element | staffFullName}}</div>
+        </div>
+      </ng-template>
+
+      <ng-template [appZippy]="'gender'" let-element>
+        {{(element.gender === 'female' ? ('form.gender.female' | translate) : ('form.gender.male' | translate) | titlecase)|| '--//--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'courses'" let-element>
+        {{(element.courses?.code ?? element.courses) || '--/--'}}
+      </ng-template>
+
+      <ng-template [appZippy]="'poor_id'" let-element>
+        <div class="el-responsive">
+          <section *ngIf="element.poor_status === 1" class="flex items-center">
+            <mat-icon svgIcon="mat-approved"></mat-icon>
+            <span class="pl-6">{{element.poor_id}}</span>
+          </section>
+          <section *ngIf="element.poor_status === 2" class="flex items-center">
+            <mat-icon svgIcon="mat-draft"></mat-icon>
+            <span class="pl-6">{{element.poor_id}}</span>
+          </section>
+          <section *ngIf="element.poor_status === 3" class="flex items-center">
+            <mat-icon svgIcon="mat-pending"></mat-icon>
+            <span class="pl-6">{{element.poor_id}}</span>
+          </section>
+          <section *ngIf="element.poor_status === -3" class="flex items-center">
+            <mat-icon svgIcon="mat-rejected"></mat-icon>
+            <span class="pl-6">{{element.poor_id}}</span>
+          </section>
+        </div>
+      </ng-template>
+
+      <ng-template [appZippy]="'action'" let-element>
+        <button
+          mat-icon-button
+          color="warn"
+          (click)="onRemove(element)"
+          *ngIf="element?.selected; else notSelect"
+          [matTooltip]="'ដកចេញ'"
+          [matTooltipPosition]="'left'"
+          [disabled]="element?.disabled"
+        >
+          <mat-icon>do_not_disturb_on</mat-icon>
+        </button>
+
+        <ng-template #notSelect>
+          <button
+            mat-icon-button
+            (click)="onAdd(element)"
+            [matTooltip]="'បញ្ចូល'"
+            [matTooltipPosition]="'left'"
+            [disabled]="element?.disabled"
+          >
+            <mat-icon svgIcon="add_new_color"></mat-icon>
+          </button>
+        </ng-template>
+      </ng-template>
+    </custom-table>
+  </mat-dialog-content>
+
+  <div align="right" class="done-button mt-16">
+    <button mat-flat-button color="primary" (click)="onSubmit()" class="rounded-full">រួចរាល់</button>
+  </div>
+</div>

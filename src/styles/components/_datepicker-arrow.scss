@@ -1,0 +1,64 @@
+@use '../variables' as *;
+
+.datepicker-arrow#datepicker-arrow {
+  display: flex;
+  align-items: center;
+  border: 1px solid $border-grey;
+  border-radius: $rounded-sm;
+  background-color: #fff;
+
+  input {
+    cursor: pointer;
+  }
+
+  button {
+    border: none;
+  }
+
+  .mat-mdc-form-field-wrapper {
+    padding: 0;
+  }
+
+  .mat-mdc-form-field-appearance-outline {
+    .mat-mdc-form-field-outline {
+      color: transparent;
+      background-color: #fff;
+
+      .mat-mdc-form-field-outline-start,
+      .mat-mdc-form-field-outline-end {
+        background-color: #fff;
+      }
+    }
+
+    .mat-mdc-form-field-infix {
+      padding: 5px 0;
+    }
+
+    .mat-mdc-form-field-flex {
+      width: 120px;
+      min-width: 120px;
+      padding: 0;
+    }
+  }
+}
+
+.mat-datepicker-toggle {
+  .mat-mdc-icon-button.mat-mdc-button-base {
+    width: 35px;
+    height: 35px;
+    padding: 4px 0;
+  }
+}
+
+.month-picker .mat-calendar-period-button {
+  pointer-events: none;
+}
+
+.month-picker .mat-calendar-previous-button,
+.month-picker .mat-calendar-next-button {
+  display: none;
+}
+
+.month-picker .mat-calendar-arrow {
+  display: none;
+}

@@ -1,0 +1,13 @@
+<div class="snackbar" (mouseover)="onHover()" (mouseleave)="onLeave()">
+  <div class="snackbar-message">
+    <mat-icon *ngIf="status===1">task_alt</mat-icon>
+    <mat-icon *ngIf="status===0">error_outline</mat-icon>
+    <span>{{alertMessage | translate}}</span>
+  </div>
+  <div class="dismiss">
+    <button mat-icon-button (click)="sbRef.dismiss(); cleanProgressBarInterval();">
+      <mat-icon>cancel</mat-icon>
+    </button>
+  </div>
+</div>
+<mat-progress-bar id="snackbar-duration" mode="determinate" [value]="progress" color="warn"></mat-progress-bar>

@@ -1,0 +1,61 @@
+@use '../variables';
+
+// .mat-tab-group,
+// .mat-tab-nav-bar {
+
+//   .mat-tab-label,
+//   .mat-tab-link {
+//     height: 40px;
+//     border-width: 1px;
+//     border-style: solid none solid none;
+//     border-color: variables.$border-grey;
+
+//     &:first-child {
+//       border-left-style: solid;
+//       border-top-left-radius: variables.$rounded-md;
+//       border-bottom-left-radius: variables.$rounded-md;
+//     }
+
+//     &:last-child {
+//       border-right-style: solid;
+//       border-top-right-radius: variables.$rounded-md;
+//       border-bottom-right-radius: variables.$rounded-md;
+//     }
+
+//     &.mat-tab-label-active {
+//       border-right-style: solid;
+//       border-left-style: solid;
+//       opacity: 1;
+//       font-weight: bold;
+//       z-index: 1;
+//     }
+//   }
+
+//   .mat-tab-label {
+//     position: relative;
+//     z-index: 1;
+//   }
+
+//   .mat-ink-bar {
+//     height: 100%;
+//     background-color: variables.$background-light-grey  !important;
+//   }
+// }
+
+.mat-mdc-tab-header {
+  margin-bottom: variables.$spacing-md;
+}
+
+// .first-tab {
+//   .mat-ink-bar {
+//     border-top-left-radius: 15px;
+//     border-bottom-left-radius: 15px;
+//   }
+// }
+
+// .last-tab {
+//   .mat-ink-bar {
+//     border-top-right-radius: 15px;
+//     border-bottom-right-radius: 15px;
+//   }
+// }
