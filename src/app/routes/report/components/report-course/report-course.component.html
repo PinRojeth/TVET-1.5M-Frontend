@@ -5,7 +5,7 @@
     </div>
   </div>
 
-  <div class="detail-form">
+  <div class="detail-form fix-gap">
     <div class="flex wrap items-center place-content-space-between gap-8">
       <section class="flex wrap items-center gap-8 no-subscript-wrapper" [formGroup]="formDate">
         <mat-form-field appearance="outline" floatLabel="always">
@@ -36,15 +36,21 @@
           </mat-datepicker-toggle>
           <ngx-mat-datetime-picker #picker2 [showSeconds]="true"> </ngx-mat-datetime-picker>
         </mat-form-field>
-        <app-filter [hide]="['dateRange', 'date', 'yearDate', 'search']"> </app-filter>
-        <button mat-flat-button color="primary" (click)="onDateChange()">
+        <app-filter [hide]="['dateRange', 'date', 'yearDate', 'search', 'filter']"> </app-filter>
+        <button mat-flat-button color="primary" (click)="onDateChange()" class="fix-btn-generate">
           <mat-icon>send</mat-icon>
           Generate
         </button>
       </section>
     </div>
 
-    <custom-table id="courses-table">
+    <custom-table
+      [tableData]="tableDataSource"
+      [tableColumns]="tableColumns"
+      [requestUrl]="courseService.path"
+      id="courses-table"
+      *ngIf="!!tableDataSource; else emptyReport"
+    >
       <ng-template [appZippy]="'code'" let-element>
         {{element.code || '--//--'}}
       </ng-template>
@@ -91,23 +97,11 @@
       <ng-template [appZippy]="'student_count'" let-element>
         {{ element?.student_count ||  0}}
       </ng-template>
-
-      <!-- <ng-template [appZippy]="'action'" let-element>
-        <app-action
-          [useRouter]="{view: {routerLink: 'info/' + element._id}, edit: {routerLink: 'edit/' + element._id}}"
-          (clickEvent)="actionEvent($event, element._id)"
-          [permission]="{
-                        view: ([pCourse.read] | permission ),
-                        edit: ([pCourse.write] | permission ),
-                        delete: ([pCourse.delete] | permission ) }"
-        >
-        </app-action>
-      </ng-template> -->
     </custom-table>
     <ng-template #emptyReport>
       <div class="report-empty">
-        <div>
-          <img src="/TVET1.5M-admin/src/assets/imgs/report-empty.svg" alt="report image placeholder" />
+        <div >
+          <img src="../../../../assets/imgs/report-empty.svg" alt="report image placeholder" />
           <div align="center" class="grid gap-y-4 mt-4">
             <strong>សូមជ្រើសរើសកាលបរិច្ឆេទ</strong>
             <span class="text-blur">ទទួលយកសំណើររបស់បេក្ខជន</span>

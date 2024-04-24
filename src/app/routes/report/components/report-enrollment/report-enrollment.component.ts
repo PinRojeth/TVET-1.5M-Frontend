@@ -65,9 +65,8 @@ export class ReportEnrollmentComponent implements OnInit {
       .getApplyCountBySChool({ ...this.filterParams, start_date: startDate, end_date: endDate })
       .pipe(
         map(map => {
-          console.log(map);
-          
           if (map?.report_data?.length > 0) {
+            console.log(map);
             for (const body of map.report_data) {
               data.push({ ...body, province: true, colSpan: this.baseTopColumn?.length - 1 });
 
@@ -194,7 +193,7 @@ export class ReportEnrollmentComponent implements OnInit {
     return item?._id ?? index ?? item?.name ?? item;
   }
 
-    onExportFile(): void {
+  onExportFile(): void {
     const table = document.getElementById('table')?.cloneNode(true) as HTMLElement;
 
     //add title in excel file

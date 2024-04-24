@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // api_url: 'http://localhost:3000',
-  api_url: 'https://s15-api.myplgs.com',
+  api_url: 'http://localhost:3000',
+  // api_url: 'https://s15-api.myplgs.com',
   file_static_url: 'https://s15-api.myplgs.com/shared/file_data/download/',
   file_streaming_url: 'https://s15-api.myplgs.com/shared/file_data/streaming/'
 };

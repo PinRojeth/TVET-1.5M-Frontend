@@ -1,0 +1,19 @@
+.fix-gap {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.fix-empty {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.fix-img {
+  height: 204px;
+}
+
+.fix-btn-generate {
+  margin-bottom: 20px;
+}

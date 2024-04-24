@@ -21,3 +21,9 @@ export interface Course {
   name?: string;
   name_en?: string;
 }
+
+export interface CourseReport {
+  start_date: Date;
+  end_date: Date;
+  report_data: Course[];
+}

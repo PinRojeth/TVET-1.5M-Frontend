@@ -42,8 +42,3 @@ export interface StudentDataReport {
   name?: string;
   name_en?: string;
 }
-
-// export interface CourseDataReport {
-//   start_date: Date;
-//   end_date: Date;
-// }

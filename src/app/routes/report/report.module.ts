@@ -47,6 +47,7 @@ import { ReportStatusBySchoolComponent } from './components/report-status-by-sch
 import { ReportStatusByMajorComponent } from './components/report-status-by-major/report-status-by-major.component';
 import { StatusPipeModule } from 'src/app/shares/status-pipe/status-pipe.module';
 import { ReportCourseComponent } from './components/report-course/report-course.component';
+import { RoleModule } from '../../shares/role/role.module';
 @NgModule({
   declarations: [
     StudentRequestsReportComponent,
@@ -68,6 +69,7 @@ import { ReportCourseComponent } from './components/report-course/report-course.
     ReportStatusByMajorComponent,
     ReportCourseComponent
   ],
+  providers: [Base64ImagePipe, KhmerDatePipe],
   imports: [
     CommonModule,
     ReportRoutingModule,
@@ -93,8 +95,8 @@ import { ReportCourseComponent } from './components/report-course/report-course.
     MatProgressBarModule,
     MatTableModule,
     EmptyModule,
-    StatusPipeModule
-  ],
-  providers: [Base64ImagePipe, KhmerDatePipe]
+    StatusPipeModule,
+    RoleModule
+  ]
 })
 export class ReportModule {}

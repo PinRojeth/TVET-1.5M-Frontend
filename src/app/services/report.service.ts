@@ -54,11 +54,13 @@ export class ReportService extends BaseCrudService<any> {
     return this.requestService.getJSON(this.path + '/approval_student_city_province', { data, is_loading: true });
   }
 
-  getStatusBySchool(data: {end_date: string}): Observable<ApplyCountBySchool> {  //{ start_date: string; end_date: string }
+  getStatusBySchool(data: { end_date: string }): Observable<ApplyCountBySchool> {
+    //{ start_date: string; end_date: string }
     return this.requestService.getJSON(this.path + '/study_status_by_school', { data, is_loading: true });
   }
 
-  getStatusByMajor(data: { end_date: string }): Observable<ApplyCountBySchool> { //{ start_date: string; end_date: string }
+  getStatusByMajor(data: { end_date: string }): Observable<ApplyCountBySchool> {
+    //{ start_date: string; end_date: string }
     return this.requestService.getJSON(this.path + '/study_status_by_major', { data, is_loading: true });
   }
 

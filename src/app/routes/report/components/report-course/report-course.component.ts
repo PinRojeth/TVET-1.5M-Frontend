@@ -2,11 +2,18 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Params } from '@angular/router';
-import { ApplyCountBySchool } from 'src/app/models/report';
+import { map, takeUntil } from 'rxjs';
+import { pAdmin } from 'src/app/helpers/permission';
+import { DESTROYER$ } from 'src/app/helpers/unsubscribe';
+import { Course, CourseReport } from 'src/app/models/course';
+import { BaseDatatable } from 'src/app/models/datatables/base.datatable';
 import { TableColumn } from 'src/app/models/table-column';
 import { CourseService } from 'src/app/services/course.service';
+import { DialogService } from 'src/app/services/dialog.service';
 import { LoadingService } from 'src/app/services/loading.service';
+import { SnackbarService } from 'src/app/services/snackbar.service';
 import { Pagination } from 'src/app/shares/pagination/pagination';
+import { SnackbarComponent } from 'src/app/shares/snackbar/components/snackbar/snackbar.component';
 
 @Component({
   selector: 'app-report-course',
@@ -14,37 +21,78 @@ import { Pagination } from 'src/app/shares/pagination/pagination';
   styleUrls: ['./report-course.component.scss']
 })
 export class ReportCourseComponent {
-  tableDateSource = new MatTableDataSource<ApplyCountBySchool>(null);
-
+  pCourse = pAdmin.course;
   formDate = inject(FormBuilder).group({
     start: [null, Validators.required],
     end: [null, Validators.required]
   });
-
-  baseColumn: string[] = [
-    'ID',
-    'Code',
-    'Skill',
-    'RegisterDate',
-    'Start_date',
-    'End_date',
-    'Shift',
-    'School',
-    'Total_Student'
+  tableColumns: TableColumn[] = [
+    {
+      name: 'table.code',
+      dataKey: 'code',
+      custom: true
+    },
+    {
+      name: 'table.major',
+      dataKey: 'major',
+      custom: true
+    },
+    {
+      name: 'table.registration_date',
+      dataKey: 'register_date',
+      custom: true
+    },
+    {
+      name: 'table.course_date',
+      dataKey: 'course_date',
+      custom: true
+    },
+    {
+      name: 'table.shift',
+      dataKey: 'shift',
+      custom: true
+    },
+    {
+      name: 'table.school',
+      dataKey: 'school',
+      custom: true
+    },
+    {
+      name: 'table.student_count',
+      dataKey: 'student_count',
+      custom: true
+    }
   ];
 
-  constructor(readonly loadingService: LoadingService, private courseService: CourseService) {}
+  private readonly destroyer$ = DESTROYER$();
+
+  tableDataSource: BaseDatatable<Course>;
+
+  // filterParams: Params = {};
+
+  constructor(
+    readonly loadingService: LoadingService,
+    public courseService: CourseService,
+    private snackbarService: SnackbarService,
+    private dialogService: DialogService
+  ) {}
 
   onLoad(): void {
     this.loadingService.setLoading('page', true);
-    let data = [];
     let startDate: string = `${new Date(this.formDate.value.start).toLocaleDateString('en-ZA')} ${new Date(
       this.formDate.value.start
     ).toLocaleTimeString('en-US', { hour12: false })}`;
-
     let endDate: string = `${new Date(this.formDate.value.end).toLocaleDateString('en-ZA')} ${new Date(
       this.formDate.value.end
     ).toLocaleTimeString('en-US', { hour12: false })}`;
+    this.courseService.getDataCourseByDateRange({ start_date: startDate, end_date: endDate }).subscribe({
+      next: res => {
+        this.tableDataSource = res;
+        console.log(res);
+        takeUntil(this.destroyer$);
+        this.loadingService.setLoading('page', false);
+      }
+    });
   }
 
   onInputDate(): void {
@@ -55,6 +103,7 @@ export class ReportCourseComponent {
     } else if (!!this.formDate.controls.end.value && this.formDate.controls.end.invalid) {
       this.formDate.controls.end.setErrors(null);
     }
+    console.log(data);
   }
 
   dateRangeChange(): void {
