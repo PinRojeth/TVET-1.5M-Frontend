@@ -37,7 +37,7 @@
           <ngx-mat-datetime-picker #picker2 [showSeconds]="true"> </ngx-mat-datetime-picker>
         </mat-form-field>
         <app-filter [hide]="['dateRange', 'date', 'yearDate', 'search', 'filter']"> </app-filter>
-        <button mat-flat-button color="primary" (click)="onDateChange()" class="fix-btn-generate">
+        <button mat-flat-button color="primary" (click)="onDateChange()">
           <mat-icon>send</mat-icon>
           Generate
         </button>
@@ -100,7 +100,7 @@
     </custom-table>
     <ng-template #emptyReport>
       <div class="report-empty">
-        <div >
+        <div>
           <img src="../../../../assets/imgs/report-empty.svg" alt="report image placeholder" />
           <div align="center" class="grid gap-y-4 mt-4">
             <strong>សូមជ្រើសរើសកាលបរិច្ឆេទ</strong>
