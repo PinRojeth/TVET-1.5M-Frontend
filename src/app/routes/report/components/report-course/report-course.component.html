@@ -1,4 +1,4 @@
-<div class="app-content report">
+<div class="app-content">
   <div class="app-header">
     <div class="app-title">
       <h1 class="title">{{'report.course_report' | translate}}</h1>
@@ -37,7 +37,7 @@
           <ngx-mat-datetime-picker #picker2 [showSeconds]="true"> </ngx-mat-datetime-picker>
         </mat-form-field>
         <app-filter [hide]="['dateRange', 'date', 'yearDate', 'search', 'filter']"> </app-filter>
-        <button mat-flat-button color="primary" (click)="onDateChange()">
+        <button mat-flat-button color="primary" (click)="onDateChange()" class="fix-btn-generate">
           <mat-icon>send</mat-icon>
           Generate
         </button>
@@ -48,6 +48,7 @@
       [tableData]="tableDataSource"
       [tableColumns]="tableColumns"
       [requestUrl]="courseService.path"
+      (goToEvent)="goTo($event)"
       id="courses-table"
       *ngIf="!!tableDataSource; else emptyReport"
     >
@@ -100,8 +101,8 @@
     </custom-table>
     <ng-template #emptyReport>
       <div class="report-empty">
-        <div>
-          <img src="../../../../assets/imgs/report-empty.svg" alt="report image placeholder" />
+        <div class="fix-empty">
+          <img src="../../../../assets/imgs/report-empty.svg" class="fix-img" alt="report image placeholder" />
           <div align="center" class="grid gap-y-4 mt-4">
             <strong>សូមជ្រើសរើសកាលបរិច្ឆេទ</strong>
             <span class="text-blur">ទទួលយកសំណើររបស់បេក្ខជន</span>

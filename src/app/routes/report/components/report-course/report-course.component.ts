@@ -77,7 +77,7 @@ export class ReportCourseComponent {
     private dialogService: DialogService
   ) {}
 
-  onLoad(): void {
+  onLoad(pagination?): void {
     this.loadingService.setLoading('page', true);
     let startDate: string = `${new Date(this.formDate.value.start).toLocaleDateString('en-ZA')} ${new Date(
       this.formDate.value.start
@@ -85,7 +85,8 @@ export class ReportCourseComponent {
     let endDate: string = `${new Date(this.formDate.value.end).toLocaleDateString('en-ZA')} ${new Date(
       this.formDate.value.end
     ).toLocaleTimeString('en-US', { hour12: false })}`;
-    this.courseService.getDataCourseByDateRange({ start_date: startDate, end_date: endDate }).subscribe({
+
+    this.courseService.getDataCourseByDateRange({ ...pagination, start_date: startDate, end_date: endDate }).subscribe({
       next: res => {
         this.tableDataSource = res;
         console.log(res);
@@ -115,5 +116,9 @@ export class ReportCourseComponent {
   onDateChange(): void {
     this.formDate.markAllAsTouched();
     this.dateRangeChange();
+  }
+
+  goTo(pagination?: Pagination) {
+    this.onLoad(pagination);
   }
 }
