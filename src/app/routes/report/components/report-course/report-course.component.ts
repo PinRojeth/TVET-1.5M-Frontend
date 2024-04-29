@@ -70,12 +70,7 @@ export class ReportCourseComponent {
 
   // filterParams: Params = {};
 
-  constructor(
-    readonly loadingService: LoadingService,
-    public courseService: CourseService,
-    private snackbarService: SnackbarService,
-    private dialogService: DialogService
-  ) {}
+  constructor(readonly loadingService: LoadingService, public courseService: CourseService) {}
 
   onLoad(pagination?): void {
     this.loadingService.setLoading('page', true);
@@ -85,11 +80,9 @@ export class ReportCourseComponent {
     let endDate: string = `${new Date(this.formDate.value.end).toLocaleDateString('en-ZA')} ${new Date(
       this.formDate.value.end
     ).toLocaleTimeString('en-US', { hour12: false })}`;
-
     this.courseService.getDataCourseByDateRange({ ...pagination, start_date: startDate, end_date: endDate }).subscribe({
       next: res => {
         this.tableDataSource = res;
-        console.log(res);
         takeUntil(this.destroyer$);
         this.loadingService.setLoading('page', false);
       }
@@ -104,7 +97,6 @@ export class ReportCourseComponent {
     } else if (!!this.formDate.controls.end.value && this.formDate.controls.end.invalid) {
       this.formDate.controls.end.setErrors(null);
     }
-    console.log(data);
   }
 
   dateRangeChange(): void {
