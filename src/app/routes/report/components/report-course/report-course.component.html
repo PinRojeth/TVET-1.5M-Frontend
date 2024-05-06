@@ -95,8 +95,11 @@
         <ng-template #elseNull>{{'--//--'}}</ng-template>
       </ng-template>
 
-      <ng-template [appZippy]="'student_count'" let-element>
-        {{ element?.student_count ||  0}}
+      <ng-template [appZippy]="'total_student_count'" let-element>
+        {{ element?.total_submit_student_count ||  0}}
+      </ng-template>
+      <ng-template [appZippy]="'student_active_count'" let-element>
+        {{ element?.student_active_count ||  0}}
       </ng-template>
     </custom-table>
     <ng-template #emptyReport>

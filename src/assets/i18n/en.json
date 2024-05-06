@@ -244,7 +244,7 @@
     "school_code": "Code",
     "school_code_en": "Code(EN)",
     "student_amount": "Student Amount",
-    "res_date":"Start Date",
+    "res_date": "Start Date",
     "res_end": "End Date",
     "requirement": "Requirement",
     "poor_id": "Poor ID",
@@ -341,7 +341,7 @@
     "option": "Options",
     "type": "Type",
     "location": "Location",
-    "date_birth":"Date of Birth",
+    "date_birth": "Date of Birth",
     "view": "View",
     "sector": "Sector",
     "law_type": "Law Type",
@@ -362,7 +362,10 @@
     "total_female": "Total Female",
     "student_count": "Student Count",
     "shift_time": "Shift Time",
-    "type_poverty_status": "Poverty Status"
+    "type_poverty_status": "Poverty Status",
+    "registered_count": "Registerd Count",
+    "approve_to_study": "Approval Study"
+
   },
   "filter": {
     "search": "Search...",

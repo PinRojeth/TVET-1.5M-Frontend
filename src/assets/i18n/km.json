@@ -366,7 +366,9 @@
     "total_female": "សិស្សស្រី",
     "student_count": "ចំនួនសិស្ស",
     "shift_time": "វេនសិក្សា",
-    "type_poverty_status": "ស្ថានភាពក្រីក្រ"
+    "type_poverty_status": "ស្ថានភាពក្រីក្រ",
+    "total_submit_student_count": "ចំនួនដាក់ពាក្យ",
+    "approve_to_study": "ចំនួនអនុម័តចូលរៀន"
   },
   "filter": {
     "search": "ស្វែងរក...",

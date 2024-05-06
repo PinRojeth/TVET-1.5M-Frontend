@@ -58,8 +58,13 @@ export class ReportCourseComponent {
       custom: true
     },
     {
-      name: 'table.student_count',
-      dataKey: 'student_count',
+      name: 'table.total_submit_student_count',
+      dataKey: 'total_student_count',
+      custom: true
+    },
+    {
+      name: 'table.approve_to_study',
+      dataKey: 'student_active_count',
       custom: true
     }
   ];
@@ -85,6 +90,7 @@ export class ReportCourseComponent {
         this.tableDataSource = res;
         takeUntil(this.destroyer$);
         this.loadingService.setLoading('page', false);
+        console.log(res);
       }
     });
   }
