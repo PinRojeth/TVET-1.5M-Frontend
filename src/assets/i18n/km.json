@@ -81,7 +81,8 @@
     "student_requests_by_major": "ចំនួនបេក្ខជនតាមជំនាញ",
     "attendance_report": "របាយការណ៍វត្តមាន",
     "approve_students_report": "របាយការណ៍បេក្ខជន",
-    "course_report": "របាយការណ៍វគ្គសិក្សា"
+    "course_report": "របាយការណ៍វគ្គសិក្សា",
+    "weekly_progress_report": "របាយការណ៍ប្រចាំសប្តាហ៍"
   },
   "dashboard": {
     "staff": "Staff",
@@ -368,7 +369,12 @@
     "shift_time": "វេនសិក្សា",
     "type_poverty_status": "ស្ថានភាពក្រីក្រ",
     "total_submit_student_count": "ចំនួនដាក់ពាក្យ",
-    "approve_to_study": "ចំនួនអនុម័តចូលរៀន"
+    "approve_to_study": "ចំនួនអនុម័តចូលរៀន",
+    "registration_start_date": "ថ្ងៃចុះឈ្មោះ",
+    "registration_end_date": "ថ្ងៃបិទចុះឈ្មោះ",
+    "course_start_date": "ថ្ងៃចូលសិក្សា",
+    "course_end_date": "ថ្ងៃបញ្ចប់ការសិក្សា",
+    "open_session": "បើកវគ្គ"
   },
   "filter": {
     "search": "ស្វែងរក...",
@@ -394,7 +400,8 @@
     "apply_majors": "ជំនាញ",
     "courses": "វគ្គសិក្សា",
     "scholarship_status": "ស្ថានភាព",
-    "shifts": "វេន"
+    "shifts": "វេន",
+    "type_poverty_status": "ស្ថានភាពក្រីក្រ"
   },
   "enum_status": {
     "Published": "កំពុងប្រើប្រាស់",

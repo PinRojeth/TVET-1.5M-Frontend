@@ -62,7 +62,7 @@ export class ReportStatusBySchoolComponent {
     ).toLocaleTimeString('en-US', { hour12: false })}`;
 
     this.reportService
-      .getStatusBySchool({ ...this.filterParams, end_date: endDate }) //, start_date: startDate, 
+      .getStatusBySchool({ ...this.filterParams, end_date: endDate }) //, start_date: startDate,
       .pipe(
         map(map => {
           if (map?.report_data?.length > 0) {
@@ -70,7 +70,7 @@ export class ReportStatusBySchoolComponent {
               data.push({ ...body, province: true, colSpan: this.baseTopColumn?.length - 1 });
 
               //mapping data table
-              for (const [index, item] of body?.schools.entries()) {
+              for (const [index, item] of body?.schools?.entries()) {
                 let dataHasSchool = data?.filter(fil => fil?.school);
                 data.push({
                   ...item,
@@ -108,6 +108,8 @@ export class ReportStatusBySchoolComponent {
               }
             }
           }
+          console.log(map);
+
           return map;
         }),
         takeUntil(this.destroyer$)
@@ -165,7 +167,8 @@ export class ReportStatusBySchoolComponent {
 
   onInputDate(): void {
     let data = this.form.value;
-    if (!data.end) { ​//!!data.start &&​ && new Date(data.start).getTime() > new Date(data.end).getTime()
+    if (!data.end) {
+      //!!data.start &&​ && new Date(data.start).getTime() > new Date(data.end).getTime()
       this.form.controls.end.markAsTouched();
       this.form.controls.end.setErrors({ 'minDate': true });
     } else if (!!this.form.controls.end.value && this.form.controls.end.invalid) this.form.controls.end.setErrors(null);
@@ -181,7 +184,7 @@ export class ReportStatusBySchoolComponent {
     return item?._id ?? index ?? item?.name ?? item;
   }
 
-    onExportFile(): void {
+  onExportFile(): void {
     const table = document.getElementById('table')?.cloneNode(true) as HTMLElement;
 
     //add title in excel file
@@ -194,7 +197,7 @@ export class ReportStatusBySchoolComponent {
     let endDate: string = `${new Date(this.form.value.end).toLocaleDateString('en-ZA')}, ${new Date(
       this.form.value.end
     ).toLocaleTimeString('en-US', { hour12: false })}`;
-    const title = `ស្ថានភាពសិក្សាតាមគ្រឹះស្ថានត្រឹមថ្ងៃ ${endDate}`; //ចាប់ពី ${startDate} 
+    const title = `ស្ថានភាពសិក្សាតាមគ្រឹះស្ថានត្រឹមថ្ងៃ ${endDate}`; //ចាប់ពី ${startDate}
 
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(table);
 

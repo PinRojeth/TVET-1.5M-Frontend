@@ -136,6 +136,8 @@ export class ReportApprovalByAllComponent {
               }
             }
           }
+          console.log(map);
+
           return map;
         }),
         takeUntil(this.destroyer$)
@@ -209,7 +211,7 @@ export class ReportApprovalByAllComponent {
     return item?._id ?? index ?? item?.name ?? item;
   }
 
-    onExportFile(): void {
+  onExportFile(): void {
     const table = document.getElementById('table')?.cloneNode(true) as HTMLElement;
 
     //add title in excel file

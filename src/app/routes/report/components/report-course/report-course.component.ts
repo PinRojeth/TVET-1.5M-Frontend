@@ -14,6 +14,7 @@ import { LoadingService } from 'src/app/services/loading.service';
 import { SnackbarService } from 'src/app/services/snackbar.service';
 import { Pagination } from 'src/app/shares/pagination/pagination';
 import { SnackbarComponent } from 'src/app/shares/snackbar/components/snackbar/snackbar.component';
+import * as XLSX from 'xlsx';
 
 @Component({
   selector: 'app-report-course',
@@ -38,13 +39,23 @@ export class ReportCourseComponent {
       custom: true
     },
     {
-      name: 'table.registration_date',
-      dataKey: 'register_date',
+      name: 'table.registration_start_date',
+      dataKey: 'register_start_date',
       custom: true
     },
     {
-      name: 'table.course_date',
-      dataKey: 'course_date',
+      name: 'table.registration_end_date',
+      dataKey: 'register_end_date',
+      custom: true
+    },
+    {
+      name: 'table.course_start_date',
+      dataKey: 'course_start_date',
+      custom: true
+    },
+    {
+      name: 'table.course_end_date',
+      dataKey: 'course_end_date',
       custom: true
     },
     {
@@ -66,6 +77,10 @@ export class ReportCourseComponent {
       name: 'table.approve_to_study',
       dataKey: 'student_active_count',
       custom: true
+    },
+    {
+      name: 'table.open_session',
+      dataKey: ''
     }
   ];
 
@@ -93,6 +108,46 @@ export class ReportCourseComponent {
         console.log(res);
       }
     });
+  }
+  formatDate(date: Date) {
+    // Ensure date is a valid Date object
+    if (!(date instanceof Date) || isNaN(date.getTime())) {
+      return 'Invalid Date';
+    }
+
+    // Get date components
+    const day = date.getDate().toString().padStart(2, '0');
+    const month = (date.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based
+    const year = date.getFullYear();
+
+    // Return formatted date string (example: "DD-MM-YYYY")
+    return `${day}-${month}-${year}`;
+  }
+  onExportFile(): void {
+    let dataExportColumn = [];
+    for (let course of this?.tableDataSource?.list) {
+      dataExportColumn.push({
+        id: course?._id,
+        code: course?.code,
+        major: course?.apply_majors?.name,
+        registerStartDate: `${this.formatDate(new Date(course.registation_start))}
+        `,
+        registerEndDate: `${this.formatDate(new Date(course.registation_end))}`,
+        course_start_date: this.formatDate(new Date(course?.course_start)),
+        course_end_date: this.formatDate(new Date(course?.course_end)),
+        shift: course?.shifts.name,
+        school: course?.schools?.name,
+        total_approve: course['student_active_count'],
+        total_apply: course['total_submit_student_count']
+      });
+    }
+
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataExportColumn);
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Course-Table-Sheet');
+
+    // Save to file
+    XLSX.writeFile(wb, 'Course-table.xlsx');
   }
 
   onInputDate(): void {

@@ -139,5 +139,7 @@ export const pAdmin = {
 
   adminAction: {
     update_poor_id: 'a.adminAction.update_poor_id',
+    change_course_date: 'a.adminAction.change_course_date',
+    change_submit_attendance: 'a.adminAction.change_submit_attendance'
   }
 };

@@ -42,6 +42,12 @@
           Generate
         </button>
       </section>
+      <div>
+        <button class="fix-btn-print" mat-flat-button color="print" (click)="onExportFile()">
+          <mat-icon>print</mat-icon>
+          {{'button.export_file' | translate}}
+        </button>
+      </div>
     </div>
 
     <custom-table
@@ -60,13 +66,17 @@
         {{element.apply_majors?.name || '--//--'}}
       </ng-template>
 
-      <ng-template [appZippy]="'register_date'" let-element>
-        {{element.registation_start | date: 'dd/MM/yyyy' || '--//--'}} ~
+      <ng-template [appZippy]="'register_start_date'" let-element>
+        {{element.registation_start | date: 'dd/MM/yyyy' || '--//--'}}
+      </ng-template>
+      <ng-template [appZippy]="'register_end_date'" let-element>
         {{element.registation_end | date: 'dd/MM/yyyy' || '--//--'}}
       </ng-template>
 
-      <ng-template [appZippy]="'course_date'" let-element>
-        {{element.course_start | date: 'dd/MM/yyyy' || '--//--'}} ~
+      <ng-template [appZippy]="'course_start_date'" let-element>
+        {{element.course_start | date: 'dd/MM/yyyy' || '--//--'}}
+      </ng-template>
+      <ng-template [appZippy]="'course_end_date'" let-element>
         {{element.course_end | date: 'dd/MM/yyyy' || '--//--'}}
       </ng-template>
 

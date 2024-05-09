@@ -63,6 +63,9 @@ export class ReportService extends BaseCrudService<any> {
     //{ start_date: string; end_date: string }
     return this.requestService.getJSON(this.path + '/study_status_by_major', { data, is_loading: true });
   }
+  getWeeklyProgress(data: { end_date: string }): Observable<ApplyCountBySchool> {
+    return this.requestService.getJSON(this.path + '/report_weekly_progress', { data, is_loading: true });
+  }
 
   filterData(): Observable<unknown> {
     return this.requestService.getJSON(`${this.path}/filter_data`, {});

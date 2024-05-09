@@ -10,7 +10,7 @@ import { passwordMatcher } from 'src/app/helpers/password-matcher';
 import { pAdmin } from 'src/app/helpers/permission';
 import { DESTROYER$ } from 'src/app/helpers/unsubscribe';
 import { Address, Nationality } from 'src/app/models/address';
-import { RoleId } from 'src/app/models/enums/enumConstant';
+import EnumConstant, { RoleId } from 'src/app/models/enums/enumConstant';
 import { ImageList } from 'src/app/models/file';
 import { Student } from 'src/app/models/student';
 import { TypeEnum } from 'src/app/models/type_enum';
@@ -112,7 +112,7 @@ export class StudentApprovedEditingComponent implements OnInit {
         remove_attachment_files: [null],
         poor_id: [{ value: null, disabled: !this.permission.transform([this.uuidPerm.update_poor_id]) }],
         poor_member_uuid: [{ value: null, disabled: !this.permission.transform([this.uuidPerm.update_poor_id]) }],
-        type_scholarship_documents: [null],
+        type_scholarship_documents: [null]
       },
       {
         validators: passwordMatcher('password', 'confirm_password')
@@ -216,7 +216,7 @@ export class StudentApprovedEditingComponent implements OnInit {
           attachment_files: this.imageList,
           poor_member_uuid: res?.poor_member_uuid,
           poor_id: res?.poor_id,
-          type_scholarship_documents: res?.type_scholarship_documents?._id,
+          type_scholarship_documents: res?.type_scholarship_documents?._id
         });
 
         if (!res?.nationality?._id) {

@@ -17,7 +17,7 @@
           color="accent"
           mat-flat-button
           [routerLink]="['../../edit', attendanceId]"
-          *ngIf="([pStudent.write] | permission)"
+          *ngIf="([permissionAdmin.change_submit_attendance] | permission)"
         >
           {{'button.edit' | translate}}
           <mat-icon svgIcon="edit"></mat-icon>
@@ -26,7 +26,7 @@
           color="warn"
           mat-flat-button
           (click)="onDelete()"
-          *ngIf="([pStudent.delete] | permission) && this.data?.status === 1"
+          *ngIf="([permission.delete] | permission) && this.data?.status === 1"
         >
           {{'button.delete' | translate}}
           <mat-icon svgIcon="delete"></mat-icon>

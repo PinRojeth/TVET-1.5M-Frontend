@@ -156,7 +156,6 @@ export class CoursesComponent {
         school: course?.schools?.name,
         total_student: course['student_count']
       });
-      console.log(course);
     }
 
     const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(dataExportColumn);
@@ -165,7 +164,6 @@ export class CoursesComponent {
 
     // Save to file
     XLSX.writeFile(wb, 'Course-table.xlsx');
-    console.log(this.tableData.list);
   }
 
   //TODO: searching functions

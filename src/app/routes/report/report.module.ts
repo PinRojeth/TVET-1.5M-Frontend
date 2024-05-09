@@ -48,6 +48,7 @@ import { ReportStatusByMajorComponent } from './components/report-status-by-majo
 import { StatusPipeModule } from 'src/app/shares/status-pipe/status-pipe.module';
 import { ReportCourseComponent } from './components/report-course/report-course.component';
 import { RoleModule } from '../../shares/role/role.module';
+import { ReportWeeklyProgressComponent } from './components/report-weekly-progress/report-weekly-progress.component';
 @NgModule({
   declarations: [
     StudentRequestsReportComponent,
@@ -67,7 +68,8 @@ import { RoleModule } from '../../shares/role/role.module';
     ReportApprovalByAllComponent,
     ReportStatusBySchoolComponent,
     ReportStatusByMajorComponent,
-    ReportCourseComponent
+    ReportCourseComponent,
+    ReportWeeklyProgressComponent
   ],
   providers: [Base64ImagePipe, KhmerDatePipe],
   imports: [

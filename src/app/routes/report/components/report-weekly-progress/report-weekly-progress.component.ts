@@ -2,9 +2,8 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { Params } from '@angular/router';
-import { Observable } from 'rxjs/internal/Observable';
+import { Observable, takeUntil } from 'rxjs';
 import { map } from 'rxjs/internal/operators/map';
-import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { DESTROYER$ } from 'src/app/helpers/unsubscribe';
 import { ApplyCountBySchool } from 'src/app/models/report';
 import { LoadingService } from 'src/app/services/loading.service';
@@ -13,106 +12,102 @@ import { environment } from 'src/environments/environment';
 import * as XLSX from 'xlsx';
 
 @Component({
-  selector: 'app-report-enrollment-by-all',
-  templateUrl: './report-enrollment-by-all.component.html',
-  styleUrls: ['./report-enrollment-by-all.component.scss']
+  selector: 'app-report-weekly-progress',
+  templateUrl: './report-weekly-progress.component.html',
+  styleUrls: ['./report-weekly-progress.component.scss']
 })
-export class ReportEnrollmentByAllComponent {
+export class ReportWeeklyProgressComponent {
   private readonly destroyer$ = DESTROYER$();
 
   readonly loadingService = inject(LoadingService);
+
   private readonly reportService = inject(ReportService);
 
   date: Date = new Date();
-  startDate: Date = new Date(this.date.getFullYear(), this.date.getMonth(), 1);
   endDate: Date = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0);
 
   form = inject(FormBuilder).group({
-    start: [null, Validators.required],
     end: [null, Validators.required]
   });
 
-  requestUrl: string = environment.api_url + this.reportService.path + '/student_apply_count';
+  requestUrl: string = environment.api_url + this.reportService.path + '/report_weekly_progress';
+  baseColumn: string[] = ['position', 'province', 'institution', 'school'];
+  baseTopColumn: string[] = ['#', 'វិស័យ', 'មុខជំនាញ', 'ឈ្មោះគ្រឹះស្ថានបណ្តុះបណ្តាល'];
 
-  baseColumn: string[] = ['position', 'province', 'institution', 'sectors', 'apply_majors'];
+  // baseColumn: string[] = [
+  //   'position',
+  //   'date',
+  //   'major',
+  //   'institution',
+  //   'register',
+  //   'incompleteCondition',
+  //   'approve',
+  //   'dropOut',
+  //   'studying',
+  //   'attendaceUnderEightPercent',
+  //   'internship',
+  //   'examForGraduate',
+  //   'graduated',
+  //   'haveWork'
+  // ];
   exportColumn: string[] = this.baseColumn;
   tableDataSource = new MatTableDataSource<ApplyCountBySchool>(null);
   displayedColumns: string[] = this.baseColumn;
-  baseTopColumn: string[] = ['#', 'រាជធានី/ខេត្ត', 'គ្រឹះស្ថាន អ.ប.វ.', 'វិស័យ', 'មុខជំនាញ'];
+  // baseTopColumn: string[] = [
+  //   'ល.រ',
+  //   'កាលបរិច្ឆេទ',
+  //   'ឈ្មោះជំនាញ',
+  //   'ឈ្មោះគ្រឹះស្ថានបណ្តុះបណ្តាល',
+  //   'ចំនួនការចុះឈ្មោះ (ដាក់ពាក្យ)',
+  //   'មិនគ្រប់លក្ខខណ្ឌ/ចង់រៀន',
+  //   'ចូលសិក្សា (ទទួលការអនុម័ត)',
+  //   'បោះបង់ការសិក្សា',
+  //   'កំពុងសិក្សា',
+  //   'វត្តមានក្រោម៨០%',
+  //   'កំពុងកម្មសិក្សា',
+  //   'ប្រឡងបញ្ចប់ការសិក្សា',
+  //   'បញ្ចប់ការសិក្សា (ប្រឡងជាប់)',
+  //   'ទទួលបានការងារ'
+  // ];
   topColumn: string[] = this.baseTopColumn;
   dynamicColumn: { _id: string; name: string }[];
 
   data: ApplyCountBySchool;
-
-  filterData$: Observable<unknown> = this.reportService.filterData();
+  filterData$: Observable<unknown> = this.reportService.filterDataRequest();
 
   filterParams: Params = {};
-
-  ngOnInit(): void {}
 
   onLoad(): void {
     this.loadingService.setLoading('page', true);
     let data = [];
-    let startDate: string = `${new Date(this.form.value.start).toLocaleDateString('en-ZA')} ${new Date(
-      this.form.value.start
-    ).toLocaleTimeString('en-US', { hour12: false })}`;
+    // let startDate: string = `${new Date(this.form.value.start).toLocaleDateString('en-ZA')} ${new Date(
+    //   this.form.value.start
+    // ).toLocaleTimeString('en-US', { hour12: false })}`;
 
     let endDate: string = `${new Date(this.form.value.end).toLocaleDateString('en-ZA')} ${new Date(
       this.form.value.end
     ).toLocaleTimeString('en-US', { hour12: false })}`;
 
     this.reportService
-      .getApplyStudentCityProvince({ ...this.filterParams, start_date: startDate, end_date: endDate })
+      .getWeeklyProgress({ ...this.filterParams, end_date: endDate }) //, start_date: startDate,
       .pipe(
         map(map => {
           if (map?.report_data?.length > 0) {
-            //*mapping data table
             for (const body of map.report_data) {
               data.push({ ...body, province: true, colSpan: this.baseTopColumn?.length - 1 });
-              console.log(body.apply_majors);
 
-              //school mapping
-              if (body?.schools?.length > 0) {
-                for (const [index, item] of body?.schools.entries()) {
-                  let dataHasSchool = data?.filter(fil => fil?.school);
-                  data.push({
-                    ...item,
-                    school: true,
-                    index: dataHasSchool?.length > 0 ? dataHasSchool[dataHasSchool.length - 1]?.index + 1 : 1,
-                    colSpan: this.baseTopColumn?.length - 2
-                  });
-                  console.log(item);
-
-                  if (item?.sectors?.length > 0) {
-                    //sector mapping
-                    for (const sector of item?.sectors) {
-                      data.push({
-                        ...sector,
-                        sector: true,
-                        colSpan: this.baseTopColumn?.length - 3
-                      });
-
-                      if (sector?.apply_majors?.length > 0) {
-                        console.log(sector.apply_majors);
-
-                        //apply_majors mapping
-                        for (const [j, apply_major] of sector?.apply_majors?.entries()) {
-                          data.push({
-                            ...apply_major,
-                            apply_major: true,
-                            colSpan: -1,
-                            rowSpan: sector?.apply_majors?.length,
-                            index: j + 1 //to rowSpan row of useless sector fields
-                          });
-                        }
-                      }
-                    }
-                  }
-                }
+              //mapping data table
+              for (const [index, item] of body?.apply_majors?.entries()) {
+                let dataHasSchool = data?.filter(fil => fil?.school);
+                data.push({
+                  ...item,
+                  school: true,
+                  index: dataHasSchool?.length > 0 ? dataHasSchool[dataHasSchool.length - 1]?.index + 1 : 1,
+                  colSpan: -1
+                });
               }
             }
 
-            //total data at the bottom of the table
             data.push({
               index: 'សរុបរួម',
               school: true,
@@ -120,7 +115,7 @@ export class ReportEnrollmentByAllComponent {
             });
           }
 
-          //*columns management
+          //columns management
           if (map?.header_columns?.length > 0) {
             //second header in table
             this.exportColumn = []; //assign to table
@@ -199,46 +194,25 @@ export class ReportEnrollmentByAllComponent {
 
   onInputDate(): void {
     let data = this.form.value;
-    if (!!data.start && !!data.end && new Date(data.start).getTime() > new Date(data.end).getTime()) {
-      this.form.controls.end.markAsTouched();
+    if (!data.end) {
+      this.form.controls.end.markAllAsTouched();
       this.form.controls.end.setErrors({ 'minDate': true });
     } else if (!!this.form.controls.end.value && this.form.controls.end.invalid) this.form.controls.end.setErrors(null);
   }
 
-  //Filtering Data Functions
-  setParams(filterParams: Params): void {
-    if (Object.keys(filterParams).length < 1) this.filterParams = [];
-    else this.filterParams = filterParams;
-  }
-
-  trackByFn(index: number, item: any): void {
-    return item?._id ?? index ?? item?.name ?? item;
-  }
+  setParams(filterParams: Params): void {}
 
   onExportFile(): void {
     const table = document.getElementById('table')?.cloneNode(true) as HTMLElement;
-
-    //add title in excel file
-    let element = document.createElement('tr');
-    table.getElementsByTagName('thead')[0].prepend(element);
-
-    let startDate: string = `${new Date(this.form.value.start).toLocaleDateString('en-ZA')}, ${new Date(
-      this.form.value.start
-    ).toLocaleTimeString('en-US', { hour12: false })}`;
-    let endDate: string = `${new Date(this.form.value.end).toLocaleDateString('en-ZA')}, ${new Date(
-      this.form.value.end
-    ).toLocaleTimeString('en-US', { hour12: false })}`;
-    const title = `ចំនួនចុះឈ្មោះតាមរាជធានី-ខេត្ត, គ្រឹះស្ថាន អ.ប.វ., វិស័យ និងមុខជំនាញ ចាប់ពី ${startDate} ដល់ ${endDate}`;
-
     const ws: XLSX.WorkSheet = XLSX.utils.table_to_sheet(table);
-
-    //add title text to excel file
-    XLSX.utils.sheet_add_aoa(ws, [[title]], { origin: { r: 0, c: 0 } });
-
     const wb: XLSX.WorkBook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Sheet1');
 
     /* save to file */
     XLSX.writeFile(wb, 'file.xlsx');
+  }
+
+  trackByFn(index: number, item: any): void {
+    return item?._id ?? index ?? item?.name ?? item;
   }
 }

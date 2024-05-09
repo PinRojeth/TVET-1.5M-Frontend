@@ -38,7 +38,8 @@ export class AttendanceSubmitInfoComponent {
   private readonly router = inject(Router);
   private readonly studentAttendanceService = inject(StudentAttendanceService);
 
-  pStudent = pAdmin.attendanceSubmit;
+  permission = pAdmin.attendanceSubmit;
+  permissionAdmin = pAdmin.adminAction;
   pPayment = pAdmin.scholarshipPayment;
   att_sub_obj;
   studentListsArrange = [];
@@ -50,7 +51,7 @@ export class AttendanceSubmitInfoComponent {
       {
         label: 'វត្តមាន',
         svgIcon: 'visibility-color',
-        permission: this.permissionPipe.transform([this.pStudent.read])
+        permission: this.permissionPipe.transform([this.permission.read])
       },
       {
         label: 'ប្រាក់ឧបត្ថម្ភ',
@@ -154,7 +155,6 @@ export class AttendanceSubmitInfoComponent {
   }
 
   onExportFile(): void {
-
     //Arrange data
     for (let student of this.att_sub_obj.students) {
       this.studentListsArrange.push({
